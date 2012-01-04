@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+   
+    <bean id="reportColumnFactory" class="net.mind_engine.oculus.db.search.ColumnFactory">
+        <property name="columnClass" value="net.mind_engine.oculus.domain.report.ReportSearchColumn"/>
+        <property name="file" value="WEB-INF/conf/report-columns.xml"/>
+    </bean>
+    
+    <bean name="/report-*" class="net.mind_engine.oculus.web.controllers.report.ReportDisplayController">
+        <property name="view" value="report"/>
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="issueDAO" ref="issueDAO"/>
+    </bean>
+    
+    <bean name="/saved-*.html" class="net.mind_engine.oculus.web.controllers.report.SavedReportController">
+        <property name="title" value="Saved Reports"/>
+        <property name="view" value="report-saved"/>
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="config" ref="oculusConfig"/>
+        <property name="type" value="html"/>
+    </bean>
+    
+    <bean name="/saved-*.xls" class="net.mind_engine.oculus.web.controllers.report.SavedReportController">
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="config" ref="oculusConfig"/>
+        <property name="type" value="xls"/>
+    </bean>
+    
+    <bean name="/browse" class="net.mind_engine.oculus.web.controllers.report.ReportBrowseController">
+        <property name="title" value="Search Reports"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="reportSearchFilter"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.report.SearchFilter"/>
+        <property name="formView" value="report-browse"/>
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="successView" value="report-browse"/>
+        <property name="columnFactory" ref="reportColumnFactory"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/browse-ajax" class="net.mind_engine.oculus.web.controllers.report.ReportBrowseAjaxController">
+        <property name="title" value="Search Reports"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="reportSearchFilter"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.report.SearchFilter"/>
+        <property name="formView" value="report-browse"/>
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="successView" value="report-browse-ajax"/>
+        <property name="columnFactory" ref="reportColumnFactory"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    
+    
+    <bean name="/browse-remember-selected-runs" class="net.mind_engine.oculus.web.controllers.report.ReportBrowseRememberSelectedRunsController">
+        <property name="testRunDAO" ref="testRunDAO"/>
+    </bean>
+    
+    <bean name="/browse-save-collected-runs" class="net.mind_engine.oculus.web.controllers.report.ReportBrowseSaveCollectedRunsController">
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/upload-file" class="net.mind_engine.oculus.web.controllers.report.ReportUploadFileController">
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/save-filter" class="net.mind_engine.oculus.web.controllers.report.filter.FilterCreateController">
+        <property name="filterDAO" ref="filterDAO"/>
+    </bean>
+    
+    <bean name="/my-filters" class="net.mind_engine.oculus.web.controllers.report.filter.FiltersDisplayController">
+        <property name="title" value="My Filters"/>
+        <property name="filterDAO" ref="filterDAO"/>
+        <property name="view" value="my-filters"/>
+    </bean>
+    
+    <bean name="/remove-filter" class="net.mind_engine.oculus.web.controllers.report.filter.FilterRemoveController">
+        <property name="filterDAO" ref="filterDAO"/>
+    </bean>
+    
+    <bean name="/screenshot" class="net.mind_engine.oculus.web.controllers.report.ScreenshotController">
+        <property name="view" value="report-screenshot"/>
+    </bean>
+    
+    <bean name="/link-to-issue" class="net.mind_engine.oculus.web.controllers.report.ReportLinkToIssueController">
+        <property name="trmDAO" ref="trmDAO"/>
+        <property name="issueDAO" ref="issueDAO"/>
+    </bean>
+    
+</beans>

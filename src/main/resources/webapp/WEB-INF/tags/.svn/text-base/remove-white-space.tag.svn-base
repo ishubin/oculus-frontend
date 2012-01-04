@@ -1,0 +1,1 @@
+<%@ tag body-content="scriptless" %><%@tag import="org.apache.commons.lang.StringEscapeUtils"%><jsp:doBody var="body"/><%String body = (String) jspContext.findAttribute("body");body = body.replace("\r\n"," ");body=body.replaceAll("\\s+", " ");out.print(body.trim());%>

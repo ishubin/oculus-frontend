@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean name="/create" class="net.mind_engine.oculus.web.controllers.cstat.CreateCustomStatisticController">
+        <property name="title" value="Create Custom Statistic"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatistic"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatistic"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-create"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    	<property name="customStatisticDAO" ref="customStatisticDAO"/>
+    	<property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    
+    <bean name="/edit" class="net.mind_engine.oculus.web.controllers.cstat.EditCustomStatisticController">
+        <property name="title" value="Edit Custom Statistic"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatistic"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatistic"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-edit"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/display" class="net.mind_engine.oculus.web.controllers.cstat.DisplayCustomStatisticController">
+        <property name="view" value="cstat-display"/>
+        <property name="title" value="Custom Statistic - "/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+    </bean>
+    
+    <bean name="/browse" class="net.mind_engine.oculus.web.controllers.cstat.BrowseCustomStatisticController">
+        <property name="view" value="cstat-browse"/>
+        <property name="title" value="Custom Statistics - "/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+    </bean>
+    
+    <bean name="/delete" class="net.mind_engine.oculus.web.controllers.cstat.DeleteCustomStatisticController">
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/create-parameter" class="net.mind_engine.oculus.web.controllers.cstat.CreateCustomStatisticParameterController">
+        <property name="title" value="Create Custom Statistic Parameter"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatisticParameter"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatisticParameter"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticParameterValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-create-parameter"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/delete-parameter" class="net.mind_engine.oculus.web.controllers.cstat.DeleteCustomStatisticParameterController">
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    
+    <bean name="/edit-parameter" class="net.mind_engine.oculus.web.controllers.cstat.EditCustomStatisticParameterController">
+        <property name="title" value="Edit Custom Statistic Parameter"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatisticParameter"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatisticParameter"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticParameterValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-edit-parameter"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/create-chart" class="net.mind_engine.oculus.web.controllers.cstat.CreateCustomStatisticChartController">
+        <property name="title" value="Create Custom Statistic Chart"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatisticChart"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatisticChart"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticChartValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-create-chart"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/edit-chart" class="net.mind_engine.oculus.web.controllers.cstat.EditCustomStatisticChartController">
+        <property name="title" value="Edit Custom Statistic Chart"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="customStatisticChart"/>
+        <property name="commandClass" value="net.mind_engine.oculus.domain.customstatistics.CustomStatisticChart"/>
+        <property name="validator">
+            <bean class="net.mind_engine.oculus.service.customstatistics.CustomStatisticChartValidator">
+            </bean>
+        </property>
+        <property name="formView" value="cstat-edit-chart"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/delete-chart" class="net.mind_engine.oculus.web.controllers.cstat.DeleteCustomStatisticChartController">
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean name="/display-chart" class="net.mind_engine.oculus.web.controllers.cstat.DisplayCustomStatisticChartController">
+        <property name="view" value="cstat-display-chart"/>
+        <property name="title" value="Custom Statistic Chart- "/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+    </bean>
+    
+    <bean name="/save-chart-settings" class="net.mind_engine.oculus.web.controllers.cstat.SaveChartSettingsController">
+        <property name="customStatisticDAO" ref="customStatisticDAO"/>
+    </bean>
+</beans>

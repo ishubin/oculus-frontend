@@ -1,0 +1,27 @@
+<columns>
+
+    <column id="PROJECT_NAME">
+        <name>Sub-Project Name</name>
+        <field>name</field>
+        <sql-column>p.name</sql-column>
+    </column>
+    
+    <column id="PARENT_PROJECT">
+        <name>Project</name>
+        <field>project</field>
+        <sql-column>pp.name</sql-column>
+    </column>
+    
+    <column id="PROJECT_DATE">
+        <name>Created</name>
+        <field>createdDate</field>
+        <sql-column>p.date</sql-column>
+    </column>
+    
+    <column id="USER_NAME">
+        <name>Designer</name>
+        <field>name</field>
+        <sql-column>u.name</sql-column>
+    </column>
+    
+</columns>

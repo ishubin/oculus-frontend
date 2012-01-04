@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <bean name="/logout" class="net.mindengine.oculus.frontend.web.controllers.user.LogoutController">
+    </bean>
+    
+    <bean name="/profile-*" class="net.mindengine.oculus.frontend.web.controllers.user.ProfileController">
+        <property name="view" value="profile"/>
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+    
+        
+    <bean name="/login" class="net.mindengine.oculus.frontend.web.controllers.user.LoginController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="login"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.user.LoginData"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.LoginValidator"></bean>
+        </property>
+        <property name="formView" value="login"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="permissionList" ref="permissionList"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/forgot-password" class="net.mindengine.oculus.frontend.web.controllers.user.ForgotPasswordController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="forgotPassword"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.user.ForgotPasswordData"/>
+        <property name="formView" value="forgot-password"/>
+        <property name="successView" value="forgot-password-success"/>
+        <property name="failedView" value="forgot-password"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/change-password" class="net.mindengine.oculus.frontend.web.controllers.user.ChangePasswordController">
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="changePassword"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.user.ChangePasswordData"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.user.ChangePasswordValidator"></bean>
+        </property>
+        <property name="formView" value="user-change-password"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+   
+   
+    <bean name="/ajax-user-fetch" class="net.mindengine.oculus.frontend.web.controllers.user.UserAjaxFetchController">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
+    
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <bean id="ictJob" class="net.mind_engine.oculus.service.jobs.runs.CheckTestRunForICTJob">
+        <property name="issueDAO" ref="issueDAO"/>
+        <property name="testRunDAO" ref="testRunDAO"/>
+    </bean>
+    
+    <bean id="ictJobTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+        <property name="delay" value="10000" />
+        <property name="period" value="30000" />
+        <property name="timerTask" ref="ictJob" />
+    </bean>
+    
+    <bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean" lazy-init="false">
+      <property name="scheduledTimerTasks">
+        <list>
+          <ref bean="ictJobTask"/>
+        </list>
+      </property>
+    </bean>
+
+</beans>

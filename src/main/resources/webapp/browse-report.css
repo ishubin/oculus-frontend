@@ -1,0 +1,70 @@
+table.browse-report {
+	border:1px solid black;
+	border-collapse: collapse;
+}
+table.browse-report td.browse-report{
+    border:1px solid #909090;
+}
+table.browse-report thead{
+	font-weight:bold;
+	background:#c0c0c0;
+	height:30px;
+}
+table.browse-report tbody{
+    font-weight:normal;
+}
+table.browse-report tr.row-PASSED{
+    background:#a0f0a0;
+}
+table.browse-report tr.row-FAILED{
+    background:#f0a0a0;
+}
+table.browse-report tr.row-WARNING{
+    background:#f0f0a0;
+}
+table.browse-report tr.gray{
+    background:#e0e0e0;
+}
+
+
+
+/*Report menu*/
+.report-column-head h2{
+    font-weight:bold;
+    font-size:10pt;
+    color:black;
+    cursor:hand;
+    cursor:pointer;
+    padding:0px;
+    margin:0px;
+}
+.report-column-head div.report-column-head{
+	position:relative;
+}
+.report-column-head ul{
+	position:absolute;
+    border:1px solid black;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background:white;
+    display:none;
+}
+.report-column-head div.report-column-head:hover ul{
+    display:block;
+}
+.report-column-head ul li{
+    background:white;
+    color:black;
+}
+.report-column-head a{
+    white-space:nowrap;
+}
+.report-column-head ul li a img{
+	border:none;
+}
+
+.report-column-head ul li:hover{
+    background:gray;
+    color:black;
+}

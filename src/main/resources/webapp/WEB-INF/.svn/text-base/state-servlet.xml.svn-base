@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <bean name="/project-*" class="net.mind_engine.oculus.web.controllers.state.ProjectStateController">
+        <property name="viewChooseUnit" value="state-choose-unit"/>
+        <property name="title" value="Project Unit State Management"/>
+        <property name="view" value="state-unit-page"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="stateDAO" ref="stateDAO"/>
+        <property name="permissions">
+            <list>
+                <ref bean="_P_PROJECT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+    
+    
+</beans>

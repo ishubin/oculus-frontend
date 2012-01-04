@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <import resource="applicationContext-security.xml"/>
+    
+    
+    <bean id="oculusConfig" class="net.mind_engine.oculus.config.Config">
+    	<property name="file" value="oculus.conf"/>
+    </bean>
+    
+    
+    <bean id="userDAO" class="net.mind_engine.oculus.service.user.JdbcUserDAO">
+	   <property name="dataSource" ref="dataSource" />
+	   <property name="beanMappingFactory" ref="beanMappingFactory"/>
+	</bean>
+	
+	<bean id="projectDAO" class="net.mind_engine.oculus.service.project.JdbcProjectDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+       <property name="fileProjectBrowseBasicTemplate" value="WEB-INF/db/project/project-browse-base-template.sql"/>
+       <property name="fileProjectBrowseBasicCountTemplate" value="WEB-INF/db/project/project-browse-base-count-template.sql"/>
+    </bean>
+    
+    <bean id="testDAO" class="net.mind_engine.oculus.service.test.JdbcTestDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="testRunDAO" class="net.mind_engine.oculus.service.runs.JdbcTestRunDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+       <property name="basicTemplateFile" value="WEB-INF/db/report/base-template.sql"/>
+       <property name="basicCountTemplateFile" value="WEB-INF/db/report/base-count-template.sql"/>
+    </bean>
+	
+	<bean id="folderDAO" class="net.mind_engine.oculus.service.folder.JdbcFolderDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="documentDAO" class="net.mind_engine.oculus.service.document.JdbcDocumentDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="trmDAO" class="net.mind_engine.oculus.service.trm.JdbcTrmDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="buildDAO" class="net.mind_engine.oculus.service.project.build.JdbcBuildDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="projectStatisticsDAO" class="net.mind_engine.oculus.service.dashboard.JdbcProjectStatisticsDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+       <property name="dashboardFetchProjectFile" value="WEB-INF/db/dashboard/dashboard-project-fetch.sql"></property>
+    </bean>
+    
+    <bean id="filterDAO" class="net.mind_engine.oculus.service.report.filter.JdbcFilterDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="chartDAO" class="net.mind_engine.oculus.service.chart.JdbcChartDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="customizationDAO" class="net.mind_engine.oculus.service.customization.JdbcCustomizationDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="issueDAO" class="net.mind_engine.oculus.service.issue.JdbcIssueDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="commentDAO" class="net.mind_engine.oculus.service.comment.JdbcCommentDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+    <bean id="customStatisticDAO" class="net.mind_engine.oculus.service.customstatistics.JdbcCustomStatisticDAO">
+       <property name="dataSource" ref="dataSource" />
+       <property name="beanMappingFactory" ref="beanMappingFactory"/>
+    </bean>
+    
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    	<property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	
+
+    
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>oculus-jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
+        <property name="defaultLocale" value="en_US"></property>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+    </bean>
+
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+		  	<map>
+			    <entry key="net.mind_engine.oculus.service.exceptions.NotAuthorizedException" value="login-redirect" />
+		  	</map>
+		</property>
+		 
+		<!-- <property name="defaultErrorView" value="general-error"/> -->
+	</bean>
+
+
+    <bean id="beanMappingFactory" class="net.mind_engine.oculus.db.jdbc.BeanMappingFactory">
+        <property name="file" value="WEB-INF/db/db-mappings.xml"/>
+    </bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesJstlView"/>
+    </bean>
+    
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
+        <property name="definitions">
+            <list>
+            	<value>/WEB-INF/tiles/tiles-main.xml</value>
+               	<value>/WEB-INF/tiles/tiles-display.xml</value>
+               	<value>/WEB-INF/tiles/tiles-admin.xml</value>
+               	<value>/WEB-INF/tiles/tiles-project.xml</value>
+               	<value>/WEB-INF/tiles/tiles-report.xml</value>
+               	<value>/WEB-INF/tiles/tiles-user.xml</value>
+               	<value>/WEB-INF/tiles/tiles-test.xml</value>
+               	<value>/WEB-INF/tiles/tiles-document.xml</value>
+               	<value>/WEB-INF/tiles/tiles-trm.xml</value>
+               	<value>/WEB-INF/tiles/tiles-dashboard.xml</value>
+               	<value>/WEB-INF/tiles/tiles-customization.xml</value>
+               	<value>/WEB-INF/tiles/tiles-issue.xml</value>
+               	<value>/WEB-INF/tiles/tiles-state.xml</value>
+               	<value>/WEB-INF/tiles/tiles-cstat.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1000000000"/>
+    </bean>
+    
+    
+    <import resource="applicationContext-jobs.xml"/>
+</beans>

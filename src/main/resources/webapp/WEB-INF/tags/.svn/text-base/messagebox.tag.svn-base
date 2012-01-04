@@ -1,0 +1,42 @@
+<%@ tag body-content="scriptless" %>
+<%@ attribute name="title" required="true" %>
+<%@ attribute name="type" required="true" %>
+<%@ attribute name="width" required="false" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+
+<table border="0" class="custom-msgbox-wrap custom-panel"   
+        cellspacing="0" cellpadding="0" <%if(width!=null){%>width="${width}"<%}%>>
+    <thead>
+        <tr>
+            <td class="custom-msgbox-corner-1"><i></i></td>
+            <td class="custom-msgbox-title">
+                <div>
+                    ${title}
+                </div>
+            </td>
+            <td class="custom-msgbox-corner-2"><i></i></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="custom-msgbox-left"><i></i></td>
+            <td class="custom-msgbox-body">
+                <c:if test="${type=='success'}">
+                   <img class="custom-msgbox-logo" src="../images/logo-success.png"/>
+                </c:if>
+                <jsp:doBody></jsp:doBody>
+            </td>
+            <td class="custom-msgbox-right"><i></i></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="custom-msgbox-corner-3"><i></i></td>
+            <td class="custom-msgbox-bottom"></td>
+            <td class="custom-msgbox-corner-4"><i></i></td>
+        </tr>
+    </tfoot>
+</table>

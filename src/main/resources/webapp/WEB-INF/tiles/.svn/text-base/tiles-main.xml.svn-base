@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+"http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="html-container" page="/WEB-INF/jsp/html-container.jsp">
+	    <put name="left-panel" type="string" value=""/>
+		<put name="content" type="string" value="Undefined"/>
+		<put name="right-panel" value="" type="string"/>
+		<put name="rightPanelEnable" value="true" type="string"/>
+	</definition>
+	
+	<definition name="login-redirect" page="/WEB-INF/jsp/html-container.jsp">
+	    <put name="left-panel" type="string" value=""/>
+		<put name="content" type="page" value="/WEB-INF/jsp/login-redirect.jsp"/>
+		<put name="right-panel" value="" type="string"/>
+		<put name="rightPanelEnable" value="true" type="string"/>
+	</definition>
+	
+</tiles-definitions>

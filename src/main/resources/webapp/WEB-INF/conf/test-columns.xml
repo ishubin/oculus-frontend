@@ -1,0 +1,33 @@
+<columns>
+
+    <column id="TEST_NAME">
+        <name>Test Name</name>
+        <field>name</field>
+        <sql-column>name</sql-column>
+    </column>
+    
+    <column id="PROJECT">
+        <name>Project</name>
+        <field>project</field>
+        <sql-column>pp.name</sql-column>
+    </column>
+    
+    <column id="SUBPROJECT">
+        <name>Sub-Project</name>
+        <field>subproject</field>
+        <sql-column>p.name</sql-column>
+    </column>
+    
+    <column id="TEST_DATE">
+        <name>Created</name>
+        <field>createdDate</field>
+        <sql-column>t.date</sql-column>
+    </column>
+    
+    <column id="USER_NAME">
+        <name>Designer</name>
+        <field>name</field>
+        <sql-column>u.name</sql-column>
+    </column>
+    
+</columns>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <bean id="_P_USER_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="1"/>
+        <property name="name" value="user_managment"/>
+        <property name="description" value="User Management"/>
+    </bean>
+    
+    <bean id="_P_PROJECT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="2"/>
+        <property name="name" value="project_managment"/>
+        <property name="description" value="Project Management"/>
+    </bean>
+    
+    <bean id="_P_SUBPROJECT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="3"/>
+        <property name="name" value="subproject_managment"/>
+        <property name="description" value="Sub-Project Management"/>
+    </bean>
+    
+    <bean id="_P_TEST_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="4"/>
+        <property name="name" value="test_managment"/>
+        <property name="description" value="Test Management"/>
+    </bean>
+    
+    <bean id="_P_TRM_ADMINISTRATION" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="5"/>
+        <property name="name" value="trm_administration"/>
+        <property name="description" value="Test Run Manager Administration"/>
+    </bean>
+    
+    <bean id="_P_DASHBOARD_EDIT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="6"/>
+        <property name="name" value="dashboard_edit"/>
+        <property name="description" value="Edit Dashboard"/>
+    </bean>
+    
+    <bean id="_P_BUILD_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="7"/>
+        <property name="name" value="build_managment"/>
+        <property name="description" value="Build Management"/>
+    </bean>
+    
+    <bean id="_P_SUPER_PROJECT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="8"/>
+        <property name="name" value="super_project_managment"/>
+        <property name="description" value="Super Project Managment (manage all projects without any restrictions)"/>
+    </bean>
+    
+    <bean id="_P_ISSUE_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="9"/>
+        <property name="name" value="issue_managment"/>
+        <property name="description" value="Issue Management"/>
+    </bean>
+    
+    <bean id="_P_COMMENT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="10"/>
+        <property name="name" value="comment_managment"/>
+        <property name="description" value="Comment Management"/>
+    </bean>
+    
+    <bean id="_P_DOCUMENT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="11"/>
+        <property name="name" value="document_managment"/>
+        <property name="description" value="Document Management (Documentation Library: test-cases, files)"/>
+    </bean>
+    
+    <bean id="_P_CSTAT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
+        <property name="code" value="12"/>
+        <property name="name" value="cstat_managment"/>
+        <property name="description" value="Custom Statistics Management"/>
+    </bean>
+    
+    <bean id="permissionList" class="net.mindengine.oculus.frontend.domain.user.PermissionList">
+        <property name="permissions">
+            <list>
+                <ref bean="_P_USER_MANAGMENT"/>
+                <ref bean="_P_PROJECT_MANAGMENT"/>
+                <ref bean="_P_SUBPROJECT_MANAGMENT"/>
+                <ref bean="_P_SUPER_PROJECT_MANAGMENT"/>
+                <ref bean="_P_TEST_MANAGMENT"/>
+                <ref bean="_P_TRM_ADMINISTRATION"/>
+                <ref bean="_P_DASHBOARD_EDIT"/>
+                <ref bean="_P_BUILD_MANAGMENT"/>
+                <ref bean="_P_ISSUE_MANAGMENT"/>
+                <ref bean="_P_COMMENT_MANAGMENT"/>
+                <ref bean="_P_DOCUMENT_MANAGMENT"/>
+                <ref bean="_P_CSTAT_MANAGMENT"/>
+            </list>
+        </property>
+    </bean>
+</beans>

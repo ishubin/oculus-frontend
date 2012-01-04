@@ -1,0 +1,1 @@
+"c:\Program Files\MySQL\MySQL Server 5.0\bin\mysqldump.exe" -uroot -proot123 --opt --no-data --routines oculus > oculus-db-init.sql

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="testColumnFactory" class="net.mindengine.oculus.frontend.db.search.ColumnFactory">
+        <property name="columnClass" value="net.mindengine.oculus.frontend.domain.test.TestSearchColumn"/>
+        <property name="file" value="WEB-INF/conf/test-columns.xml"/>
+    </bean>
+    
+    <bean id ="testReportGenerator" class="net.mindengine.oculus.frontend.service.report.ExcelTestSearchReportGenerator">
+        <property name="unit" value="test"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+    </bean>
+    
+    <bean name="/create" class="net.mindengine.oculus.frontend.web.controllers.test.TestCreateController">
+        <property name="title" value="Create Test"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="createTest"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.Test"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.test.TestValidator"></bean>
+        </property>
+        <property name="formView" value="test-create"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    
+    <bean name="/edit" class="net.mindengine.oculus.frontend.web.controllers.test.TestEditController">
+        <property name="title" value="Edit Test"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="editTest"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.Test"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.test.TestValidator"></bean>
+        </property>
+        <property name="formView" value="test-edit"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    <bean name="/delete" class="net.mindengine.oculus.frontend.web.controllers.test.TestDeleteController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"></property>
+    </bean>
+    
+    
+    <bean name="/display" class="net.mindengine.oculus.frontend.web.controllers.test.TestDisplayController">
+        <property name="title" value="Test - "/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="commentDAO" ref="commentDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="documentDAO" ref="documentDAO"/>
+        <property name="view" value="test-display"/>
+    </bean>
+    
+    <bean name="/customize" class="net.mindengine.oculus.frontend.web.controllers.test.TestCustomizeController">
+        <property name="title" value="Customize Test"/>
+        <property name="view" value="test-customize"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    <bean name="/link-with-test-case" class="net.mindengine.oculus.frontend.web.controllers.test.TestLinkWithTestCaseController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="documentDAO" ref="documentDAO"/>
+    </bean>
+        
+    
+    <bean name="/ajax-fetch" class="net.mindengine.oculus.frontend.web.controllers.test.TestAjaxFetchController">
+        <property name="testDAO" ref="testDAO"/>
+    </bean>
+    
+    <bean name="/ajax-search" class="net.mindengine.oculus.frontend.web.controllers.test.TestAjaxSearchController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="columnFactory" ref="testColumnFactory"/>
+    </bean>
+    
+    
+    <bean name="/search" class="net.mindengine.oculus.frontend.web.controllers.test.TestSearchController">
+        <property name="title" value="Search Tests"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="searchFilter"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestSearchFilter"/>
+        <property name="formView" value="search-test"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="successView" value="search-test"/>
+        <property name="columnFactory" ref="testColumnFactory"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
+    <bean name="/search-export.xls" class="net.mindengine.oculus.frontend.web.controllers.test.TestSearchExportXLSController">
+        <property name="commandName" value="searchFilter"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestSearchFilter"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="customizationDAO" ref="customizationDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="columnFactory" ref="testColumnFactory"/>
+        <property name="config" ref="oculusConfig"/>
+        <property name="reportGenerator" ref="testReportGenerator"/>
+    </bean>
+    
+    <bean name="/ajax-parameters-search" class="net.mindengine.oculus.frontend.web.controllers.test.AjaxParameterSearchController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    <bean name="/copy-parameters" class="net.mindengine.oculus.frontend.web.controllers.test.CopyParametersController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    
+    <bean name="/create-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupCreateController">
+        <property name="title" value="Create Test Group"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="createTestGroup"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestGroup"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.test.TestGroupValidator"></bean>
+        </property>
+        <property name="formView" value="test-group-create"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    <bean name="/edit-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupEditController">
+        <property name="title" value="Create Test Group"/>
+        <property name="sessionForm" value="true"/>
+        <property name="commandName" value="editTestGroup"/>
+        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestGroup"/>
+        <property name="validator">
+            <bean class="net.mindengine.oculus.frontend.service.test.TestGroupValidator"></bean>
+        </property>
+        <property name="formView" value="test-group-edit"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+    
+    <bean name="/delete-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupDeleteController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="authorizationCheck" value="true"/>
+    </bean>
+</beans>

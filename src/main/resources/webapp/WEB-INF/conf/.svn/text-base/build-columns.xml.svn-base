@@ -1,0 +1,21 @@
+<columns>
+
+    <column id="BUILD_NAME">
+        <name>Build Name</name>
+        <field>name</field>
+        <sql-column>name</sql-column>
+    </column>
+    
+    <column id="PROJECT">
+        <name>Project</name>
+        <field>project</field>
+        <sql-column>p.name</sql-column>
+    </column>
+    
+    <column id="BUILD_DATE">
+        <name>Created</name>
+        <field>createdDate</field>
+        <sql-column>b.date</sql-column>
+    </column>
+    
+</columns>

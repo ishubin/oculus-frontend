@@ -1,0 +1,40 @@
+<%@ include file="/include.jsp" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<div id="testCaseInfo" style="display:none;">
+    Example of decorating tags:
+    <ul>
+        <li>
+            [b] bold text [/b]
+        </li>
+        <li>
+            [i] italic text [/i]
+        </li>
+        <li>
+            [url] link [/url]<br/>
+			or 
+			<br/>
+			[ulr=http://somewebsite]check this website[/url]
+        </li>
+        <li>
+            [size=2] text with defined font-size [/size]
+        </li>
+        <li>
+            [color=#ff00ff] text with defined color [/color]
+        </li>
+    </ul>
+</div>
+<table border="0" width="100%">
+    <tr>
+        <td width="40px" height="40px">
+            <div id="divLoadingIcon" style="display:none">
+                <img src="../images/loading.gif"/>
+            </div>
+        </td>
+        <td height="40px">
+            <div id="divInformationBox" style="height:40px;">
+            </div>
+        </td>
+    </tr>
+</table>

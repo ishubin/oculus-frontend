@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+"http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="create-issue-choose-project" extends="html-container">
+        <put name="left-panel" type="string" value=""/>
+        <put name="right-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/issue/issue-create-choose-project.jsp" type="page"/>
+    </definition>
+    
+    <definition name="edit-issue" extends="html-container">
+        <put name="left-panel" value="/WEB-INF/jsp/issue/issue-left-panel.jsp" type="page"/>
+        <put name="right-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/issue/issue-edit.jsp" type="page"/>
+    </definition>
+    
+    <definition name="create-issue" extends="html-container">
+        <put name="left-panel" type="string" value=""/>
+        <put name="right-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/issue/issue-create.jsp" type="page"/>
+    </definition>
+    
+    <definition name="display-issue" extends="html-container">
+        <put name="left-panel" value="/WEB-INF/jsp/issue/issue-left-panel.jsp" type="page"/>
+        <put name="right-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/issue/issue-display.jsp" type="page"/>
+    </definition>
+    
+    <definition name="search-issue" extends="html-container">
+        <put name="left-panel" value="/WEB-INF/jsp/issue/search/issue-search-filter.jsp" type="page"/>
+        <put name="right-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/issue/search/issue-search.jsp" type="page"/>
+        <put name="rightPanelEnable" value="false" type="string"/>
+    </definition>
+    
+    
+</tiles-definitions>

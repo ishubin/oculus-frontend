@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+   <bean name="/project-*" class="net.mindengine.oculus.frontend.web.controllers.dashboard.ProjectDashboardController">
+       <property name="projectDAO" ref="projectDAO"/>
+       <property name="title" value="Project Dashboard - "/>
+       <property name="projectStatisticsDAO" ref="projectStatisticsDAO"/>
+       <property name="view" value="project-dashboard"/>
+   </bean>
+   
+   <bean name="/edit" class="net.mindengine.oculus.frontend.web.controllers.dashboard.EditDashboardController">
+       <property name="sessionForm" value="true"/>
+       <property name="title" value="Edit Dashboard"/>
+       <property name="commandName" value="editDashboard"/>
+       <property name="commandClass" value="net.mindengine.oculus.frontend.domain.dashboard.Dashboard"/>
+       <property name="formView" value="edit-dashboard"/>
+       <property name="projectDAO" ref="projectDAO"/>
+       <property name="projectStatisticsDAO" ref="projectStatisticsDAO"/>
+       <property name="authorizationCheck" value="true"/>
+       <property name="permissions">
+           <list>
+                <ref bean="_P_DASHBOARD_EDIT"/>
+           </list>
+       </property>
+   </bean>
+    
+    
+   <bean name="/chart-*" class="net.mindengine.oculus.frontend.web.controllers.dashboard.ChartDashboardController">
+   </bean> 
+    
+</beans>

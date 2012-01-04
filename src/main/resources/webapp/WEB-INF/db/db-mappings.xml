@@ -1,0 +1,449 @@
+<beans>
+    <bean class="net.mindengine.oculus.frontend.domain.user.User">
+	    <property name="id" column="id"/>
+	    <property name="login" column="login"/>
+	    <property name="password" column="password"/>
+	    <property name="name" column="name"/>
+	    <property name="email" column="email"/>
+	    <property name="permissions" column="permissions"/>
+	</bean>
+	
+	<bean class="net.mindengine.oculus.frontend.domain.project.Project">
+        <property name="id" column="id"/>
+        <property name="parentId" column="parent_id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="path" column="path"/>
+        <property name="icon" column="icon"/>
+        <property name="subprojectsCount" column="subprojects_count"/>
+        <property name="testsCount" column="tests_count"/>
+        <property name="parentName" column="parentName"/>
+        <property name="parentPath" column="parentPath"/>
+        <property name="authorId" column="author_id"/>
+        <property name="authorName" column="authorName"/>
+        <property name="authorLogin" column="authorLogin"/>
+        <property name="date" column="date"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.run.TestRun">
+        <property name="id" column="id"/>
+        <property name="reasons" column="reasons"/>
+        <property name="report" column="report"/>
+        <property name="projectId" column="project_id"/>
+        <property name="testId" column="test_id"/>
+        <property name="suiteRunId" column="suite_run_id"/>
+        <property name="startTime" column="start_time"/>
+        <property name="endTime" column="end_time"/>
+        <property name="name" column="name"/>
+        <property name="status" column="status"/>
+        <property name="description" column="description"/>
+        <property name="issueId" column="issue_id"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.run.SuiteRun">
+        <property name="id" column="id"/>
+        <property name="parameters" column="parameters"/>
+        <property name="startTime" column="start_time"/>
+        <property name="endTime" column="end_time"/>
+        <property name="name" column="name"/>
+        <property name="runnerId" column="runner_id"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.test.Test">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="projectId" column="project_id"/>
+        <property name="projectPath" column="project_path"/>
+        <property name="projectName" column="project_name"/>
+        <property name="parentProjectPath" column="parentProjectPath"/>
+        <property name="parentProjectName" column="parentProjectName"/>
+        <property name="authorId" column="author_id"/>
+        <property name="authorName" column="authorName"/>
+        <property name="authorLogin" column="authorLogin"/>
+        <property name="description" column="description"/>
+        <property name="mapping" column="mapping"/>
+        <property name="date" column="date"/>
+        <property name="testCaseId" column="test_case_id"/>
+        <property name="groupId" column="group_id"/>
+        <property name="groupName" column="groupName"/>
+    </bean>
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.test.TestGroup">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="projectId" column="project_id"/>
+        <property name="description" column="description"/>
+    </bean>
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.test.TestParameter">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="type" column="type"/>
+        <property name="description" column="description"/>
+        <property name="controlType" column="control_type"/>
+        <property name="defaultValue" column="default_value"/>
+        <property name="possibleValues" column="possible_values"/>
+        <property name="testId" column="test_id"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.report.TestRunSearchData">
+		<property name="testRunId" column="trId"/>
+		<property name="testRunName" column="trName"/>
+		<property name="testRunStatus" column="trStatus"/>
+		<property name="testRunStartTime" column="trStartTime"/>
+		<property name="testRunEndTime" column="trEndTime"/>
+		<property name="testRunReasons" column="trReasons"/>
+		<property name="testRunReport" column="trReport"/>
+		<property name="testRunDescription" column="trDescription"/>
+		
+		<property name="suiteRunId" column="srId"/>
+		<property name="suiteRunName" column="srName"/>
+		<property name="suiteRunStartTime" column="srStartTime"/>
+		<property name="suiteRunEndTime" column="srEndTime"/>
+		<property name="suiteRunParameters" column="srParameters"/>
+		<property name="suiteRunAgentName" column="srAgentName"/>
+		
+		<property name="projectId" column="pId"/>
+		<property name="projectName" column="pName"/>
+		<property name="projectPath" column="pPath"/>
+		
+		<property name="parentProjectId" column="ppId"/>
+        <property name="parentProjectName" column="ppName"/>
+        <property name="parentProjectPath" column="ppPath"/>
+		
+		<property name="testId" column="tId"/>
+		<property name="testName" column="tName"/>
+		<property name="testDescription" column="tDescription"/>
+		
+		<property name="runnerId" column="runnerId"/>
+		<property name="runnerName" column="runnerName"/>
+		<property name="runnerLogin" column="runnerLogin"/>
+		
+		<property name="designerId" column="designerId"/>
+		<property name="designerName" column="designerName"/>
+		<property name="designerLogin" column="designerLogin"/>
+		
+		<property name="issueId" column="issId"/>
+		<property name="issueName" column="issName"/>
+		<property name="issueLink" column="issLink"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.run.TestRunParameter">
+        <property name="id" column="id"/>
+        <property name="testRunId" column="test_run_id"/>
+        <property name="name" column="name"/>
+        <property name="value" column="value"/>
+        <property name="type" column="type"/>
+    </bean>
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.report.SavedRun">
+        <property name="id" column="id"/>
+        <property name="date" column="date"/>
+        <property name="userId" column="user_id"/>
+        <property name="name" column="name"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.folder.Folder">
+        <property name="id" column="id"/>
+        <property name="projectId" column="project_id"/>
+        <property name="parentId" column="parent_id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="userId" column="userId"/>
+        <property name="children" column="children"/>
+        <property name="documents" column="documents"/>
+        <property name="branch" column="branch"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.document.Document">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="content" column="content"/>
+        <property name="date" column="date"/>
+        <property name="projectId" column="project_id"/>
+        <property name="folderId" column="folder_id"/>
+        <property name="userId" column="user_id"/>
+        <property name="branch" column="branch"/>
+        <property name="type" column="type"/>
+        <property name="typeExtended" column="type_extended"/>
+        <property name="size" column="size"/>
+        <property name="parentProjectName" column="parentProjectName"/>
+        <property name="parentProjectPath" column="parentProjectPath"/>
+        <property name="projectName" column="projectName"/>
+        <property name="projectPath" column="projectPath"/>
+        <property name="authorLogin" column="authorLogin"/>
+        <property name="authorName" column="authorName"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.document.DocumentAttachment">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="userId" column="user_id"/>
+        <property name="documentId" column="document_id"/>
+        <property name="date" column="date"/>
+        <property name="userLogin" column="userLogin"/>
+        <property name="userName" column="userName"/>
+        <property name="size" column="size"/>
+        <property name="type" column="type"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmProperty">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="value" column="value"/>
+        <property name="type" column="type"/>
+        <property name="projectId" column="project_id"/>
+        <property name="subtype" column="subtype"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmTask">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="userId" column="user_id"/>
+        <property name="projectId" column="project_id"/>
+        <property name="date" column="date"/>
+        <property name="shared" column="shared"/>
+        <property name="userLogin" column="userLogin"/>
+        <property name="userName" column="userName"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency">
+        <property name="id" column="id"/>
+        <property name="taskId" column="task_id"/>
+        <property name="refTaskId" column="ref_task_id"/>
+        <property name="refTaskName" column="refTaskName"/>
+        <property name="ownerId" column="ownerId"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmSuite">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="taskId" column="task_id"/>
+        <property name="suiteData" column="suiteData"/>
+        <property name="enabled" column="enabled"/>
+        <property name="groupId" column="group_id"/>
+        <property name="groupName" column="groupName"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup">
+        <property name="id" column="id"/>
+        <property name="taskId" column="task_id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="enabled" column="enabled"/>
+    </bean>
+    
+     <bean class="net.mindengine.oculus.frontend.domain.project.build.Build">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="projectId" column="project_id"/>
+        <property name="projectName" column="project_name"/>
+        <property name="projectPath" column="project_path"/>
+        <property name="date" column="date"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.dashboard.ProjectStatistics">
+        <property name="suiteRunId" column="srId"/>
+        <property name="projectId" column="pId"/>
+        <property name="projectName" column="pName"/>
+        <property name="projectPath" column="pPath"/>
+        <property name="startTime" column="srStartTime"/>
+        <property name="total" column="ssTotal"/>
+        <property name="failed" column="ssFailed"/>
+        <property name="passed" column="ssPassed"/>
+        <property name="warning" column="ssWarning"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.dashboard.Dashboard">
+        <property name="projectId" column="project_id"/>
+        <property name="runnerId" column="runner_id"/>
+        <property name="daysPeriod" column="days_period"/>
+        <property name="dayStart" column="day_start"/>
+        <property name="summaryStatistics" column="summary_statistics"/>
+        <property name="healthChart" column="healthChart"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.report.filter.Filter">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="userId" column="user_id"/>
+        <property name="date" column="date"/>
+        <property name="filter" column="filter"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.testrunframework.chart.Chart">
+        <property name="id" column="id"/>
+        <property name="title" column="title"/>
+        <property name="type" column="type"/>
+        <property name="xAxisName" column="x_axis_name"/>
+        <property name="xAxisType" column="x_axis_type"/>
+        <property name="yAxisName" column="y_axis_name"/>
+        <property name="yAxisType" column="y_axis_type"/>
+        <property name="data" column="data"/>
+    </bean>
+    
+   
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customization.Customization">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="unit" column="unit"/>
+        <property name="projectId" column="project_id"/>
+        <property name="subtype" column="subtype"/>
+        <property name="type" column="type"/>
+        <property name="groupName" column="group_name"/>
+    </bean>
+    
+     
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customization.CustomizationPossibleValue">
+        <property name="id" column="id"/>
+        <property name="customizationId" column="customization_id"/>
+        <property name="possibleValue" column="possible_value"/>
+    </bean>
+    
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customization.UnitCustomizationValue">
+        <property name="id" column="id"/>
+        <property name="unitId" column="unit_id"/>
+        <property name="customizationId" column="customization_id"/>
+        <property name="value" column="value"/>
+    </bean>
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customization.FetchedCustomizationParameter">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="description" column="description"/>
+        <property name="unit" column="unit"/>
+        <property name="projectId" column="project_id"/>
+        <property name="subtype" column="subtype"/>
+        <property name="type" column="type"/>
+        <property name="value" column="value"/>
+        <property name="groupName" column="group_name"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.issue.Issue">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="link" column="link"/>
+        <property name="summary" column="summary"/>
+        <property name="description" column="description"/>
+        <property name="authorId" column="author_id"/>
+        <property name="date" column="date"/>
+        <property name="fixed" column="fixed"/>
+        <property name="fixedDate" column="fixed_date"/>
+        <property name="projectId" column="project_id"/>
+        <property name="subProjectId" column="subproject_id"/>
+        <property name="dependentTests" column="dependent_tests"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.issue.IssueSearchData">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="link" column="link"/>
+        <property name="summary" column="summary"/>
+        <property name="description" column="description"/>
+        <property name="authorId" column="author_id"/>
+        <property name="date" column="date"/>
+        <property name="fixed" column="fixed"/>
+        <property name="fixedDate" column="fixed_date"/>
+        <property name="projectId" column="project_id"/>
+        <property name="subProjectId" column="subproject_id"/>
+        <property name="dependentTests" column="dependent_tests"/>
+        <property name="userName" column="uName"/>
+        <property name="userLogin" column="uLogin"/>
+        <property name="projectName" column="prName"/>
+        <property name="projectPath" column="prPath"/>
+        <property name="subProjectName" column="sprName"/>
+        <property name="subProjectPath" column="sprPath"/>
+    </bean>
+    
+   
+    <bean class="net.mindengine.oculus.frontend.domain.issue.IssueCollation">
+        <property name="id" column="id"/>
+        <property name="reasonPattern" column="reason_pattern"/>
+        <property name="issueId" column="issue_id"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.issue.IssueCollationTest">
+        <property name="id" column="id"/>
+        <property name="issueCollationId" column="issue_collation_id"/>
+        <property name="testId" column="test_id"/>
+        <property name="testName" column="test_name"/>
+        <property name="projectPath" column="projectPath"/>
+        <property name="projectName" column="projectName"/>
+    </bean>
+    
+  
+    <bean class="net.mindengine.oculus.frontend.domain.issue.IssueCollationCondition">
+        <property name="trmPropertyId" column="trm_property_id"/>
+        <property name="issueCollationId" column="issue_collation_id"/>
+        <property name="value" column="value"/>
+        <property name="trmPropertyName" column="trmpName"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.run.CronIctTestRun">
+        <property name="id" column="id"/>
+        <property name="testRunId" column="test_run_id"/>
+        <property name="testId" column="test_id"/>
+        <property name="suiteRunId" column="suite_run_id"/>
+        <property name="reason" column="reason"/>
+        <property name="testName" column="test_name"/>
+        <property name="suiteRunParameters" column="suite_run_parameters"/>
+        <property name="issueCollationId" column="issue_collation_id"/>
+    </bean>
+    
+    
+    <bean class="net.mindengine.oculus.frontend.domain.comment.Comment">
+        <property name="id" column="id"/>
+        <property name="text" column="text"/>
+        <property name="userId" column="user_id"/>
+        <property name="date" column="date"/>
+        <property name="unitId" column="unit_id"/>
+        <property name="unit" column="unit"/>
+        <property name="userName" column="user_name"/>
+        <property name="userLogin" column="user_login"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatistic">
+        <property name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="shortName" column="short_name"/>
+        <property name="description" column="description"/>
+        <property name="projectId" column="project_id"/>
+        <property name="userId" column="user_id"/>
+        <property name="createdDate" column="created_date"/>
+        <property name="valueType" column="value_type"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatisticParameter">
+        <property name="id" column="id"/>
+        <property name="customStatisticId" column="custom_statistic_id"/>
+        <property name="name" column="name"/>
+        <property name="shortName" column="short_name"/>
+        <property name="description" column="description"/>
+    </bean>
+    
+    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatisticChart">
+        <property name="id" column="id"/>
+        <property name="customStatisticId" column="custom_statistic_id"/>
+        <property name="name" column="name"/>
+        <property name="type" column="type"/>
+        <property name="parameters" column="parameters"/>
+        <property name="date" column="date"/>
+    </bean>
+    
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+"http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="report" page="/WEB-INF/jsp/report/report.jsp">
+    </definition>
+    
+    <definition name="report-screenshot" page="/WEB-INF/jsp/report/screenshot.jsp">
+    </definition>
+    
+    <definition name="report-browse" extends="html-container">
+    	<put name="left-panel" type="page" value="/WEB-INF/jsp/report/filter.jsp"/>
+        <put name="content" value="/WEB-INF/jsp/report/browse.jsp" type="page"/>
+        <put name="right-panel" value="" type="string"/>
+        <put name="rightPanelEnable" value="false" type="string"/>
+    </definition>
+    
+    <definition name="report-browse-ajax" page="/WEB-INF/jsp/report/report-browse-ajax.jsp">
+    </definition>
+    
+    <definition name="report-saved" extends="html-container">
+    	<put name="left-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/report/report-saved.jsp" type="page"/>
+        <put name="right-panel" value="" type="string"/>
+    </definition>
+    
+    <definition name="my-filters" extends="html-container">
+        <put name="left-panel" type="string" value=""/>
+        <put name="content" value="/WEB-INF/jsp/report/filter/my-filters.jsp" type="page"/>
+        <put name="right-panel" value="" type="string"/>
+    </definition>
+    
+    
+   
+</tiles-definitions>

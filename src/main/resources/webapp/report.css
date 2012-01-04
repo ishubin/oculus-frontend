@@ -1,0 +1,197 @@
+body{
+    background:#f4f4f4;
+    padding:10px;
+    margin:0px;
+}
+body, body td{
+	vertical-align:top;
+	font-size:10pt;
+    font-family:arial,tahoma,verdana,helvetica;
+}
+code{
+	font-size:10pt;
+	font-family:Courier New,tahoma,verdana,helvetica;
+}
+.report-header{
+	font-weight:bold;
+	font-size:10pt;
+    font-family:arial,tahoma,verdana,helvetica;
+}
+a.collapse{
+	border:none;
+    background:none;
+    text-decoration:none;
+    font-family:arial;
+    outline-color:invert;
+    outline-style:none;
+    outline-width:medium;
+}
+a img{
+    border:none;
+    background:none;
+    text-decoration:none;
+    font-family:arial;
+    outline-color:invert;
+    outline-style:none;
+    outline-width:medium;
+}
+a.menu-item {
+    border:1px solid #fff;
+    display:block;
+    float:left;
+    background:none;
+    text-decoration:none;
+    font-family:arial;
+    outline-color:invert;
+    outline-style:none;
+    outline-width:medium;
+    margin:3px;
+    width:30px;
+    height:30px;
+    text-align: center;
+    vertical-align: middle;
+    padding:2px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+a.menu-item:hover {
+    border:1px solid #aaa;
+    background:#f0f0f0;
+    text-decoration:none;
+    font-family:arial;
+    outline-color:invert;
+    outline-style:none;
+    outline-width:medium;
+    margin:3px;
+}
+
+.report-node-error{
+	background:url('images/report-node-back-error.png') repeat;
+}
+
+code.xpath{
+	color:#009900;
+}
+span.string{
+	color:#0000aa;
+}
+span.tip{
+    color:#777777;
+    font-style: italic;
+}
+a.custom-link{
+    color:#0000aa;
+    text-decoration: underline;
+}
+a.custom-link:hover{
+    color:#0000aa;
+    text-decoration: none;
+}
+div.separator{
+	width:100%;
+	background:url('images/report-node-separator.png') repeat-x;
+	height:4px;
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    opacity: 0.3;
+}
+
+
+.component-name{
+	white-space:nowrap;
+	font-size:10pt;
+	font-weight:bold;
+}
+.component-description{
+	white-space:nowrap;
+    font-size:8pt;
+    font-weight:normal;
+    color:#555555;
+}
+
+
+table.description-table{
+    border:none;
+    border-collapse: collapse;
+}
+
+table.description-table td a, table.description-table td a:active, table.description-table td a:visited{
+    border:none;
+    text-decoration: none;
+    font-weight:bold;
+    color:blue;
+    font-size:8pt;
+}
+table.description-table td.description-table, table.description-table td.description-table-left{
+    padding: 4px;
+    vertical-align: top;
+    text-align: left;
+    font-size:8pt;
+}
+table.description-table thead td.description-table{
+    background:#bbc4ca;
+    font-weight:bold;
+    font-size:10pt;
+}
+table.description-table tbody td.description-table-left{
+    white-space: nowrap;
+    width:100px;
+    font-weight: bold;
+    font-size:8pt;
+}
+table.description-table tr.description-table-odd td.description-table-left{
+	background:#d7e1e8;
+}
+table.description-table tr.description-table-even td.description-table-left{
+    background:#d2dde3;
+}
+table.description-table tr.description-table-odd td.description-table{
+    background:#ffffff;
+}
+table.description-table tr.description-table-even td.description-table{
+    background:#fafafa;
+}
+
+
+.exception-name{
+	color:#000000;
+	font-weight:bold;
+}
+.exception-text{
+	color:#004444;
+	font-weight:normal;
+	white-space: normal;
+}
+.exception-stack-trace{
+    color:#000000;
+    font-size:8pt;
+    font-weight:normal;
+}
+
+.custom-table{
+	border:none;
+	border-collapse:collapse;
+}
+.custom-table td{
+	border:1px solid #aaaaaa;
+	padding:4px;
+	text-align: left;
+	vertical-align: top;
+}
+.custom-table thead td{
+    background:#c0c0c0;
+    font-weight:bold;
+}
+.custom-table tbody td{
+    background:#f0f0f0;
+}
+
+
+table.report-table th{
+	font-size:10pt;
+	text-align: left;
+	background:white;
+	border:1px solid #ddd;
+	padding:5px;
+}

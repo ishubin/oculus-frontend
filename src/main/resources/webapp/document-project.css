@@ -1,0 +1,63 @@
+textarea.test-case, input.test-case{
+	border:1px solid #555555;
+	background:#ffffff;
+}
+
+
+table.test-case-table{
+	width:100%;
+    border:none;
+    border-collapse: collapse;
+}
+table.test-case-table td.test-case-table{
+    border:1px solid #aaaaaa;
+	vertical-align:top;
+}
+table.test-case-table td.test-case-table textare{
+    border:none;
+}
+table.test-case-table thead td.test-case-table{
+	background:#bbbbbb;
+	font-weight: bold;
+}
+table.test-case-table thead td{
+    padding:5px;
+}
+table.test-case-table tbody td.test-case-table{
+	background:#dddddd;
+}
+table.test-case-table tbody td{
+    padding:0px;
+}
+table.test-case-table td.test-case-table textarea{
+	background:#ffffff;
+	border:none;
+}
+
+div.test-case-row-menu{
+	position:absolute;
+	display:none;
+	z-index:999;
+}
+div.test-case-row-menu a{
+	margin:2px;
+}
+div.test-case-row-menu a img{
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    -moz-opacity: 0.50;
+    -khtml-opacity: 0.50;
+    opacity: 0.50;
+}
+
+div.test-case-row-menu a:hover img{
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    -moz-opacity: 1.0;
+    -khtml-opacity: 1.0;
+    opacity: 1.0;
+}
+
+
+table.test-case-table tr:hover div.test-case-row-menu{
+    display:block;
+}
+
