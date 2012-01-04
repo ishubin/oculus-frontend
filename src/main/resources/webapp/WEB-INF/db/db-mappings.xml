@@ -281,7 +281,7 @@
         <property name="filter" column="filter"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.frontend.testrunframework.chart.Chart">
+    <bean class="net.mindengine.oculus.experior.chart.Chart">
         <property name="id" column="id"/>
         <property name="title" column="title"/>
         <property name="type" column="type"/>

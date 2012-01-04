@@ -124,21 +124,6 @@
         <property name="config" ref="oculusConfig"/>
     </bean>
     
-    <bean name="/scheduler" class="net.mindengine.oculus.frontend.web.controllers.trm.scheduler.SchedulerController">
-        <property name="config" ref="oculusConfig"/>
-        <property name="view" value="trm-scheduler"/>
-    </bean>
-    
-    <bean name="/scheduler-change-occurrence" class="net.mindengine.oculus.frontend.web.controllers.trm.scheduler.SchedulerChangeOccurrenceController">
-        <property name="config" ref="oculusConfig"/>
-        <property name="view" value="redirect:../test-run-manager/scheduler"/>
-    </bean>
-    
-    <bean name="/scheduler-delete-task" class="net.mindengine.oculus.frontend.web.controllers.trm.scheduler.SchedulerDeleteTaskController">
-        <property name="config" ref="oculusConfig"/>
-        <property name="view" value="redirect:../test-run-manager/scheduler"/>
-    </bean>
-    
     <bean name="/upload-project-choose-project" class="net.mindengine.oculus.frontend.web.controllers.trm.customize.UploadProjectChooseProjectController">
         <property name="projectDAO" ref="projectDAO"/>
         <property name="view" value="trm-upload-project-choose-project"/>
