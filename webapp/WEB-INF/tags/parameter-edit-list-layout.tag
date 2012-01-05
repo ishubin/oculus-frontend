@@ -1,7 +1,7 @@
 <%@tag import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@ tag body-content="scriptless" %>
 <%@ attribute name="layoutName" required="true" type="java.lang.String" %>
-<%@ attribute name="parameter" required="false" type="net.mind_engine.oculus.domain.test.TestParameter" %>
+<%@ attribute name="parameter" required="false" type="net.mindengine.oculus.frontend.domain.test.TestParameter" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>

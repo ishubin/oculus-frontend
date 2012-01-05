@@ -1,9 +1,9 @@
 <%@ tag body-content="scriptless" %>
-<%@ attribute name="comments" required="true" type="net.mind_engine.oculus.domain.db.BrowseResult"%>
+<%@ attribute name="comments" required="true" type="net.mindengine.oculus.frontend.domain.db.BrowseResult"%>
 <%@ attribute name="redirect" required="true"%>
 <%@ attribute name="unitId" required="true"%>
 <%@ attribute name="unit" required="true"%>
-<%@ attribute name="user" required="true" type="net.mind_engine.oculus.domain.user.User"%>
+<%@ attribute name="user" required="true" type="net.mindengine.oculus.frontend.domain.user.User"%>
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

@@ -1,5 +1,5 @@
 <%@ tag body-content="scriptless" %>
-<%@ attribute name="node" required="true"  type="net.mind_engine.oculus.testrunframework.reporter.nodes.ReportNode"%>
+<%@ attribute name="node" required="true"  type="net.mindengine.oculus.frontend.testrunframework.reporter.nodes.ReportNode"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>

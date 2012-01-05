@@ -1,8 +1,8 @@
 <%@ tag body-content="scriptless" %>
-<%@ attribute name="customization" required="true" type="net.mind_engine.oculus.domain.customization.FetchedCustomizationParameter" %>
+<%@ attribute name="customization" required="true" type="net.mindengine.oculus.frontend.domain.customization.FetchedCustomizationParameter" %>
 <%@ attribute name="possibleValues" required="false" type="java.util.List" %>
 <%@ attribute name="useDefaultEmptyValues" required="false" type="java.lang.Boolean" %>
-<%@ attribute name="assignedUser" required="false" type="net.mind_engine.oculus.domain.user.User" %>
+<%@ attribute name="assignedUser" required="false" type="net.mindengine.oculus.frontend.domain.user.User" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
