@@ -16,8 +16,8 @@ public class OculusFrontend {
         Server server = new Server(8080);
         WebAppContext context = new WebAppContext();
         context.setContextPath("/oculus");
-        context.setWar("src/main/webapp");
-        context.setExtraClasspath("src/main/webapp");
+        context.setWar("webapp");
+        context.setExtraClasspath("webapp");
         context.setParentLoaderPriority(true);
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { context});
