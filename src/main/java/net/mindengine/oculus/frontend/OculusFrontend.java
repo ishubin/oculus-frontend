@@ -1,10 +1,12 @@
 package net.mindengine.oculus.frontend;
 
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.DefaultHandler;
-import org.mortbay.jetty.handler.HandlerList;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+
+
 
 public class OculusFrontend {
 
@@ -13,10 +15,11 @@ public class OculusFrontend {
         Server server = new Server(8080);
         WebAppContext context = new WebAppContext();
         context.setContextPath("/oculus");
-        context.setResourceBase(OculusFrontend.class.getResource("/webapp").getFile());
+        context.setWar("src/main/webapp");
+        context.setExtraClasspath("src/main/webapp");
         context.setParentLoaderPriority(true);
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { context, new DefaultHandler() });
+        handlers.setHandlers(new Handler[] { context});
         server.setHandler(context);
         server.start();
 
