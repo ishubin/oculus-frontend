@@ -4,6 +4,7 @@ public class Option {
 	private String key;
 	private String value;
 
+	private boolean checked = false;
 	public Option() {
 
 	}
@@ -13,6 +14,13 @@ public class Option {
 		this.key = key;
 		this.value = value;
 	}
+	
+	public Option(String key, String value, boolean checked) {
+        super();
+        this.key = key;
+        this.value = value;
+        this.checked = checked;
+    }
 
 	public String getKey() {
 		return key;
@@ -29,4 +37,12 @@ public class Option {
 	public void setValue(String value) {
 		this.value = value;
 	}
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 }

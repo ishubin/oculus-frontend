@@ -115,11 +115,7 @@
         <property name="defaultLocale" value="en_US"></property>
     </bean>
 
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename" value="messages"/>
-    </bean>
-
-	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 		  	<map>
 			    <entry key="net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException" value="login-redirect" />

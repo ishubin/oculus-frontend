@@ -1,47 +1,46 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <tr>
     <td>
         Name:
         <br/>
-        <tag:edit-field path="name" width="100%"></tag:edit-field>
+        <tag:edit-field name="name" value="${issue.name}" width="100%"></tag:edit-field>
     </td>
 </tr>
 <tr>
     <td>
         External Link:
         <br/>
-        <tag:edit-field path="link" width="100%"></tag:edit-field>
+        <tag:edit-field name="link" value="${issue.link}" width="100%"></tag:edit-field>
     </td>
 </tr>
 <tr>
     <td>
         Summary:
         <br/>
-        <tag:edit-field path="summary" width="100%"></tag:edit-field>
+        <tag:edit-field name="summary" value="${issue.summary}" width="100%"></tag:edit-field>
     </td>
 </tr>
 <tr>
     <td>
         Description:
         <br/>
-        <form:textarea path="description" cssStyle="width:100%;" rows="7"/>
+        <textarea name="description" style="width:100%;" rows="7"><tag:escape text="${issue.description }"></tag:escape></textarea>
     </td>
 </tr>
 <tr>
     <td>
-        <form:hidden path="projectId"/>
+        <input type="hidden" name="projectId" value="${issue.projectId}"/>
         <c:choose>
             <c:when test="${subprojects!=null}">
                 Subproject:
                 <br/>
-                <form:select path="subProjectId" size="7" cssStyle="width:100%;">
-                    <form:option value="0" cssStyle="color:gray;">Not specified</form:option>
+                <select name="subProjectId" size="7" style="width:100%;">
+                    <option value="0" style="color:gray;">Not specified</option>
                     <c:forEach items="${subprojects}" var="subproject">
-                        <form:option value="${subproject.id}"><tag:escape text="${subproject.name}"/></form:option>
+                        <tag:select-option value="${subproject.id}"  check="${issue.subProjectId}"><tag:escape text="${subproject.name}"/></tag:select-option>
                     </c:forEach>
-                </form:select>
+                </select>
             </c:when>
         </c:choose>
         

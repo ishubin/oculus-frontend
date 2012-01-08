@@ -4,7 +4,7 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
-<script language="javascript">
+<script>
 function onDateAfterChanged(date)
 {
 }
@@ -94,20 +94,20 @@ function onSubmitIssueSearchForm(form)
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
-<form:form onsubmit="return onSubmitIssueSearchForm(this);" method="get" name="searchFilter" action="../issue/search" commandName="searchFilter">
+<form onsubmit="return onSubmitIssueSearchForm(this);" method="get" name="searchFilter" action="../issue/search">
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
     <table border="0" width="100%">
         <tr>
             <td>
                 <tag:panel title="Common" id="common" align="left" width="100%" disclosure="true" closed="false">
                     Name:<br/>
-                    <tag:edit-field path="name" width="100%"/>
+                    <tag:edit-field name="name" value="${searchFilter.name}" width="100%"/>
                     <br/>
                     Summary:<br/>
-                    <tag:edit-field path="summary" width="100%"/>
+                    <tag:edit-field name="summary" value="${searchFilter.summary}" width="100%"/>
                     <br/>
                     Details:<br/>
-                    <tag:edit-field path="details" width="100%"/>
+                    <tag:edit-field name="details" value="${searchFilter.details}" width="100%"/>
                 </tag:panel>
             </td>
         </tr>
@@ -115,7 +115,7 @@ function onSubmitIssueSearchForm(form)
             <td>
                 <tag:panel title="User" id="user" align="left" width="100%" disclosure="true" closed="false">
                     User Name:<br/>
-                    <tag:edit-field path="user" width="100%"/>
+                    <tag:edit-field name="user" value="${searchFilter.user}" width="100%"/>
                 </tag:panel>
             </td>
         </tr>
@@ -123,15 +123,15 @@ function onSubmitIssueSearchForm(form)
             <td>
                 <tag:panel title="Project" id="project" align="left" width="100%" disclosure="true" closed="false">
                     Project:<br/>
-                    <form:select path="project" size="6" cssStyle="width:100%;">
-                        <form:option value="0" cssStyle="color:gray;">Not selected</form:option>
+                    <select name="project" size="6" style="width:100%;">
+                        <option value="0" style="color:gray;">Not selected</option>
                         <c:forEach items="${rootProjects}" var="rp">
-                            <form:option value="${rp.id}"><tag:escape text="${rp.name}"/></form:option>
+                            <tag:select-option value="${rp.id}" check="${searchFilter.project}"><tag:escape text="${rp.name}"/></tag:select-option>
                         </c:forEach>
-                    </form:select>
+                    </select>
                     <br/>
                     Sub-Project:<br/>
-                    <tag:edit-field path="subProject" width="100%"/><br/>
+                    <tag:edit-field name="subProject" value="${searchFilter.subProject}" width="100%"/><br/>
                     
                 </tag:panel>
             </td>
@@ -154,9 +154,9 @@ function onSubmitIssueSearchForm(form)
         </c:if>
     </table>
     
-    <form:hidden path="pageOffset"/>
-    <form:hidden path="pageLimit"/>
-    <form:hidden path="orderByColumnId"/>
-    <form:hidden path="orderDirection"/>
+    <input type="hidden" name="pageOffset" value="${searchFilter.pageOffset}"/>
+    <input type="hidden" name="pageLimit" value="${searchFilter.pageLimit}"/>
+    <input type="hidden" name="orderByColumnId" value="${searchFilter.orderByColumnId}"/>
+    <input type="hidden" name="orderDirection" value="${searchFilter.orderDirection}"/>
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
-</form:form>
+</form>

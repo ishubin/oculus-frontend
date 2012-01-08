@@ -6,8 +6,11 @@
         <a class="sf-with-ul sf-header" href="<c:url value="../display/home"/>"><img src="../images/menu-icon-home.png"/> Home</a>
     </li>
     <li>
-        <a  class="sf-with-ul sf-header" href="../project/browse"><img src="../images/menu-icon-project.png"/>  Projects</a>
+        <a  class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-project.png"/>  Projects</a>
         <ul>
+        	<li>
+        		<a  class="sf-with-ul sf-header" href="../project/browse"><img src="../images/workflow-icon-project.png"/> All Projects</a>
+        	</li>
             <li>
                  <a class="sf-with-ul" href="../project/search">
                       <img src="../images/workflow-icon-search.png"/>
@@ -35,15 +38,18 @@
         </ul>
     </li>
     <li>
-        <a class="sf-with-ul sf-header" href="../report/browse"><img src="../images/menu-icon-report.png"/> Reports</a>
-        <c:if test="${user!=null}">
-	        <ul>
-	            <li><a class="sf-with-ul" href="<c:url value="../report/my-filters"/>"><img src="../images/workflow-icon-filter.png"/> My Filters</a></li>
-	        </ul>
-        </c:if>
+        <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-report.png"/> Reports</a>
+        <ul>
+        	<li>
+        		<a class="sf-with-ul sf-header" href="../report/browse"><img src="../images/workflow-icon-search.png"/> Search Reports</a>
+        	</li>
+        	<c:if test="${user!=null}">
+            	<li><a class="sf-with-ul" href="<c:url value="../report/my-filters"/>"><img src="../images/workflow-icon-filter.png"/> My Filters</a></li>
+            </c:if>
+        </ul>
     </li>
     <li>
-        <a class="sf-with-ul sf-header" href="../issue/search"><img src="../images/menu-icon-issue.png"/> Issues</a>
+        <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-issue.png"/> Issues</a>
         <ul>
             <li><a class="sf-with-ul" href="../issue/search"><img src="../images/workflow-icon-search.png"/> Search Issues</a></li>
             <c:if test="${user.hasPermissions.issue_managment == true}">
@@ -77,12 +83,6 @@
                       <a class="sf-with-ul" href="../test-run-manager/shared-tasks">
                           <img src="../images/workflow-icon-shared-task.png"/>
                           Shared Tasks
-                      </a>
-                  </li>
-                  <li>
-                      <a class="sf-with-ul" href="../test-run-manager/scheduler">
-                          <img src="../images/workflow-icon-schedule.png"/>
-                          Scheduler
                       </a>
                   </li>
                   <li>

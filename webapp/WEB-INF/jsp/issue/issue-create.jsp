@@ -11,16 +11,18 @@
 <tag:pickuser-setup></tag:pickuser-setup>
 
 <tag:panel align="center" title="Create Issue" logo="../images/workflow-icon-bug.png" width="600px">
-    <form:form method="post" commandName="issue" action="../issue/create">
+    <form method="post" action="../issue/create">
         <table border="0" width="100%">
             <%@ include file="/WEB-INF/jsp/issue/issue-form.jsp" %>
             <tr>
                 <td align="center">
                     <tag:submit value="Create"/>
                     <br/>
-                    <form:errors path=""/>
+                    <div class="error">
+                    	<tag:spring-form-error field="" command="issue"/>
+                    </div>
                 </td>
             </tr>
         </table>
-    </form:form>
+    </form>
 </tag:panel>

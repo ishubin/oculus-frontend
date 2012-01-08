@@ -12,7 +12,7 @@ Choose the project
 <br/>
 <br/>
 <c:forEach items="${projects}" var="p">
-    <div class="project-layout">
+    <div class="project-layout" onclick="window.location='../issue/create?projectId=${p.id}';">
         <table class="project-browse-project" border="0" cellpadding="0px" cellspacing="0px" width="100%" height="100%">
             <tr>
                 <td width="60px" valign="middle" align="center">

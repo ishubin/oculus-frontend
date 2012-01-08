@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class JdbcProjectDAO extends MySimpleJdbcDaoSupport implements ProjectDAO
 	@Override
 	public Long createProject(Project project) throws Exception {
 
-		PreparedStatement ps = getConnection().prepareStatement("insert into projects (name, description, path, parent_id, icon, author_id, date) values (?,?,?,?,?,?,?)");
+		PreparedStatement ps = getConnection().prepareStatement("insert into projects (name, description, path, parent_id, icon, author_id, date) values (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
 		ps.setString(1, project.getName());
 		ps.setString(2, project.getDescription());
@@ -41,6 +42,7 @@ public class JdbcProjectDAO extends MySimpleJdbcDaoSupport implements ProjectDAO
 		ps.setString(5, project.getIcon());
 		ps.setLong(6, project.getAuthorId());
 		ps.setTimestamp(7, new Timestamp(project.getDate().getTime()));
+		
 		ps.executeUpdate();
 		ResultSet rs = ps.getGeneratedKeys();
 		Long projectId = null;

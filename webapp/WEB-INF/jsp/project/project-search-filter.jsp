@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -94,15 +93,14 @@ function onSubmitTestSearchForm(form)
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
-<form:form onsubmit="return onSubmitTestSearchForm(this);" method="get" name="searchFilter" action="../project/search" commandName="searchFilter">
+<form onsubmit="return onSubmitTestSearchForm(this);" method="get" name="searchFilter" action="../project/search">
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
     <table border="0" width="100%">
         <tr>
             <td>
                 <tag:panel title="Common" id="common" align="left" width="100%" disclosure="true" closed="false">
                     Name:<br/>
-                    <tag:edit-field path="name" width="100%"/>
-                    
+                    <tag:edit-field-simple name="name" value="${searchFilter.name}" width="100%"/>
                 </tag:panel>
             </td>
         </tr>
@@ -110,7 +108,7 @@ function onSubmitTestSearchForm(form)
             <td>
                 <tag:panel title="User" id="user" align="left" width="100%" disclosure="true" closed="false">
                     Designer Name:<br/>
-                    <tag:edit-field path="designer" width="100%"/>
+                    <tag:edit-field-simple name="designer" value="${searchFilter.designer}" width="100%"/>
                 </tag:panel>
             </td>
         </tr>
@@ -118,12 +116,12 @@ function onSubmitTestSearchForm(form)
             <td>
                 <tag:panel title="Project" id="project" align="left" width="100%" disclosure="true" closed="false">
                     Project:<br/>
-                    <form:select path="project" size="6" cssStyle="width:100%;">
-                        <form:option value="0" cssStyle="color:gray;">Not selected</form:option>
+                    <select name="project" size="6" style="width:100%;">
+                        <option value="0" style="color:gray;">Not selected</option>
                         <c:forEach items="${rootProjects}" var="rp">
-                            <form:option value="${rp.id}"><tag:escape text="${rp.name}"/></form:option>
+                            <option value="${rp.id}" <c:if test="${searchFilter.project==rp.id}">selected="selected"</c:if>><tag:escape text="${rp.name}"/></option>
                         </c:forEach>
-                    </form:select>
+                    </select>
                     <br/>
                     
                 </tag:panel>
@@ -147,9 +145,10 @@ function onSubmitTestSearchForm(form)
         </c:if>
     </table>
     
-    <form:hidden path="pageOffset"/>
-    <form:hidden path="pageLimit"/>
-    <form:hidden path="orderByColumnId"/>
-    <form:hidden path="orderDirection"/>
+    <input type="hidden" name="pageOffset"/>
+	<input type="hidden" name="pageLimit"/>
+	<input type="hidden" name="pageByColumnId"/>
+	<input type="hidden" name="pageDirection"/>
+	
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
-</form:form>
+</form>

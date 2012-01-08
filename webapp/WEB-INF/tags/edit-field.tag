@@ -1,29 +1,13 @@
+
+<%@tag import="java.util.Enumeration"%>
 <%@ tag body-content="scriptless" %>
-<%@ attribute name="path" required="true" %>
+<%@ attribute name="name" required="true" %>
 <%@ attribute name="password" required="false" %>
 <%@ attribute name="width" required="false"%>
+<%@ attribute name="value" required="true"%>
 <%@ attribute name="id" required="false" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<c:choose>
-    <c:when test="${password==true}">
-        <form:password path="${path}" 
-            cssStyle="width:${width};"  
-            cssClass="custom-edit-text" 
-            cssErrorClass="custom-edit-text-error"
-            id="${id}"
-            />
-    </c:when>
-    <c:otherwise>
-        
-        <form:input path="${path}" 
-            cssStyle="width:${width};" 
-            cssClass="custom-edit-text" 
-            cssErrorClass="custom-edit-text-error"
-            id="${id}"
-            />
-            
-    </c:otherwise>
-</c:choose>
+
+<input id="${id!=null?id:''}" class="custom-edit-text" name="${name}" value="${value}" type="${password==true?'password':'text'}" <c:if test="${width!=null }">style="width:${width};"</c:if>/>

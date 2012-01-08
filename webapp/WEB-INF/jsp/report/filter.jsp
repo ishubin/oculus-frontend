@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -139,7 +138,7 @@ function onSaveFilter()
 </script>
 
     
-<form:form onsubmit="return onSubmitReportBrowseForm(this);" method="get" name="browseFilter" commandName="reportSearchFilter">
+<form onsubmit="return onSubmitReportBrowseForm(this);" method="get" name="browseFilter">
 <table border="0" align="center">
     <tr>
         <td>
@@ -156,17 +155,23 @@ function onSaveFilter()
     <tr>
         <td>
             <tag:panel title="Test" id="testCase" align="left" width="100%" disclosure="true" closed="false">
-          <div class="small-description">Test:</div>
-          <tag:edit-field path="testCaseName" width="100%"/>
-          <br/>
-          <div class="small-description">Status:</div>
-          <form:checkboxes path="testCaseStatusList" items="${testCaseStatusList}"
-              itemValue="key" itemLabel="value" delimiter="<br/>"/>
-          <br/>
-          <br/>
-                <div class="small-description">Fail Reason:</div>
-                <tag:edit-field path="testRunReason"  width="100%"/>
-      </tag:panel>
+		          <div class="small-description">Test:</div>
+		          <tag:edit-field name="testCaseName" value="${reportSearchFilter.testCaseName }" width="100%"/>
+		          <br/>
+		          <div class="small-description">Status:</div>
+		          <ul class="flat-list">
+		          <c:forEach items="${testCaseStatusList }" var="status" varStatus="statusVarStatus">
+		          	<li>
+		          	<input name="testCaseStatusList" id="testCaseStatusList${statusVarStatus.index+1}" type="checkbox" value="${status.key}" <c:if test="${status.checked==true}">checked="checked"</c:if>/> 
+		          	<label for="testCaseStatusList${statusVarStatus.index+1}">${status.value}</label>
+		          	</li>
+		          </c:forEach>
+		          </ul>
+		          <br/>
+		          <br/>
+		                <div class="small-description">Fail Reason:</div>
+		                <tag:edit-field name="testRunReason" value="${reportSearchFilter.testRunReason }"  width="100%"/>
+		      </tag:panel>
         </td>
     </tr>
     
@@ -174,20 +179,20 @@ function onSaveFilter()
         <td>
             <tag:panel title="Suite" id="suite" align="left" width="100%"  disclosure="true" closed="false">
                 <div class="small-description">Project:</div>
-                <form:select path="rootProject" size="6" cssStyle="width:100%;">
-                    <form:option value="0" cssStyle="color:gray;">Not selected</form:option>
+                <select name="rootProject" size="6" style="width:100%;">
+                    <tag:select-option value="0" style="color:gray;">Not selected</tag:select-option>
                     <c:forEach items="${rootProjects}" var="rp">
-                        <form:option value="${rp.id}"><tag:escape text="${rp.name}"/></form:option>
+                        <tag:select-option value="${rp.id}" check="${reportSearchFilter.rootProject }"><tag:escape text="${rp.name}"/></tag:select-option>
                     </c:forEach>
-                </form:select>
+                </select>
                 <br/>
                 
                 <br/>
                 <div class="small-description">Sub-Project:</div>
-                <tag:edit-field path="project"  width="100%"/><br/>
+                <tag:edit-field name="project" value="${reportSearchFilter.project }"  width="100%"/><br/>
                 
                 <div class="small-description">Suite:</div>
-                <tag:edit-field path="suite"  width="100%"/>
+                <tag:edit-field name="suite" value="${reportSearchFilter.suite }"  width="100%"/>
                 <br/>
                 <tag:panel-border title="Time" align="center" width="100%">
                  <table border="0"  width="100%">
@@ -196,7 +201,7 @@ function onSaveFilter()
                      </tr>
                      <tr>
                          <td>
-                             <tag:edit-field path="suiteRunTimeAfter" id="time_after"  width="100%"/>
+                             <tag:edit-field name="suiteRunTimeAfter" id="time_after" value="${reportSearchFilter.suiteRunTimeAfter}"  width="100%"/>
                          </td>
                      </tr>
                      <tr>
@@ -204,7 +209,7 @@ function onSaveFilter()
                      </tr>
                      <tr>
                          <td>
-                             <tag:edit-field path="suiteRunTimeBefore" id="time_before"  width="100%"/>
+                             <tag:edit-field name="suiteRunTimeBefore" id="time_before" value="${reportSearchFilter.suiteRunTimeBefore }"  width="100%"/>
                              <script>
                              $(function() {
                                  $("#time_before").datepicker({dateFormat: 'yy-mm-dd'});
@@ -217,10 +222,10 @@ function onSaveFilter()
                 </tag:panel-border>
                 
                 <div class="small-description">Parameters:</div>
-                <form:textarea path="suiteRunParameters" cssStyle="width:100%;overflow:auto;" rows="5"/>
+                <textarea name="suiteRunParameters" style="width:100%;overflow:auto;" rows="5"><tag:escape text="${reportSearchFilter.suiteRunParameters}"/></textarea>
                 <br/>
                 <div class="small-description">Agent:</div>
-                <tag:edit-field path="suiteRunAgent"  width="100%"/>
+                <tag:edit-field name="suiteRunAgent" value="${reportSearchFilter.suiteRunAgent }"  width="100%"/>
             </tag:panel>
         </td>
     </tr>
@@ -229,10 +234,10 @@ function onSaveFilter()
         <td>
             <tag:panel title="User" id="user" align="left" width="100%"  disclosure="true" closed="false">
                 <div class="small-description">Designer:</div>
-                <tag:edit-field path="userDesigner"  width="100%"/>
+                <tag:edit-field name="userDesigner" value="${reportSearchFilter.userDesigner }"  width="100%"/>
                 <br/>
                 <div class="small-description">Runner:</div>
-                <tag:edit-field path="userRunner"  width="100%"/>
+                <tag:edit-field name="userRunner" value="${reportSearchFilter.userRunner}"  width="100%"/>
             </tag:panel>
         </td>
     </tr>
@@ -241,7 +246,7 @@ function onSaveFilter()
         <td>
             <tag:panel title="Issue" id="issue" align="left" width="100%"  disclosure="true" closed="false">
                 <div class="small-description">Issue:</div>
-                <tag:edit-field path="issue" width="100%"/>
+                <tag:edit-field name="issue" value="${reportSearchFilter.issue }" width="100%"/>
             </tag:panel>
         </td>
     </tr>
@@ -249,12 +254,10 @@ function onSaveFilter()
     <tr>
         <td align="center">
             
-            <form:hidden path="pageOffset"/>
-            <form:hidden path="pageLimit"/>
-            <form:hidden path="orderByColumnId"/>
-            <form:hidden path="orderDirection"/>
-            
-            
+            <input type="hidden" name="pageOffset" value="${reportSearchFilter.pageOffset}"/>
+		    <input type="hidden" name="pageLimit" value="${reportSearchFilter.pageLimit}"/>
+		    <input type="hidden" name="orderByColumnId" value="${reportSearchFilter.orderByColumnId}"/>
+		    <input type="hidden" name="orderDirection" value="${reportSearchFilter.orderDirection}"/>
         </td>
     </tr>
 </table>
@@ -270,7 +273,7 @@ function onSaveFilter()
             </c:if>
         </tr>
     </table>
-</form:form>
+</form>
 
 <c:if test="${user!=null}">
     <div id="divSaveFilterDialogBox" style="display:none;">

@@ -23,7 +23,7 @@ public class LoginValidator implements Validator {
 
 		logger.info("Validating the logins form data");
 		if (loginData.getLogin() == null || "".equals(loginData.getLogin())) {
-			errors.rejectValue("login", "login.error.login.empty");
+			errors.rejectValue("login", "Login and password are empty");
 		}
 	}
 

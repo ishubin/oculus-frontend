@@ -20,6 +20,7 @@ import net.mindengine.oculus.frontend.service.runs.TestRunDAO;
 import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
+import org.apache.commons.collections.ListUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,9 +47,20 @@ public class ReportBrowseController extends SecureSimpleFormController {
 	
 		Map referenceData = new HashMap();
 		List statuses = new ArrayList<Option>();
-		statuses.add(new Option("PASSED", "<img src=\"../images/filter-passed.png\"/>Passed"));
-		statuses.add(new Option("WARNING", "<img src=\"../images/filter-warning.png\"/>Warning"));
-		statuses.add(new Option("FAILED", "<img src=\"../images/filter-failed.png\"/>Failed"));
+		
+		List filterTCStatusList = null;
+		
+		if(filter!=null) {
+		    filterTCStatusList = filter.getTestCaseStatusList();
+		}
+		
+		if(filterTCStatusList == null) {
+		    filterTCStatusList = ListUtils.EMPTY_LIST;
+		}
+		
+		statuses.add(new Option("PASSED", "<img src=\"../images/filter-passed.png\"/>Passed", filterTCStatusList.contains("PASSED")));
+		statuses.add(new Option("WARNING", "<img src=\"../images/filter-warning.png\"/>Warning", filterTCStatusList.contains("WARNING")));
+		statuses.add(new Option("FAILED", "<img src=\"../images/filter-failed.png\"/>Failed", filterTCStatusList.contains("FAILED")));
 
 		referenceData.put("testCaseStatusList", statuses);
 		referenceData.put("columnFactory", columnFactory);

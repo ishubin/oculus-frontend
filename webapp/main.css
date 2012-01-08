@@ -1290,3 +1290,14 @@ ul.document-attachment-list li span{
 ul.document-attachment-list li:hover span{
     display:inline;
 }
+
+
+ul.flat-list {
+	list-style: none;
+	margin: 5px;
+	margin-left:0px;
+	padding:0px;
+}
+ul.flat-list li {
+	margin-left: 0px;
+}

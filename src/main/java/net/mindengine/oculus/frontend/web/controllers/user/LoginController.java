@@ -59,7 +59,7 @@ public class LoginController extends SimpleFormController {
 		}
 		else {
 			logger.info("Authorization Denied");
-			errors.reject("login.error.not_authorized");
+			errors.reject("Wrong credentials");
 			Map model = errors.getModel();
 			ModelAndView mav = new ModelAndView("login", model);
 			mav.addObject("login", loginData);
