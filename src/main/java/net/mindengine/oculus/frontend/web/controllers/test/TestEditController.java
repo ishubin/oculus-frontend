@@ -50,6 +50,8 @@ public class TestEditController extends SecureSimpleFormController {
 		Long rootId = projectDAO.getProjectRootId(project.getId(), 10);
 		map.put("customizationGroups", CustomizationUtils.fetchCustomizationGroups(customizationDAO, userDAO, rootId, test.getId(), Customization.UNIT_TEST));
 		map.put("title", getTitle());
+		map.put("testPanelTitle", "Edit Test");
+		map.put("testCommand", "Save");
 
 		if (test.getGroupId() > 0) {
 			map.put("group", testDAO.getTestGroup(test.getGroupId()));

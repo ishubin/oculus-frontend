@@ -47,7 +47,8 @@ public class TestCreateController extends SecureSimpleFormController {
 			Project parentProject = projectDAO.getProject(project.getParentId());
 			map.put("project", project);
 			map.put("parentProject", parentProject);
-
+			map.put("testPanelTitle", "Create Test");
+			map.put("testCommand", "Create");
 			Long rootId = projectDAO.getProjectRootId(project.getId(), 10);
 			map.put("customizationGroups", CustomizationUtils.fetchCustomizationGroups(customizationDAO, userDAO, rootId, 0L, Customization.UNIT_TEST));
 

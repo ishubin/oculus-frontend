@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <div class="breadcrump" align="center">
     <a href="../project/display-${project.path }"><img src="../images/workflow-icon-project.png"/> ${project.name }</a>
@@ -9,24 +8,23 @@
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
+
+
 <tag:panel align="center" title="Create Build" width="500px">
-	<form:form method="post" commandName="createBuild" action="../project/build-create?projectId=${project.id}">
+	<form method="post" action="../project/build-create?projectId=${project.id}">
 	   <table border="0" width="100%">
 	       <tr>
 	           <td>
 	               Name:
 	               <br/>
-	               <tag:edit-field path="name" width="100%"/>
+	               <tag:edit-field name="name" value="${createBuild.name}" width="100%"/>
 	           </td>
-	       </tr>
-	       <tr>
-	           <td><form:errors path="name" cssClass="error"/></td>
 	       </tr>
 	       <tr>
                <td>
                    Description:
                    <br/>
-                   <tag:textarea path="description" width="100%"></tag:textarea>
+                   <textarea name="description" rows="10" style="width:100%"><tag:escape text="${createBuild.description}"></tag:escape></textarea>
                </td>
            </tr>
            <!-- A list of customization parameter groups -->
@@ -62,8 +60,8 @@
                </td>
            </tr>
            <tr>
-               <td><form:errors cssClass="error"/></td>
+               <td><div class="error"><tag:spring-form-error field="" command="createBuild"></tag:spring-form-error> </div></td>
            </tr>
 	   </table>
-	</form:form>
+	</form>
 </tag:panel>

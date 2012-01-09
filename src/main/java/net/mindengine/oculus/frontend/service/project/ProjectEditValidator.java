@@ -24,10 +24,10 @@ public class ProjectEditValidator implements Validator {
 		else {
 
 			if (project.getName() == null || "".equals(project.getName())) {
-				errors.rejectValue("name", "project.create.name.empty");
+				errors.reject("Project name should not be empty");
 			}
 			if (project.getPath() == null || "".equals(project.getPath())) {
-				errors.rejectValue("path", "project.create.path.empty");
+				errors.reject("Project path should not be empty");
 			}
 			else {
 				String path = project.getPath();
@@ -42,7 +42,7 @@ public class ProjectEditValidator implements Validator {
 						bFinished = true;
 				}
 				if (bFinished)
-					errors.rejectValue("path", "project.create.path.special_symbols");
+					errors.reject("Project path shouldn't contain special symbols");
 
 				// Verifying the project path if it is unique
 				if (project.getId() == null || project.getId() == 0) {
@@ -50,7 +50,7 @@ public class ProjectEditValidator implements Validator {
 					try {
 						Project tp = projectDAO.getProjectByPath(project.getPath());
 						if (tp != null) {
-							errors.rejectValue("path", "project.create.path.already_exists");
+							errors.reject("Project with such path already exists");
 						}
 					}
 					catch (Exception e) {
@@ -61,18 +61,7 @@ public class ProjectEditValidator implements Validator {
 		}
 	}
 
-	public static void main(String[] args) {
-
-		String path = "1234567890_-";
-		// ath = "abcdefghijklmnopqrstuvwxyz";
-		for (int i = 0; i < path.length(); i++) {
-			char ch = path.charAt(i);
-			int code = (int) ch;
-			System.out.println("'" + ch + "' = " + code);
-		}
-
-	}
-
+	
 	public void setProjectDAO(ProjectDAO projectDAO) {
 		this.projectDAO = projectDAO;
 	}

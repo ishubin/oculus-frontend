@@ -18,7 +18,7 @@
     <bean name="/create" class="net.mindengine.oculus.frontend.web.controllers.test.TestCreateController">
         <property name="title" value="Create Test"/>
         <property name="sessionForm" value="true"/>
-        <property name="commandName" value="createTest"/>
+        <property name="commandName" value="test"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.Test"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.test.TestValidator"></bean>
@@ -35,7 +35,7 @@
     <bean name="/edit" class="net.mindengine.oculus.frontend.web.controllers.test.TestEditController">
         <property name="title" value="Edit Test"/>
         <property name="sessionForm" value="true"/>
-        <property name="commandName" value="editTest"/>
+        <property name="commandName" value="test"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.Test"/>
         <property name="bindOnNewForm" value="true"/>
         <property name="validator">

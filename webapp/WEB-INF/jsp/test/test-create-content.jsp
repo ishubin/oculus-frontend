@@ -1,16 +1,9 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
-<%
-if(pageContext.findAttribute("createTest")==null)
-{
-    pageContext.setAttribute("testPanelTitle","Edit Test");
-}
-else pageContext.setAttribute("testPanelTitle","Create Test");
-%>
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
@@ -21,9 +14,9 @@ else pageContext.setAttribute("testPanelTitle","Create Test");
 	    <tr>
 	        <td>
 	            <div class="small-description">Name:</div>
-	            <tag:edit-field path="name" width="100%"></tag:edit-field>
+	            <tag:edit-field name="name" value="${test.name}" width="100%"></tag:edit-field>
 	            
-	            <c:if test="${createTest!=null}">
+	            <c:if test="${testCommand=='Create'}">
 	            <input type="hidden" name="projectId" value="${project.id}"/>
 	            
 	            </c:if>
@@ -32,13 +25,13 @@ else pageContext.setAttribute("testPanelTitle","Create Test");
 	    <tr>
 	        <td>
 	            <div class="small-description">Description:</div>
-	            <form:textarea path="description" cssStyle="width:100%;" rows="10" cssErrorClass="error"/>
+	            <textarea name="description" style="width:100%;" rows="10"><tag:escape text="${test.description}"/></textarea>
 	        </td>
 	    </tr>
 	    <tr>
 	        <td>
 	            <div class="small-description">Mapping:</div>
-	            <tag:edit-field path="mapping" width="100%"></tag:edit-field>
+	            <tag:edit-field name="mapping" width="100%" value="${test.mapping}"></tag:edit-field>
 	        </td>
 	    </tr>
 	    <tr>
@@ -82,16 +75,11 @@ else pageContext.setAttribute("testPanelTitle","Create Test");
         </c:forEach>
 	    <tr>
 	        <td>
-	            <c:choose>
-	                <c:when test="${createTest!=null}">
-	                    <tag:submit value="Create"></tag:submit>
-	                </c:when>
-	                <c:otherwise>
-	                    <tag:submit value="Save"></tag:submit>
-	                </c:otherwise>
-	            </c:choose>
-	            
-	            <form:errors path=""/>
+	        	<tag:submit value="${testCommand }"></tag:submit>
+	        	
+	            <div class="error">
+	            	<tag:spring-form-error field="" command="test"></tag:spring-form-error>
+	            </div>
 	        </td>
 	    </tr>
 	</table>

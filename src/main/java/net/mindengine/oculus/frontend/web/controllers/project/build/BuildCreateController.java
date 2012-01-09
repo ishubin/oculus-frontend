@@ -49,12 +49,6 @@ public class BuildCreateController extends SecureSimpleFormController {
 		Build build = (Build) command;
 		build.setProjectId(Long.parseLong(request.getParameter("projectId")));
 
-		if (buildDAO.getBuildByNameAndProject(build.getName(), build.getProjectId()) != null) {
-			errors.reject("project.builds.create.already_exist");
-			Map model = errors.getModel();
-			model.put("project", project);
-			return new ModelAndView(getFormView(), model);
-		}
 		build.setDate(new Date());
 		Long buildId = buildDAO.createBuild(build);
 

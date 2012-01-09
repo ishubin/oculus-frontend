@@ -20,16 +20,15 @@ public class BuildCreateValidator implements Validator {
 	public void validate(Object object, Errors errors) {
 		Build build = (Build) object;
 		if (build.getName().isEmpty()) {
-			errors.rejectValue("name", "project.builds.create.name.empty");
+			errors.rejectValue("name", "Name should not be empty");
 		}
 		else {
 			try {
 				if (buildDAO.getBuildByNameAndProject(build.getName(), build.getProjectId()) != null) {
-					errors.rejectValue("name", "project.builds.create.already_exist");
+					errors.rejectValue("name", "Build with such name already exists");
 				}
 			}
 			catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

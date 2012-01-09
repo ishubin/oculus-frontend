@@ -1,5 +1,5 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <%
@@ -68,13 +68,13 @@ else pageContext.setAttribute("createProjectTitle","Create Sub-Project");
     </table>
 </c:if>
 <tag:panel title="${createProjectTitle}" align="center" width="600px">
-	<form:form method="post" commandName="createProject" action="../project/create">
+	<form method="post" action="../project/create">
 	    <table border="0" width="100%">
 	        <tr>
 	            <td>
 	                <div class="small-description">Name:</div>
-	                <tag:edit-field path="name" width="100%"/>
-	                <form:errors path="name" cssClass="error"/>
+	                <tag:edit-field name="name" value="${createProject.name}" width="100%"/>
+	                
 	                <c:choose>
 	                    <c:when test="${parentProject!=null}">
 	                        <input type="hidden" name="parentId" value="${parentProject.id}"/>
@@ -88,14 +88,14 @@ else pageContext.setAttribute("createProjectTitle","Create Sub-Project");
 	        <tr>
 	            <td>
 	                <div class="small-description">Path:</div>
-	                <tag:edit-field path="path" width="100%"/>
-	                <form:errors path="path" cssClass="error"/>
+	                <tag:edit-field name="path" value="${createProject.path}" width="100%"/>
+	                
 	            </td>
 	        </tr>
 	        <tr>
 	            <td>
 	                <div class="small-description">Description:</div>
-	                <tag:textarea path="description"/>
+	                <textarea name="description" rows="10" style="width:100%"><tag:escape text="${createProject.description}"></tag:escape></textarea>
 	            </td>
 	        </tr>
 	        <!-- A list of customization parameter groups -->
@@ -129,9 +129,11 @@ else pageContext.setAttribute("createProjectTitle","Create Sub-Project");
 	            <td align="center">
 	                <tag:submit value="Create"/>
 	                <br/>
-	                <form:errors path=""/>
+	                <div class="error">
+	                	<tag:spring-form-error field="" command="createProject"></tag:spring-form-error>
+	                </div>
 	            </td>
 	        </tr>
 	    </table>
-	</form:form>
+	</form>
 </tag:panel>

@@ -32,15 +32,15 @@ if(br!=null) {
 	    }
 	}
 	if(!foundError) {
-	    errorsList = br.getGlobalErrors();
-		if(errorsList!=null) {
+	    errorsList = br.getAllErrors();
+	    if(errorsList!=null) {
 		    Iterator it = errorsList.iterator();
 		    if(it.hasNext()) {
 		        ObjectError error = (ObjectError)it.next();
 		        if(error.getCode()!=null) {
 	                out.println(error.getCode());
-	                foundError = true;
 	            }
+		        else out.println(error.getCodes());		        
 		    }
 		}
 	}
