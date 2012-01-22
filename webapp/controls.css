@@ -576,46 +576,19 @@ select.small-select{
 
 
 
-.panel-dashboard-corner-1{
-    background:url('images/dashboard-rect-corner-1.png') no-repeat;
-    width:8px;
-    height:8px;
-}
-.panel-dashboard-corner-2{
-    background:url('images/dashboard-rect-corner-2.png') no-repeat;
-    width:8px;
-    height:8px;
-}
-.panel-dashboard-corner-3{
-    background:url('images/dashboard-rect-corner-3.png') no-repeat;
-    width:8px;
-    height:8px;
-}
-.panel-dashboard-corner-4{
-    background:url('images/dashboard-rect-corner-4.png') no-repeat;
-    width:8px;
-    height:8px;
-}
-.panel-dashboard-left-fill{
-    background:url('images/dashboard-rect-left-fill.png') repeat-y;
-    width:8px;
-}
-.panel-dashboard-right-fill{
-    background:url('images/dashboard-rect-right-fill.png') repeat-y;
-    width:8px;
-}
-.panel-dashboard-top-fill{
-    background:url('images/dashboard-rect-top-fill.png') repeat-x;
-    height:8px;
-}
-.panel-dashboard-bottom-fill{
-    background:url('images/dashboard-rect-bottom-fill.png') repeat-x;
-    height:8px;
-}
-.panel-dashboard-body{
-    background:#e6e6e6;
+
+.panel-dashboard{
+    display:inline-block;
+    padding:5px;
     vertical-align: top;
     text-align: left;
+    border:1px solid #aaa;
+	background:#e6e6e6;
+	-moz-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 6px 6px 6px #ccc;
+    -webkit-box-shadow: 6px 6px 6px #ccc;
+    box-shadow: 6px 6px 6px #ccc;
 }
 
 

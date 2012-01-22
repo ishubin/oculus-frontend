@@ -146,6 +146,7 @@
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.project.build.Build"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.project.build.BuildCreateValidator">
+            	<property name="buildDAO" ref="buildDAO"/>
             </bean>
         </property>
         <property name="formView" value="build-edit"/>

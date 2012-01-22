@@ -31,7 +31,6 @@ if(project!=null)
                             <tag:workflow-element icon="search" link="../document/testcase-search?project=${project.id}">Test-Cases</tag:workflow-element>
                             <tag:workflow-element icon="chart" link="../dashboard/project-${project.path}">Dashboard</tag:workflow-element>
                             <tag:workflow-element icon="build" link="../project/builds-${project.path}">Builds</tag:workflow-element>
-                            <tag:workflow-element icon="custom-statistic" link="../cstat/browse?projectId=${project.id}">Custom Statistics</tag:workflow-element>
                             <c:if test="${user.hasPermissions.project_managment == true}">
                                <tag:workflow-element icon="settings" link="../customization/project-${project.path}">Customize Project</tag:workflow-element>
                             </c:if>

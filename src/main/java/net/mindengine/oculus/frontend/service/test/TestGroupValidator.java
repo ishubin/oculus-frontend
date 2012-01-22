@@ -21,7 +21,7 @@ public class TestGroupValidator implements Validator {
 
 		TestGroup group = (TestGroup) obj;
 		if (group.getName() == null || group.getName().isEmpty()) {
-			errors.reject("name", "Group name cannot be empty");
+			errors.reject(null, "Group name cannot be empty");
 		}
 	}
 

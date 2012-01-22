@@ -12,7 +12,7 @@
 
 <tag:workflow-panel id="subprojects" title="Sub-Projects" width="100%">
     <c:forEach items="${subprojectCharts}" var="subprojectChart">
-        <tag:workflow-element icon="subproject" link="#${subprojectChart.project.path}">${subprojectChart.project.name}</tag:workflow-element>
+        <tag:workflow-element icon="subproject" link="\#${subprojectChart.project.path}">${subprojectChart.project.name}</tag:workflow-element>
     </c:forEach>
 </tag:workflow-panel>
 

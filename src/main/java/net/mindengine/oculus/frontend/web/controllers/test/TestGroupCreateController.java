@@ -30,6 +30,8 @@ public class TestGroupCreateController extends SecureSimpleFormController {
 		Project project = projectDAO.getProject(projectId);
 		map.put("project", project);
 		map.put("parentProject", projectDAO.getProject(project.getParentId()));
+		map.put("testGroupTitle", "Create Test Group");
+		map.put("testGroupCommand", "Create");
 		return map;
 	}
 

@@ -1,6 +1,6 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -17,8 +17,7 @@
 
 <br/>
 <br/>
-<form:form action="../test/create-group" 
-    commandName="createTestGroup" 
+<form action="../test/create-group" 
     method="post">
     <%@ include file="/WEB-INF/jsp/test/test-group-create-content.jsp" %>
-</form:form>
+</form>

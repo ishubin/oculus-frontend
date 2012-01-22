@@ -24,10 +24,10 @@ public class ProjectEditValidator implements Validator {
 		else {
 
 			if (project.getName() == null || "".equals(project.getName())) {
-				errors.reject("Project name should not be empty");
+				errors.reject(null, "Project name should not be empty");
 			}
 			if (project.getPath() == null || "".equals(project.getPath())) {
-				errors.reject("Project path should not be empty");
+				errors.reject(null, "Project path should not be empty");
 			}
 			else {
 				String path = project.getPath();
@@ -42,7 +42,7 @@ public class ProjectEditValidator implements Validator {
 						bFinished = true;
 				}
 				if (bFinished)
-					errors.reject("Project path shouldn't contain special symbols");
+					errors.reject(null, "Project path shouldn't contain special symbols");
 
 				// Verifying the project path if it is unique
 				if (project.getId() == null || project.getId() == 0) {
@@ -50,7 +50,7 @@ public class ProjectEditValidator implements Validator {
 					try {
 						Project tp = projectDAO.getProjectByPath(project.getPath());
 						if (tp != null) {
-							errors.reject("Project with such path already exists");
+							errors.reject(null, "Project with such path already exists");
 						}
 					}
 					catch (Exception e) {

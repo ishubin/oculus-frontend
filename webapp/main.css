@@ -142,7 +142,7 @@ a.small-link:hover{
     font-size:12pt;
     font-weight:bold;
     padding:10px;
-    text-align: center;
+    text-align: left;
 }
 .breadcrump a, .breadcrump a:ACTIVE, .breadcrump a:VISITED {
     font-size:12pt;

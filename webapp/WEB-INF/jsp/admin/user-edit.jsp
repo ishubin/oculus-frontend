@@ -4,7 +4,6 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.domain.user.*"/>
 <jsp:directive.page import="java.util.*"/>
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <h2>Edit user</h2>
@@ -45,29 +44,26 @@ pageContext.setAttribute("permissions",permissionsModel);
 
 <tag:link name="Delete user" url="/admin/delete-user?id=${editUser.id}" onclick="if(confirm('Are you sure you want to delete this user'))return true; else return false;"></tag:link>
 
-<form:form method="post" commandName="editUser">
+<form method="post">
 	<tag:panel title="General Information" align="center">
 		<table border="0" width="500px" align="center">
 		   <tbody>
 		       <tr>
 		           <td>
 			           Name:<br/>
-			           <tag:edit-field path="name" width="100%"/>
-			           <form:errors path="name" cssClass="error"/>
+			           <tag:edit-field name="name" width="100%" value="${editUser.name}"/>
 			       </td>
 		       </tr>
 		       <tr>
 	               <td>
-	                   Login:<br/><tag:edit-field path="login" width="100%"/>
-	                   <form:errors path="login" cssClass="error"/>
+	                   Login:<br/><tag:edit-field name="login" width="100%" value="${editUser.login}"/>
 	               </td>
 	               
 	               
 	           </tr>
 	           <tr>
 	               <td>
-	                   Mail:<br/><tag:edit-field path="email" width="100%"/>
-	                   <form:errors path="email" cssClass="error"/>
+	                   Mail:<br/><tag:edit-field name="email" width="100%" value="${editUser.email}"/>
 	               </td>
 	           </tr>
 		       <tr>
@@ -77,8 +73,9 @@ pageContext.setAttribute("permissions",permissionsModel);
 	           </tr>
 		       <tr>
 		           <td>
-		               <form:errors cssClass="error"/>
-		               
+		               <div class="error">
+		               		<tag:spring-form-error field="" command="editUser"></tag:spring-form-error>
+		               </div>
 		           </td>
 		       </tr>
 		   </tbody>
@@ -106,4 +103,4 @@ pageContext.setAttribute("permissions",permissionsModel);
 	   </table>
 	   
 	</tag:panel>
-</form:form>
+</form>

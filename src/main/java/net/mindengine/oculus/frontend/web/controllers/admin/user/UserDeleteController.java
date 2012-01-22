@@ -19,7 +19,7 @@ public class UserDeleteController extends SecureSimpleViewController {
 		userDAO.deleteUser(id);
 
 		Session session = Session.create(request);
-		session.setTemporaryMessageId("user.delete.successful");
+		session.setTemporaryMessage("User was removed successfully");
 
 		return super.handleController(request);
 	}

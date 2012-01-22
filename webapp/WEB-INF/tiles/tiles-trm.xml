@@ -6,25 +6,19 @@
 <tiles-definitions>
 
     <definition name="trm-main-page" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-main-page.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
     
-    <definition name="trm-customize-page" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
-        <put name="content" value="/WEB-INF/jsp/trm/trm-customize-page.jsp" type="page"/>
-        <put name="right-panel" value="" type="string"/>
-    </definition>
-    
     <definition name="trm-customize-suite-parameters-choose-project" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-customize-suite-parameters-choose-project.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
-    
+     
     <definition name="trm-customize-suite-parameters" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-customize-suite-parameters.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
@@ -99,25 +93,25 @@
     </definition>
     
     <definition name="trm-upload-project-choose-project" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-upload-project-choose-project.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
     
     <definition name="trm-upload-project" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-upload-project.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
     
     <definition name="trm-upload-project-success" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-upload-project-success.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>
     
     <definition name="trm-agents" extends="html-container">
-        <put name="left-panel" type="page" content=""/>
+        <put name="left-panel" type="string" content=""/>
         <put name="content" value="/WEB-INF/jsp/trm/trm-agents.jsp" type="page"/>
         <put name="right-panel" value="" type="string"/>
     </definition>

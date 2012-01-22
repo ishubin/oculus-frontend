@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <div class="breadcrump" align="center">
@@ -9,17 +8,19 @@
 </div>
 
 <tag:panel align="center" title="Create Custom Statistic" logo="../images/workflow-icon-custom-statistic.png" width="600px">
-    <form:form method="post" commandName="customStatistic" action="../cstat/create">
+    <form method="post" action="../cstat/create">
         <table border="0" width="100%">
             <%@ include file="/WEB-INF/jsp/cstat/cstat-form.jsp" %>
             <tr>
                 <td align="center">
-                    <form:hidden path="projectId"/>
+                    <input type="hidden" name="projectId" value="${customStatistic.projectId}"/>
                     <tag:submit value="Create"/>
                     <br/>
-                    <form:errors path="" cssClass="error"/>
+                    <div class="error">
+                    	<tag:spring-form-error field="" command="customStatistic"></tag:spring-form-error>
+                    </div>
                 </td>
             </tr>
         </table>
-    </form:form>
+    </form>
 </tag:panel>

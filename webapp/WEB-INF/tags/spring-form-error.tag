@@ -24,8 +24,8 @@ if(br!=null) {
 	    while(it.hasNext() && !foundError) {
 	        ObjectError error = (ObjectError)it.next();
 	        if(field.equals(error.getObjectName())){
-	            if(error.getCode()!=null) {
-	                out.println(error.getCode());
+	            if(error.getDefaultMessage()!=null) {
+	                out.println(error.getDefaultMessage());
 	                foundError = true;
 	            }    
 	        }
@@ -37,10 +37,9 @@ if(br!=null) {
 		    Iterator it = errorsList.iterator();
 		    if(it.hasNext()) {
 		        ObjectError error = (ObjectError)it.next();
-		        if(error.getCode()!=null) {
-	                out.println(error.getCode());
-	            }
-		        else out.println(error.getCodes());		        
+		        if(error.getDefaultMessage()!=null) {
+	                out.println(error.getDefaultMessage());
+	            }		        
 		    }
 		}
 	}

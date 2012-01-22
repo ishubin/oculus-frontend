@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <div class="breadcrump" align="center">
@@ -12,27 +11,25 @@
 <tag:pickuser-setup></tag:pickuser-setup>
 
 <tag:panel align="center" title="Edit Project" width="600px">
-<form:form method="post" commandName="project" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     <table border="0" width="100%">
         <tr>
             <td>
                 Name:<br/>
-                <tag:edit-field path="name" width="100%"/>
-                <form:errors path="name" cssClass="error"/>
-                <form:hidden path="parentId"/>
+                <tag:edit-field name="name" width="100%" value="${project.name}"/>
+                <input type="hidden" name="parentId" value="${project.parentId}"/>
             </td>
         </tr>
         <tr>
             <td>
                 Path:<br/>
-                <tag:edit-field path="path" width="100%"/>
-                <form:errors path="path" cssClass="error"/>
+                <tag:edit-field name="path" width="100%" value="${project.path}"/>
             </td>
         </tr>
         <tr>
             <td>
                 Description:<br/>
-                <form:textarea path="description" cssStyle="width:100%;" cols="30"  rows="6" cssClass="border-textarea" cssErrorClass="error"/>
+                <textarea name="description" style="width:100%;" cols="30"  rows="6" class="border-textarea"><tag:escape text="${project.description}"></tag:escape></textarea>
             </td>
         </tr>
         <tr>
@@ -75,9 +72,11 @@
             <td align="center">
                 <tag:submit value="Change"/>
                 <br/>
-                <form:errors path=""/>
+                <div class="error">
+                	<tag:spring-form-error field="" command="project"></tag:spring-form-error>
+                </div>
             </td>
         </tr>
     </table>
-</form:form>
+</form>
 </tag:panel>

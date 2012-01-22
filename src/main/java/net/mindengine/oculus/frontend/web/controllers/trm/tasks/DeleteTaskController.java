@@ -22,7 +22,7 @@ public class DeleteTaskController extends SecureSimpleViewController {
 			throw new NotAuthorizedException();
 
 		trmDAO.deleteTask(taskId, user.getId());
-		session.setTemporaryMessageId("trm.deletetask.successful");
+		session.setTemporaryMessage("Task was removed successfully");
 
 		return null;
 	}

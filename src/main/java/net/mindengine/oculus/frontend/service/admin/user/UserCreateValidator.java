@@ -19,19 +19,19 @@ public class UserCreateValidator implements Validator {
 		User user = (User) object;
 		if (user != null) {
 			if (user.getName() == null || "".equals(user.getName()))
-				errors.rejectValue("name", null, null, "Shouldn't be empty");
+				errors.reject(null, "Name shouldn't be empty");
 
 			if (user.getLogin() == null || "".equals(user.getLogin()))
-				errors.rejectValue("login", null, null, "Shouldn't be empty");
+				errors.reject(null, "Login shouldn't be empty");
 
 			if (user.getLogin() != null) {
 				if (!StringUtils.containsOnly(user.getLogin(), "qwertyuiopasdfghjklzxcvbnm1234567890")) {
-					errors.rejectValue("login", null, null, "Login should contain only lowercase symbols");
+					errors.reject(null, "Login should contain only lowercase symbols");
 				}
 			}
 
 			if (user.getEmail() == null || "".equals(user.getEmail()))
-				errors.rejectValue("email", null, null, "Shouldn't be empty");
+				errors.reject(null, "Email shouldn't be empty");
 		}
 		else
 			errors.reject(null, "Input users data");

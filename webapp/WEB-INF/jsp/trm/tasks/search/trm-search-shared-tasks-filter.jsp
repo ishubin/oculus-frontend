@@ -1,10 +1,9 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
-<script language="javascript">
+<script>
 function onDateAfterChanged(date)
 {
 }
@@ -94,14 +93,14 @@ function onSubmitTaskSearchForm(form)
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
-<form:form onsubmit="return onSubmitTaskSearchForm(this);" method="get" name="searchFilter" action="../test-run-manager/shared-tasks" commandName="searchFilter">
+<form onsubmit="return onSubmitTaskSearchForm(this);" method="get" name="searchFilter" action="../test-run-manager/shared-tasks" >
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
     <table border="0" width="100%">
         <tr>
             <td>
                 <tag:panel title="Common" id="common" align="left" width="100%" disclosure="true" closed="false">
                     Name:<br/>
-                    <tag:edit-field path="name" width="100%"/>
+                    <tag:edit-field name="name" value="${searchFilter.name }" width="100%"/>
                     
                 </tag:panel>
             </td>
@@ -110,16 +109,17 @@ function onSubmitTaskSearchForm(form)
             <td>
                 <tag:panel title="User" id="user" align="left" width="100%" disclosure="true" closed="false">
                     User Name:<br/>
-                    <tag:edit-field path="user" width="100%"/>
+                    <tag:edit-field name="user" value="${searchFilteruser}" width="100%"/>
                 </tag:panel>
             </td>
         </tr>
         
     </table>
     
-    <form:hidden path="pageOffset"/>
-    <form:hidden path="pageLimit"/>
-    <form:hidden path="orderByColumnId"/>
-    <form:hidden path="orderDirection"/>
+    <input type="hidden" name="pageOffset" value="${searchFilter.pageOffset}"/>
+    <input type="hidden" name="pageLimit" value="${searchFilter.pageLimit}"/>
+    <input type="hidden" name="orderByColumnId" value="${searchFilter.orderByColumnId}"/>
+    <input type="hidden" name="orderDirection" value="${searchFilter.orderDirection}"/>
+    
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
-</form:form>
+</form>

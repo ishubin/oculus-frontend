@@ -43,7 +43,7 @@ public class TestDeleteController extends SecureSimpleViewController {
 		customizationDAO.removeAllUnitCustomizationValues(test.getId(), customizations);
 
 		Session session = Session.create(request);
-		session.setTemporaryMessageId("test.delete.successful");
+		session.setTemporaryMessage("Test \""+test.getName()+"\" was removed successfully");
 
 		return new ModelAndView(new RedirectView("../project/display-" + project.getPath()));
 	}

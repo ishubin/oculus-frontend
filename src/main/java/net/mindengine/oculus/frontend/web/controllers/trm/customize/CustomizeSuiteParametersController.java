@@ -139,10 +139,6 @@ public class CustomizeSuiteParametersController extends SecureSimpleViewControll
 	@SuppressWarnings("unchecked")
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*
-		 * Checking for specified project If it wasn't provided then loading a
-		 * page for choosing a project
-		 */
 		if (request.getParameter("projectId") == null) {
 			Map model = new HashMap<String, Object>();
 			model.put("projects", projectDAO.getRootProjects());

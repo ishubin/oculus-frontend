@@ -66,30 +66,6 @@ public class Session {
 		session.setAttribute("collectedTestRuns", testRuns);
 	}
 
-	/**
-	 * Returns the temporary message id and deletes it from the session. This
-	 * method couldn't be run twice as in the second time it will return null
-	 * value
-	 * 
-	 * @return temporary message text
-	 */
-	public String getTemporaryMessageId() {
-		String messageId = (String) session.getAttribute("temporary_message_id");
-		if (messageId != null)
-			session.removeAttribute("temporary_message_id");
-		return messageId;
-	}
-
-	/**
-	 * Set the temporary id of message to session variable. This message lives
-	 * only between two methods: set and get. The id of message is taken from
-	 * messages.properties file
-	 * 
-	 * @param text
-	 */
-	public void setTemporaryMessageId(String messageId) {
-		session.setAttribute("temporary_message_id", messageId);
-	}
 
 	/**
 	 * Returns the temporary message text and deletes it from the session. This

@@ -1,5 +1,5 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 User <b>${createdUser.name}</b> was created successfully
 <br/>

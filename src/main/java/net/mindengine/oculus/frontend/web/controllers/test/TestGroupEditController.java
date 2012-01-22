@@ -29,6 +29,8 @@ public class TestGroupEditController extends SecureSimpleFormController {
 		Project project = projectDAO.getProject(group.getProjectId());
 		map.put("project", project);
 		map.put("parentProject", projectDAO.getProject(project.getParentId()));
+		map.put("testGroupTitle", group.getName());
+        map.put("testGroupCommand", "Save");
 		return map;
 	}
 

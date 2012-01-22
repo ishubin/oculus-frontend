@@ -17,17 +17,14 @@ public class SessionViewHandler {
 	public static void createSessionModel(PageContext pageContext, HttpSession httpSession) {
 		User user = null;
 
-		String temporaryMessageId = null;
 		String temporaryMessage = null;
 		if (httpSession != null) {
 			Session session = Session.create(httpSession);
 			user = session.getAuthorizedUser();
 
-			temporaryMessageId = session.getTemporaryMessageId();
 			temporaryMessage = session.getTemporaryMessage();
 		}
 		pageContext.setAttribute("user", user);
-		pageContext.setAttribute("temporaryMessageId", temporaryMessageId);
 
 		pageContext.setAttribute("temporaryMessage", temporaryMessage);
 

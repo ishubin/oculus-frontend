@@ -134,7 +134,7 @@
     <bean name="/create-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupCreateController">
         <property name="title" value="Create Test Group"/>
         <property name="sessionForm" value="true"/>
-        <property name="commandName" value="createTestGroup"/>
+        <property name="commandName" value="testGroup"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestGroup"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.test.TestGroupValidator"></bean>
@@ -146,9 +146,9 @@
     </bean>
     
     <bean name="/edit-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupEditController">
-        <property name="title" value="Create Test Group"/>
+        <property name="title" value="Edit Test Group"/>
         <property name="sessionForm" value="true"/>
-        <property name="commandName" value="editTestGroup"/>
+        <property name="commandName" value="testGroup"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.test.TestGroup"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.test.TestGroupValidator"></bean>

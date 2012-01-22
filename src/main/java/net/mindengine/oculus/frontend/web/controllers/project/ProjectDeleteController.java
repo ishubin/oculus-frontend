@@ -50,7 +50,7 @@ public class ProjectDeleteController extends SecureSimpleViewController {
 		projectDAO.deleteProject(id);
 
 		Session session = Session.create(request);
-		session.setTemporaryMessageId("project.delete.successful");
+		session.setTemporaryMessage("Project \""+project.getName()+"\" was removed successfully");
 		return null;
 	}
 

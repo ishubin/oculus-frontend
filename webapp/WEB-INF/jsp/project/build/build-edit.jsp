@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <div class="breadcrump" align="center">
     <a href="../project/display-${project.path }"><img src="../images/workflow-icon-project.png"/> ${project.name }</a>
@@ -11,24 +10,22 @@
 <tag:pickuser-setup></tag:pickuser-setup>
 
 <tag:panel align="center" title="Create Build" width="500px">
-    <form:form method="post" commandName="build">
-       <form:hidden path="projectId"/>
+    <form method="post">
+       <input type="hidden" name="projectId" value="${build.projectId}"/>
+       
        <table border="0" width="100%">
            <tr>
                <td>
                    Name:
                    <br/>
-                   <tag:edit-field path="name" width="100%"/>
+                   <tag:edit-field name="name" width="100%" value="${build.name}"/>
                </td>
-           </tr>
-           <tr>
-               <td><form:errors path="name" cssClass="error"/></td>
            </tr>
            <tr>
                <td>
                    Description:
                    <br/>
-                   <tag:textarea path="description" width="100%"></tag:textarea>
+                   <textarea name="description" style="width:100%"><tag:escape text="${build.description}"/></textarea>
                </td>
            </tr>
            <!-- A list of customization parameter groups -->
@@ -60,12 +57,16 @@
             </c:forEach>
            <tr>
                <td align="center">
-                   <tag:submit value="Create"></tag:submit>
+                   <tag:submit value="Save"></tag:submit>
                </td>
            </tr>
            <tr>
-               <td><form:errors cssClass="error"/></td>
+               <td>
+               	   <div class="error">
+               	   	   <tag:spring-form-error field="" command="build"></tag:spring-form-error>
+               	   </div>
+               </td>
            </tr>
        </table>
-    </form:form>
+    </form>
 </tag:panel>

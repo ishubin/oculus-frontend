@@ -57,7 +57,7 @@ public class BuildEditController extends SecureSimpleFormController {
 		build.setId(Long.parseLong(request.getParameter("id")));
 
 		if (buildDAO.getBuildByNameAndProject(build.getName(), build.getProjectId()) != null) {
-			errors.reject("project.builds.create.already_exist");
+			errors.reject("Build with such name already exists");
 			Map model = errors.getModel();
 			model.put("project", project);
 			return new ModelAndView(getFormView(), model);

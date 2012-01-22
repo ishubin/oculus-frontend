@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <div class="breadcrump">
@@ -25,15 +24,15 @@
 </div>
 
 <tag:panel title="Create suite" align="center">
-    <form:form action="../test-run-manager/create-suite?taskId=${task.id}" method="post" commandName="suite">
+    <form action="../test-run-manager/create-suite?taskId=${task.id}" method="post">
         <table border="0" align="center">
             <tr>
                 <td>Name:</td>
-                <td><tag:edit-field path="name" width="100%"/></td>
+                <td><tag:edit-field name="name" width="100%" value="${suite.name}"/></td>
             </tr>
             <tr>
                 <td valign="top">Description:</td>
-                <td><form:textarea path="description" cols="40" rows="7"/></td>
+                <td><textarea name="description" cols="40" rows="7"><tag:escape text="${suite.description}"/></textarea></td>
             </tr>
             <tr>
                 <td valign="top">Group:</td>
@@ -53,9 +52,11 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <form:errors path="name" cssClass="error"/>
+                    <div class="error">
+                    	<tag:spring-form-error field="" command="suite"></tag:spring-form-error>
+                    </div>
                 </td>
             </tr>
         </table>
-    </form:form>
+    </form>
 </tag:panel> 

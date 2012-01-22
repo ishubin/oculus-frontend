@@ -14,17 +14,6 @@
         <property name="view" value="trm-main-page"/>
     </bean>
     
-    <bean name="/customize" class="net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController">
-        <property name="view" value="trm-customize-page"/>
-        <property name="authorizationCheck" value="true"/>
-        <property name="permissions">
-            <list>
-                <ref bean="_P_TRM_ADMINISTRATION"/>
-            </list>
-        </property>
-    </bean>
-    
-    
     <bean name="/customize-suite-parameters" class="net.mindengine.oculus.frontend.web.controllers.trm.customize.CustomizeSuiteParametersController">
         <property name="view" value="trm-customize-suite-parameters"/>
         <property name="trmDAO" ref="trmDAO"/>
@@ -35,8 +24,7 @@
                 <ref bean="_P_TRM_ADMINISTRATION"/>
             </list>
         </property>
-    </bean>
-    
+    </bean>    
     
     <bean name="/my-tasks" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.MyTasksController">
         <property name="view" value="trm-my-tasks"/>

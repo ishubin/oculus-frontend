@@ -95,7 +95,7 @@ public class TestCustomizeController extends SecureSimpleViewController {
 		Long testParameterId = Long.parseLong(request.getParameter("deleteParameterId"));
 		testDAO.deleteTestParameter(testParameterId, testId);
 		Session session = Session.create(request);
-		session.setTemporaryMessageId("test.parameter.delete.successful");
+		session.setTemporaryMessage("Test parameter was removed successfully");
 	}
 
 	@Override

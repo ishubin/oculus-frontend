@@ -4,7 +4,7 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
-<div align="center">
+<div align="left">
     <div class="breadcrump">
         <a href="../project/display-${project.path}"><img src="../images/workflow-icon-project.png"/>  ${project.name}</a>
         <img src="../images/breadcrump-arrow.png"/> 
@@ -12,7 +12,7 @@
     </div>
     <br/>
     <c:if test="${dashboard.healthChart==true}">
-        <tag:panel-dashboard align="center">
+        <tag:panel-dashboard>
         <img src="../dashboard/chart-${healthChartId}?date=${uniqueKey}&width=500&height=${healthChartHeight}"/>
         </tag:panel-dashboard>
         <br/>
@@ -23,7 +23,7 @@
 	<c:forEach items="${subprojectCharts}" var="subprojectChart">
 	    <br/>
 	    <div id="${subprojectChart.project.path}"></div>
-	    <tag:panel-dashboard align="center">
+	    <tag:panel-dashboard>
 	        <img src="../dashboard/chart-${subprojectChart.todayChartId}?date=${uniqueKey}&width=500&height=200" />
             <br/>
 		    <img src="../dashboard/chart-${subprojectChart.statisticsChartId}?date=${uniqueKey}" />

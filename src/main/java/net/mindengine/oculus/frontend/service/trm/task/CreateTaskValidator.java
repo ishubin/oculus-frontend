@@ -19,10 +19,10 @@ public class CreateTaskValidator implements Validator {
 	public void validate(Object obj, Errors err) {
 		TrmTask task = (TrmTask) obj;
 		if (task.getName() == null || task.getName().isEmpty()) {
-			err.rejectValue("name", "trm.createtask.error.name.empty");
+			err.reject(null, "Name shouldn't be empty");
 		}
 		else if(task.getProjectId()==null || task.getProjectId()==0){
-		    err.rejectValue("projectId", null, "Project is not specified");
+		    err.reject(null, "Project is not specified");
 		}
 	}
 

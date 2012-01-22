@@ -33,8 +33,19 @@ public class EditDashboardController extends SecureSimpleFormController {
 		Dashboard dashboard = (Dashboard) command;
 		Long projectId = Long.parseLong(request.getParameter("projectId"));
 		dashboard.setProjectId(projectId);
-		projectStatisticsDAO.changeDashboard(dashboard);
-		return new ModelAndView(new RedirectView("../dashboard/edit?projectId=" + projectId));
+		
+		if(dashboard.getRunnerId()==null ) {
+		    dashboard.setRunnerId(0L);
+		}
+		
+		if(dashboard.getDaysPeriod()==null || dashboard.getDaysPeriod()<1){
+		    errors.reject(null, "You have to specify days period higher than 0");
+		}
+		else {
+		    projectStatisticsDAO.changeDashboard(dashboard);
+		    return new ModelAndView(new RedirectView("../dashboard/edit?projectId=" + projectId));
+		}
+		return new ModelAndView(getFormView(), errors.getModel());
 	}
 
 	public ProjectDAO getProjectDAO() {

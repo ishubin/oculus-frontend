@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -32,7 +31,7 @@
 <input type="hidden" name="deleteParameterId" value="-1"/>
 <input type="hidden" name="Submit" value="Delete Parameter"/>
 </form>
-<script language="javascript">
+<script>
 Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
     this.length = from < 0 ? this.length + from : from;

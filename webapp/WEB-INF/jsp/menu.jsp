@@ -59,7 +59,7 @@
     </li>
     <c:if test="${user!=null}">
 	    <li>
-	        <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-trm.png"/> Test Run Manager</a>
+	        <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-trm.png"/> Grid</a>
             <ul>
                   <li>
                       <a class="sf-with-ul" href="../test-run-manager/create-task">

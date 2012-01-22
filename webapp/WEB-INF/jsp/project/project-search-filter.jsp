@@ -145,10 +145,10 @@ function onSubmitTestSearchForm(form)
         </c:if>
     </table>
     
-    <input type="hidden" name="pageOffset"/>
-	<input type="hidden" name="pageLimit"/>
-	<input type="hidden" name="pageByColumnId"/>
-	<input type="hidden" name="pageDirection"/>
+	<input type="hidden" name="pageOffset" value="${searchFilter.pageOffset}"/>
+    <input type="hidden" name="pageLimit" value="${searchFilter.pageLimit}"/>
+    <input type="hidden" name="orderByColumnId" value="${searchFilter.orderByColumnId}"/>
+    <input type="hidden" name="orderDirection" value="${searchFilter.orderDirection}"/>
 	
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
 </form>

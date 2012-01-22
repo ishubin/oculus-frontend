@@ -20,7 +20,7 @@ public class TestValidator implements Validator {
 	public void validate(Object object, Errors errors) {
 		Test test = (Test) object;
 		if (test.getName() == null || test.getName().isEmpty()) {
-			errors.reject("Test name cannot be empty");
+			errors.reject(null, "Test name cannot be empty");
 		}
 	}
 

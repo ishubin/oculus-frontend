@@ -1,5 +1,4 @@
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 
@@ -25,8 +24,8 @@
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
-<tag:panel align="center" title="Create Issue" logo="../images/workflow-icon-bug-edit.png" width="600px">
-    <form:form method="post" commandName="issue" action="../issue/edit">
+<tag:panel align="center" title="Edit Issue" logo="../images/workflow-icon-bug-edit.png" width="600px">
+    <form method="post" action="../issue/edit">
         
         <table border="0" width="100%">
             <%@ include file="/WEB-INF/jsp/issue/issue-form.jsp" %>
@@ -35,9 +34,11 @@
                     <input type="hidden" name="id" value="${issue.id}"/>
                     <tag:submit value="Change"/>
                     <br/>
-                    <form:errors path=""/>
+                    <div class="error">
+                    	<tag:spring-form-error field="" command="issue"></tag:spring-form-error>
+                    </div>
                 </td>
             </tr>
         </table>
-    </form:form>
+    </form>
 </tag:panel>

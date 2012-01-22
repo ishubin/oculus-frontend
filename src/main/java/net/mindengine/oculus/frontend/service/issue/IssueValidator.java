@@ -20,7 +20,7 @@ public class IssueValidator implements Validator {
 	public void validate(Object object, Errors errors) {
 		Issue issue = (Issue) object;
 		if ((issue.getName() == null || issue.getName().isEmpty()) && (issue.getLink() == null || issue.getLink().isEmpty())) {
-			errors.reject("Name or link should be provided");
+			errors.reject(null, "Name or link should be provided");
 		}
 	}
 }

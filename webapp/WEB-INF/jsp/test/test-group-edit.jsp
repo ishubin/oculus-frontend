@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -11,8 +10,8 @@
     </c:if>
     <a href="../project/display-${project.path}"><img src="../images/workflow-icon-project.png"/> ${project.name}</a>
     <img src="../images/breadcrump-arrow.png"/> 
-    <a href="../project/display-${project.path}?groupId=${editTestGroup.id}">
-        ${editTestGroup.name}
+    <a href="../project/display-${project.path}?groupId=${testGroup.id}">
+        ${testGroup.name}
     </a>
     <img src="../images/breadcrump-arrow.png"/>
     Edit
@@ -21,9 +20,8 @@
 
 <br/>
 <br/>
-<form:form action="../test/edit-group" 
-    commandName="editTestGroup" 
+<form action="../test/edit-group" 
     method="post">
-    <form:hidden path="id"/>
+    <input type="hidden" name="id" value="${testGroup.id}"/>
     <%@ include file="/WEB-INF/jsp/test/test-group-create-content.jsp" %>
-</form:form>
+</form>

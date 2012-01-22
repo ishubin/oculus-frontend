@@ -1,25 +1,27 @@
 package net.mindengine.oculus.frontend.web.controllers.trm.customize;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
-import org.springframework.web.servlet.ModelAndView;
-
-import net.mindengine.jeremy.bin.RemoteFile;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.trm.TrmUploadProject;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
-import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
+import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
+import org.springframework.web.servlet.ModelAndView;
 
 public class UploadProjectController extends SecureSimpleFormController {
 	private ProjectDAO projectDAO;
@@ -49,9 +51,10 @@ public class UploadProjectController extends SecureSimpleFormController {
 		 * Uploading project to server
 		 */
 		User user = getUser(request);
-		RemoteFile remoteFile = new RemoteFile();
-		remoteFile.setBytes(uploadProject.getZippedFile());
-		server.uploadProject(project.getPath(), uploadProject.getVersion(), remoteFile, user.getName());
+		String fileName = UUID.randomUUID().toString().replace("-", "");
+        File tmpFile = File.createTempFile(fileName, ".tmp");
+        FileUtils.writeByteArrayToFile(tmpFile, uploadProject.getZippedFile());
+		server.uploadProject(project.getPath(), uploadProject.getVersion(), tmpFile, user.getName());
 
 		return new ModelAndView(getSuccessView());
 	}

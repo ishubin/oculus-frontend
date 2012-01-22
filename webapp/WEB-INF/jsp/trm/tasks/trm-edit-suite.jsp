@@ -5,7 +5,6 @@
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page import="java.util.Enumeration"%>
 <div class="breadcrump">
     <a href="../test-run-manager/my-tasks">My Tasks</a>
@@ -22,27 +21,15 @@
         </a>
     </c:if>
     
-    <img src="../images/breadcrump-arrow.png"/> 
-    <c:choose>
-        <c:when test="${suite.uniteTests==true}">
-            <img src="../images/workflow-icon-united-suite.png"/>
-        </c:when>
-        <c:otherwise>
-            <img src="../images/workflow-icon-suite.png"/>
-        </c:otherwise>
-    </c:choose>
+    <img src="../images/breadcrump-arrow.png"/>
+    <img src="../images/workflow-icon-suite.png"/>
     <tag:escape text="${suite.name}"/>
 </div>
     
            
 <form name="editSuiteForm" method="post" onsubmit="return submitEditSuiteForm();">
     <tag:submit name="Submit" value="Save" ></tag:submit><br/>    
-    <input type="checkbox" name="suiteUniteTests" id="suiteUniteTests"
-        <c:if test="${suite.uniteTests==true }">checked="checked"</c:if> 
-    /><label for="suiteUniteTests">Unite all tests as one test</label>
-    <br/>
-    <br/>
-	            <tag:panel align="left" title="Suite Description" width="100%" disclosure="true" closed="false" id="suiteDescriptionPanel"> 
+     <tag:panel align="left" title="Suite Description" width="100%" disclosure="true" closed="false" id="suiteDescriptionPanel"> 
 	                <table width="100%" border="0" cellpadding="0" cellspacing="0">
 	                    <tbody>
 	                        <tr>
