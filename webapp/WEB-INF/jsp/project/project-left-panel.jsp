@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@page import="net.mindengine.oculus.frontend.domain.project.Project"%>
 <%@page import="java.net.URLEncoder"%><jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>

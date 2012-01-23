@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?><%@ include file="/include.jsp" %><%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %><%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<?xml version='1.0' encoding='utf-8'?><%@ include file="/include.jsp" %><%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <rows>
     <page>1</page>
     <total>1</total>

@@ -1,6 +1,5 @@
 <%@page import="net.mindengine.oculus.frontend.domain.issue.IssueCollationTest"%>
 <%@ include file="/include.jsp" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.*"/>

@@ -45,6 +45,7 @@ public class CreateSuiteGroupController extends SecureSimpleFormController {
 		if (task == null)
 			throw new UnexistentResource("The task with id " + taskId + " is not present");
 		map.put("task", task);
+		map.put("suiteGroupCommand", "Create");
 		return map;
 	}
 

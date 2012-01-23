@@ -1,7 +1,7 @@
 <%@page import="net.mindengine.oculus.frontend.domain.test.Test"%>
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 <tag:workflow-panel title="Test Management" width="100%" id="workflow_TM">
     <tag:workflow-element icon="create" link="../test/create?projectId=${project.id}&groupId=${group!=null?group.id:'0'}">New Test</tag:workflow-element>

@@ -20,10 +20,10 @@ public class ChangePasswordValidator implements Validator {
 
 		ChangePasswordData data = (ChangePasswordData) object;
 		if (data.getNewPassword().length() < 4) {
-			errors.reject("change.password.low.new.password");
+			errors.reject(null, "Password should contain more than 3 characters");
 		}
 		if (!data.getNewPassword().equals(data.getNewPasswordConfirmation())) {
-			errors.reject("change.password.confirm.password");
+			errors.reject(null, "Please confirm password");
 		}
 	}
 

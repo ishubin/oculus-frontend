@@ -1,7 +1,6 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <%@ taglib prefix="tiles" uri="/WEB-INF/tld/struts-tiles.tld" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <h2>Problem was found in your suite groups for this task</h2>
 You have suites for different projects within the same suite group.

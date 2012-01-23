@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -12,30 +11,24 @@
         <tr>
             <td>
                 <div class="small-description">Name:</div>
-                <tag:edit-field path="name" width="100%"></tag:edit-field>
-                <form:errors path="name"/>
-                <form:hidden path="taskId"/>
+                <tag:edit-field name="name" value="${suiteGroup.name}" width="100%"></tag:edit-field>
                 
+                <input type="hidden" name="taskId"  value="${suiteGroup.taskId}"/>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="small-description">Description:</div>
-                <form:textarea path="description" cssStyle="width:100%;" rows="10" cssErrorClass="error"/>
+                <textarea name="description" style="width:100%;" rows="10"><tag:escape text="${suiteGroup.description }"/></textarea>
             </td>
         </tr>
         <tr>
             <td>
-                <c:choose>
-                    <c:when test="${createSuiteGroup!=null}">
-                        <tag:submit value="Create"></tag:submit>
-                    </c:when>
-                    <c:otherwise>
-                        <tag:submit value="Save"></tag:submit>
-                    </c:otherwise>
-                </c:choose>
-                
-                <form:errors path="" cssClass="error"/>
+            	<tag:submit value="${suiteGroupCommand}"></tag:submit>
+             	
+             	<div class="error">   
+                	<tag:spring-form-error field="" command="suiteGroup"></tag:spring-form-error>
+                </div>
             </td>
         </tr>
     </table>

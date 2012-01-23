@@ -1,7 +1,6 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <%@ taglib prefix="tiles" uri="/WEB-INF/tld/struts-tiles.tld" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="breadcrump" align="center">
     <a href="../test-run-manager/main">Test Run Manager</a>
@@ -76,24 +75,13 @@ function onAjaxBuildFetchResponse(loader)
         divNavigation.innerHTML = html;
 
         var builds = result.results;
-        html="";
-        html+="<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\" style=\"border:1px solid #909090;\">";
-        var color = "";
-        html+="<tr><td style=\"width:100%;background:#e0e0e0;\">";
-        html+="<a class=\"disclosure\" href=\"javascript:onPickBuildPicked('Current Version');\">Current Version</a>";
-        html+="</td></tr>";
+        html="<ul class=\"pick-button-list\">";
+        html+="<li><a href=\"javascript:onPickBuildPicked('Current Version');\">Current Version</a></li>";
         for(var i=0;i<builds.length;i++)
         {
-            if(i%2==0)
-            {
-                color="#d0d0d0";
-            }
-            else color="#a0a0a0";
-            html+="<tr><td style=\"width:100%;background:"+color+";\">";
-            html+="<a class=\"disclosure\" href=\"javascript:onPickBuildPicked('"+builds[i].name+"');\">"+builds[i].name+"</a>";
-            html+="</td></tr>";
+            html+="<li><a href=\"javascript:onPickBuildPicked('"+builds[i].name+"');\">"+builds[i].name+"</a></li>";
         }
-        html+="</table>";
+        html+="</ul>";
         var divBuilds = document.getElementById("divPickBuildBuilds");
         divBuilds.innerHTML = html;
     }
@@ -199,7 +187,7 @@ function onPickBuildNameChange(control)
 <br/>
 
 <tag:panel align="center" title="Upload Project" width="400px">
-    <form:form method="post" name="formUploadProject" commandName="uploadProject" enctype="multipart/form-data">
+    <form method="post" name="formUploadProject" enctype="multipart/form-data">
         <table border="0" align="center" cellpadding="10">
             <tr>
                 <td colspan="2">
@@ -211,7 +199,7 @@ function onPickBuildNameChange(control)
                     Build:
                 </td>
                 <td>
-                    <form:hidden path="version"/>
+                    <input type="hidden" name="version" value="${uploadProject.version}"/>
                     <div style="width:134px;height:19px;margin-bottom:5px;">
                         <a class="pick-button" id="linkPickBuild" href="javascript:onPickBuildClick(${project.id});">${uploadProject.version}</a>
                     </div>
@@ -229,11 +217,13 @@ function onPickBuildNameChange(control)
                 <td align="center"  colspan="2">
                     <tag:submit value="Submit"></tag:submit>
                     <br/>
-                    <form:errors cssClass="error"/>
+                    <div class="error">
+                    	<tag:spring-form-error field="" command="uploadProject"></tag:spring-form-error>
+                    </div>
                 </td>
             </tr>
         </table>
-    </form:form>
+    </form>
 </tag:panel>
 
 

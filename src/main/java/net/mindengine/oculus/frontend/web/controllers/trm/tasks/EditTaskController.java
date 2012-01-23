@@ -27,26 +27,29 @@ import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController
 public class EditTaskController extends SecureSimpleViewController {
 	private TrmDAO trmDAO;
 
-	private void saveTask(Long taskId, List<TrmSuite> suites, List<TrmSuiteGroup> groups, HttpServletRequest request) throws Exception {
+	private void saveTask(Long taskId, List<TrmSuite> suites, List<TrmSuiteGroup> groups, Long groupId, HttpServletRequest request) throws Exception {
 		TrmTask task = new TrmTask();
 		task.setId(taskId);
-		String name = request.getParameter("taskName");
-		String description = request.getParameter("taskDescription");
-		String shared = request.getParameter("shared");
-
-		if (name == null || name.isEmpty() || description == null) {
-			throw new InvalidRequest();
-		}
-
-		if (shared != null && shared.equals("on")) {
-			task.setShared(true);
-		}
-		else
-			task.setShared(false);
-
-		task.setName(name);
-		task.setDescription(description);
-		trmDAO.saveTask(task);
+		
+		if(groupId==null || groupId.equals(0L)) {
+		    String name = request.getParameter("taskName");
+    		String description = request.getParameter("taskDescription");
+    		String shared = request.getParameter("shared");
+    
+    		if (name == null || name.isEmpty() || description == null) {
+    			throw new InvalidRequest();
+    		}
+    
+    		if (shared != null && shared.equals("on")) {
+    			task.setShared(true);
+    		}
+    		else
+    			task.setShared(false);
+    
+    		task.setName(name);
+    		task.setDescription(description);
+    		trmDAO.saveTask(task);
+	    }
 
 		if (suites != null) {
 			for (TrmSuite suite : suites) {
@@ -102,7 +105,7 @@ public class EditTaskController extends SecureSimpleViewController {
 		}
 		if (submit != null) {
 			if (submit.equals("Save")) {
-				saveTask(taskId, suites, groups, request);
+				saveTask(taskId, suites, groups, groupId, request);
 			}
 		}
 

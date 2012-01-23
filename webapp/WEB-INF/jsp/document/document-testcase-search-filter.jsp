@@ -3,7 +3,7 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
-<script language="javascript">
+<script>
 function onDateAfterChanged(date)
 {
 }

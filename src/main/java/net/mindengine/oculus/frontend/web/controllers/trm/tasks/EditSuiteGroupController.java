@@ -6,15 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.BindException;
-import org.springframework.web.servlet.ModelAndView;
-
 import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
-import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
+
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
 
 public class EditSuiteGroupController extends SecureSimpleFormController {
 
@@ -31,7 +30,7 @@ public class EditSuiteGroupController extends SecureSimpleFormController {
 		return group;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected Map referenceData(HttpServletRequest request) throws Exception {
 
@@ -41,6 +40,7 @@ public class EditSuiteGroupController extends SecureSimpleFormController {
 		TrmSuiteGroup group = trmDAO.getSuiteGroup(groupId);
 
 		map.put("task", trmDAO.getTask(group.getTaskId()));
+		map.put("suiteGroupCommand", "Edit");
 		return map;
 	}
 

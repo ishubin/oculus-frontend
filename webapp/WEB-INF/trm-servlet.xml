@@ -183,7 +183,7 @@
     <bean name="/create-suite-group" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.CreateSuiteGroupController">
         <property name="sessionForm" value="true"/>
         <property name="title" value="Create Suite Group"/>
-        <property name="commandName" value="createSuiteGroup"/>
+        <property name="commandName" value="suiteGroup"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.trm.task.CreateSuiteGroupValidator"></bean>
@@ -197,8 +197,8 @@
     
     <bean name="/edit-suite-group" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.EditSuiteGroupController">
         <property name="sessionForm" value="true"/>
-        <property name="title" value="Create Suite Group"/>
-        <property name="commandName" value="editSuiteGroup"/>
+        <property name="title" value="Edit Suite Group"/>
+        <property name="commandName" value="suiteGroup"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup"/>
         <property name="validator">
             <bean class="net.mindengine.oculus.frontend.service.trm.task.CreateSuiteGroupValidator"></bean>

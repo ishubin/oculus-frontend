@@ -40,8 +40,9 @@ public class ChangePasswordController extends SecureSimpleFormController {
 			session.setTemporaryMessage("Your password was successfuly changed");
 			return new ModelAndView(new RedirectView("../user/profile-" + user.getLogin()));
 		}
-		else
-			errors.reject("change.password.enter.old.password");
+		else {
+			errors.reject(null, "Please enter correct old password");
+		}
 
 		Map model = errors.getModel();
 		model.put("changePassword", cpData);

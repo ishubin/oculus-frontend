@@ -19,11 +19,11 @@ public class CreateSuiteGroupValidator implements Validator {
 	public void validate(Object object, Errors errors) {
 		TrmSuiteGroup tsg = (TrmSuiteGroup) object;
 		if (tsg.getName() == null || tsg.getName().isEmpty()) {
-			errors.reject("name", "The name shouldn't be empty");
+			errors.reject(null, "The name shouldn't be empty");
 		}
 
 		if (tsg.getTaskId() == null || tsg.getTaskId() < 1) {
-			errors.reject("taskId", "Incorrect task");
+			errors.reject(null, "Incorrect task");
 		}
 
 	}

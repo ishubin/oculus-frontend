@@ -1,6 +1,5 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <tag:workflow-panel title="Task Actions" width="100%" id="workflow_MyTasks">
     <tag:workflow-element id="workflowRunTaskLink" icon="run" link="javascript:submitRunTask();">Run Task On Server</tag:workflow-element>

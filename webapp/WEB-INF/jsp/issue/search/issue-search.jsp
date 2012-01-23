@@ -1,9 +1,7 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-
 <%@page import="net.mindengine.oculus.frontend.domain.issue.IssueSearchFilter"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -13,7 +11,9 @@
 <%@page import="net.mindengine.oculus.frontend.domain.issue.IssueSearchData"%>
 <%@page import="java.util.Collection"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="java.text.SimpleDateFormat"%><script language="javascript">
+<%@page import="java.text.SimpleDateFormat"%>
+
+<script>
 function onPageLimitChange(select)
 {
     document.forms.searchFilter.pageLimit.value = select.options[select.selectedIndex].value;

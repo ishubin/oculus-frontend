@@ -2,7 +2,6 @@
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmSuite"%>
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <div class="breadcrump">
     <a href="../test-run-manager/shared-tasks"><img src="../images/workflow-icon-shared-task.png"/>  Shared Tasks</a>
@@ -10,7 +9,7 @@
     ${task.name} 
 </div>
 
-<script language="javascript">
+<script>
 function showSopySharedTaskDialog()
 {
 	showPopup("divCopySuiteDialog",300,250);

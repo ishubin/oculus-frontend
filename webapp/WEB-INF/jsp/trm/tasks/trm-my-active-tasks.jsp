@@ -1,10 +1,9 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <%@ taglib prefix="tiles" uri="/WEB-INF/tld/struts-tiles.tld" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@page import="java.util.Collection"%>
-<%@page import="net.mindengine.oculus.frontend.testrunmanager.domain.task.Task"%><div class="breadcrump" align="center">
+<%@page import="net.mindengine.oculus.grid.domain.task.Task"%><div class="breadcrump" align="center">
 My Active Tasks
 </div>
 

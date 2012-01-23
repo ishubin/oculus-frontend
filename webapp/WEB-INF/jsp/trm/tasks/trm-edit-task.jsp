@@ -3,7 +3,6 @@
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmSuite"%>
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
@@ -70,7 +69,7 @@
 		</tag:panel>
 	</c:if>	
 	     
-	<script language="javascript">
+	<script>
 	var _taskSuites = [
 	<%
 	List<TrmSuite> suites = (List<TrmSuite>)pageContext.findAttribute("suites");
@@ -276,14 +275,7 @@
 				   <tr>
 				       <td><tag:remove-white-space>
 				           <a href="../test-run-manager/edit-suite?id=${s.id}">
-				              <c:choose>
-				                 <c:when test="${s.uniteTests==true }">
-				                     <img src="../images/workflow-icon-united-suite.png"/> 
-				                 </c:when>
-				                 <c:otherwise>
-				                     <img src="../images/workflow-icon-suite.png"/> 
-				                 </c:otherwise>
-				              </c:choose>
+				              <img src="../images/workflow-icon-suite.png"/>
 				              <tag:escape text="${s.name}"/>
 				              <br/>
 				              <span class="small-description">

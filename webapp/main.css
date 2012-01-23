@@ -1301,3 +1301,43 @@ ul.flat-list {
 ul.flat-list li {
 	margin-left: 0px;
 }
+
+
+
+ul.pick-button-list {
+	display:inline;
+	width:100%;
+	list-style:none;
+	margin-left:5px;
+	padding:0px;
+	margin:0px;
+}
+ul.pick-button-list li {
+	float:left;
+	width:100%;
+}
+ul.pick-button-list li a {
+	color:#2779AA;
+	font-weight:10pt;
+	display:block;
+	width:auto;
+	height:25px;
+	padding-top:5px;
+	padding-left:5px;
+}
+ul.pick-button-list li:nth-child(even) a {
+	background:#D7EBF9;
+	border:1px solid #D7EBF9;
+}
+ul.pick-button-list li:nth-child(odd) a {
+	background:#D3E9F7;
+	border:1px solid #D0E5F4;
+}
+
+ul.pick-button-list li a:hover {
+	background:#E4F1FB;
+	border:1px solid #AED0EA;
+	-moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
