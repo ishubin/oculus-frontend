@@ -15,37 +15,39 @@ document.onmousemove = function(ev) {
 	ev = ev || window.event;
 	this.mousePos = mouseCoords(ev);
 
-	if (dragObject != null) {
+	if (_dragObject != null) {
 		// rendering the object dragging
 
-		dragObject.style.display = "block";
-		dragObject.style.zIndex = "999";
-		dragObject.style.left = document.mousePos.x + 10;
-		dragObject.style.top = document.mousePos.y + 5;
+		_dragObject.style.display = "block";
+		_dragObject.style.zIndex = "999";
+		_dragObject.style.left = document.mousePos.x + 10;
+		_dragObject.style.top = document.mousePos.y + 5;
 		return false;
 	}
 	return true;
 };
 
-var dragObject = null;
+var _dragObject = null;
 // checkes whether it is a drag-n-grop within the same area
-var dragObjectIsAdded = false;
-var positionLevelFrom = -1;
-var positionLevelTo = -1;
+var _dragObjectIsAdded = false;
+var _draggedTestCustomId = -1;
+var _draggedTestType = 'test';
+var _droppedTestCustomId = -1;
+var _droppedTestType = 'last';
 
 document.onmouseup = function(ev) {
-	if (dragObject != null) {
-		dragObject.style.display = "none";
+	if (_dragObject != null) {
+		_dragObject.style.display = "none";
 	}
-	dragObject = null;
+	_dragObject = null;
 };
 
-var testsToDrag = [];
+var _testsToDrag = [];
 
 function onTestInTreeMouseDown(testId, div) {
 	// Checking if the user has selected more than one test
 	var str = "";
-	testsToDrag = [];
+	_testsToDrag = [];
 
 	if (checkedTests.length > 0) {
 
@@ -57,36 +59,37 @@ function onTestInTreeMouseDown(testId, div) {
 						+ escapeHTML(test.name) + "</div>";
 			}
 
-			testsToDrag[testsToDrag.length] = test;
+			_testsToDrag[_testsToDrag.length] = test;
 		}
 	} else {
 		var test = findTestInTree(testId);
 		str += "<div class=\"drag-brick\"><img src=\"../images/iconTest.png\"/>"
 				+ escapeHTML(test.name) + "</div>";
-		testsToDrag[testsToDrag.length] = test;
+		_testsToDrag[_testsToDrag.length] = test;
 	}
 
 	var divContainer = document.getElementById("brickDragContainer");
 	divContainer.innerHTML = str;
-	dragObject = divContainer;
-	dragObjectIsAdded = false;
+	_dragObject = divContainer;
+	_dragObjectIsAdded = false;
 }
 
-function onAddedBrickMouseDown(div, testCustomId, posLevelFrom) {
-	testsToDrag = [];
-	positionLevelFrom = posLevelFrom;
-	dragObjectIsAdded = true;
+function onAddedBrickMouseDown(div, testCustomId) {
+	_testsToDrag = [];
+	_draggedTestCustomId = testCustomId;
+	_dragObjectIsAdded = true;
+
 	var divContainer = document.getElementById("brickDragContainer");
 	var str = "";
 	var test = findTestByCustomId(testCustomId);
 	str += "<div class=\"drag-brick drag-brick-level-1\"><img src=\"../images/iconTest.png\"/>"
 			+ escapeHTML(test.name) + "</div>";
 	divContainer.innerHTML = str;
-	dragObject = divContainer;
+	_dragObject = divContainer;
 }
 
 function onDropAreaMouseOver(dropArea, isBig) {
-	if (dragObject != null) {
+	if (_dragObject != null) {
 		if (isBig) {
 			dropArea.className = "dropArea-big-highlighted";
 		} else
@@ -94,45 +97,65 @@ function onDropAreaMouseOver(dropArea, isBig) {
 	}
 }
 function onDropAreaMouseOut(dropArea, isBig) {
-	if (dragObject != null) {
+	if (_dragObject != null) {
 		if (isBig) {
 			dropArea.className = "dropArea-big";
 		} else
 			dropArea.className = "dropArea";
 	}
 }
-function onDropAreaMouseUp(dropArea, positionLevel, isBig) {
-	if (dragObject != null) {
+function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
+	if (_dragObject != null) {
 		if (isBig) {
 			dropArea.className = "dropArea-big";
 		} else
 			dropArea.className = "dropArea";
 
 		var divContainer = document.getElementById("brickDragContainer");
-		if (dragObjectIsAdded) {
-			if (positionLevelFrom != positionLevel) {
-				if (positionLevel == 'last') {
-					positionLevel = myTests.length;
+		if (_dragObjectIsAdded) {
+			//Moving existent test in suite
+			
+			if(_draggedTestType=='test') {
+				var positionLevelFrom = findTestIdByCustomId(_draggedTestCustomId);
+				
+				if(type=='last') {
+					gatherAllParameterValues();
+					var positionLevelTo = myTests.length;
+					var testArr = myTests.splice(positionLevelFrom, 1);
+					myTests.splice(positionLevelTo, 0, testArr[0]);
+					rerenderTests();
 				}
-				if (positionLevel > positionLevelFrom) {
-					positionLevel--;
+				else if(type=='test') {
+					if(testCustomId != _draggedTestCustomId) {
+						gatherAllParameterValues();
+						var testArr = myTests.splice(positionLevelFrom, 1);
+						var positionLevelTo = findTestIdByCustomId(testCustomId);
+						myTests.splice(positionLevelTo, 0, testArr[0]);
+						rerenderTests();
+					}
+					else return true;
 				}
-
-				gatherAllParameterValues();
-				var testArr = myTests.splice(positionLevelFrom, 1);
-				myTests.splice(positionLevel, 0, testArr[0]);
-				rerenderTests();
+				else {
+					//TODO handle moving to test group
+				}
 			}
+			else {
+				//TODO handle moving from test group
+			}
+			
 		} else {
-			positionLevelTo = positionLevel;
+			//Adding new test to suite
+			_droppedTestCustomId = testCustomId;
+			_droppedTestType = type;
 			var str = "";
-			for ( var i = 0; i < testsToDrag.length; i++) {
+			for ( var i = 0; i < _testsToDrag.length; i++) {
 				if (i > 0)
 					str += ",";
-				str += testsToDrag[i].id;
+				str += _testsToDrag[i].id;
 			}
 			dhtmlxAjax.post("../test/ajax-fetch", "ids=" + str,
 					onAjaxTestFetchResponse);
 		}
+		return false;
 	}
 }

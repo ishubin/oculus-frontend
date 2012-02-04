@@ -122,11 +122,16 @@
                                             }
                                             
                                             //addTestToSuite(tests[i]);
-                                            if(positionLevelTo!='last' && positionLevelTo>=0)
-                                            {   
-                                                myTests.splice(positionLevelTo+i,0,tests[i]);
+                                            if(_droppedTestType=='last') {
+                                            	myTests[myTests.length] = tests[i];
                                             }
-                                            else myTests[myTests.length] = tests[i];
+                                            else if(_droppedTestType=='test') {
+                                            	var positionLevelTo = findTestIdByCustomId(_droppedTestCustomId);
+                                            	myTests.splice(positionLevelTo+i,0,tests[i]);
+                                            }
+                                            else {
+                                            	//TODO Handle test groups
+                                            }
                                         }
                                         rerenderTests();
                                     }
@@ -304,7 +309,7 @@
                                 }
                                 
                                 str+= "<div id=\"divTestMainLayout"+test.customId+"\" class=\"test-layout\">";
-                                str+= "   <div class='dropArea' onmouseup='onDropAreaMouseUp(this, findTestIdByCustomId("+id+"), false); return false;' onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
+                                str+= "   <div class='dropArea' onmouseup=\"return onDropAreaMouseUp(this, 'test', "+id+", false);\" onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
                                 str+= "      <div class=\"dropArea-line\"></div>";
                                 str+= "      <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
                                 str+= "         <tr>";
@@ -312,7 +317,7 @@
                                 str+= "                 <a class=\"test-layout-remove-link\" href=\"javascript:removeTest("+test.customId+");\"><img src=\"../images/button-close-2.png\"/></a>";
                                 str+= "             </td>";
                                 str+= "             <td>";
-                                str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+", "+findTestIdByCustomId(test.customId)+"); return false;\">";
+                                str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+"); return false;\">";
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
                                 str+= "                      href=\"javascript:onTestPanelClick("+test.customId+");\"><b>"+escapeHTML(test.name)+"</b>";
                                 str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></span>";
@@ -393,8 +398,8 @@
 	                                }
                                 }
                                 else {
-                                	//The test is a test group
-                                	str+= "<div class='dropArea-big' onmouseup='onDropAreaMouseUp(this, findTestIdByCustomId("+id+"), true); return false;' onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
+                                	//The test is a test group 
+                                	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup',"+id+", true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
                                 	str+= "<div class='dropArea-line'></div> Drop your tests here</div>";
                                 }
                                 str+= "                 </div>";
@@ -709,7 +714,7 @@
                 <div id="divCurrentTests" class="my-suite-tests-layout">
                     <table id="myTestsTable" border="0px" cellspacing="0px" cellpadding="0px" width="100%">
                     </table>
-                    <div class="dropArea-big" onMouseUp="onDropAreaMouseUp(this, 'last',true); return false;" onMouseOver="onDropAreaMouseOver(this, true);" onMouseOut="onDropAreaMouseOut(this, true);">
+                    <div class="dropArea-big" onMouseUp="onDropAreaMouseUp(this, 'last', 0, true); return false;" onMouseOver="onDropAreaMouseOver(this, true);" onMouseOut="onDropAreaMouseOut(this, true);">
                         <div class="dropArea-line"></div>
                         <br/>
                         Drop your tests here
