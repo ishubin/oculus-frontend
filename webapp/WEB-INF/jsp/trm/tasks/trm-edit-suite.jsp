@@ -71,20 +71,27 @@
                             //Array of tests which are belong to the current test suite
                             var myTests = new Array();
                             
+                            function findMaxCustomId(tests, max) {
+                            	if(tests!=null){
+                                    for(var i=0;i<tests.length;i++){
+                                    	if(tests[i].tests!=null) {
+                                    		max = findMaxCustomId(tests[i].tests, max);
+                                    	}
+                                    	if(max<tests[i].customId){
+                                            max = tests[i].customId;
+                                        }
+                                    }
+                                }
+                            	return max;
+                            }
                             /**
                             * Fetching the unique custom id so it wouldn't interfier with existing tests
                             */
                             function getUniqueCustomTestId(){
-                                var uid = 0;
+                                var uid = findMaxCustomId(myTests, 0);
                                 
                                 //Setting the uid as the maxixum customId value from exising tests
-                                if(myTests!=null){
-                                    for(var i=0;i<myTests.length;i++){
-                                        if(uid<myTests[i].customId){
-                                            uid = myTests[i].customId;
-                                        }
-                                    }
-                                }
+                                
                                 //Incrementing it so it becomes unique
                                 uid++;
                                 return uid;
@@ -208,21 +215,51 @@
                                 div.innerHTML = str;
                                 return div;
                             }
-                            function findTestIdByCustomId(customId)
-                            {
-                                for(var i=0;i<myTests.length;i++)
-                                {
-                                    if(myTests[i].customId == customId) return i;
+                            function findTestIdByCustomIdInArray(tests, customId) {
+                            	for(var i=0;i<tests.length;i++) {
+                                    if(tests[i].customId == customId) return i;
+                                    if(tests[i].tests!=null) {
+                                    	var id = findTestIdByCustomIdInArray(tests[i].tests, customId);
+                                    	if(id>=0) {
+                                    		return id;
+                                    	}
+                                    }                                    
                                 }
                                 return -1;
                             }
-                            function findTestByCustomId(customId)
-                            {
-                                for(var i=0;i<myTests.length;i++)
-                                {
-                                    if(myTests[i].customId == customId) return myTests[i];
+                            function findTestIdByCustomId(customId) {
+                                return findTestIdByCustomIdInArray(myTests, customId);
+                            }
+                            
+                            function findParentForCustomId(customId){
+                            	for(var i=0;i<myTests.length;i++) {
+                            		if(myTests[i].tests!=null) {
+                            			for(var j=0; j<myTests[i].tests.length; j++) {
+                            				if(myTests[i].tests[j].customId == customId) {
+                            					return myTests[i].tests[j];
+                            				}
+                            			}
+                            		}
+                            	}
+                            	return null;
+                            }
+                            
+                            function findTestByCustomIdInArray(tests, customId) {
+                            	for(var i=0;i<tests.length;i++) {
+                            		if(tests[i].customId == customId) {
+                            			return tests[i];
+                            		}
+                            		if(tests[i].tests!=null) {
+                            			var test = findTestByCustomIdInArray(tests[i].tests, customId);
+                            			if(test!=null) {
+                            				return test;
+                            			}
+                            		}
                                 }
-                                return null;
+                            	return null;
+                            }
+                            function findTestByCustomId(customId) {
+                                return findTestByCustomIdInArray(myTests, customId);
                             }
                             
                             
@@ -296,8 +333,8 @@
                             /**
                             * Generates div element with test layout view 
                             */
-                            function renderTest(test)
-                            {
+                            function renderTest(test, isChild) {
+                            	
                                 var id = test.customId;
                                 var trDescriptionLayout = "<span id='testRunDescription_"+test.customId+"' style='color:#999999;font-weight:normal;'> "+escapeHTML(trDescription)+" </span>";
                                 var str = "";
@@ -309,7 +346,7 @@
                                 }
                                 
                                 str+= "<div id=\"divTestMainLayout"+test.customId+"\" class=\"test-layout\">";
-                                str+= "   <div class='dropArea' onmouseup=\"return onDropAreaMouseUp(this, 'test', "+id+", false);\" onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
+                                str+= "   <div class='dropArea' onmouseup=\"return onDropAreaMouseUp(this, '"+(isChild?'child':'test')+"', "+id+", false);\" onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
                                 str+= "      <div class=\"dropArea-line\"></div>";
                                 str+= "      <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
                                 str+= "         <tr>";
@@ -399,6 +436,10 @@
                                 }
                                 else {
                                 	//The test is a test group 
+                                	for(var k=0;k<test.tests.length;k++) {
+                                		str+=renderTest(test.tests[k], true);
+                                	}
+                                	
                                 	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup',"+id+", true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
                                 	str+= "<div class='dropArea-line'></div> Drop your tests here</div>";
                                 }

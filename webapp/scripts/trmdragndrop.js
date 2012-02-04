@@ -119,6 +119,7 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 				var positionLevelFrom = findTestIdByCustomId(_draggedTestCustomId);
 				
 				if(type=='last') {
+					//Moving to the last position
 					gatherAllParameterValues();
 					var positionLevelTo = myTests.length;
 					var testArr = myTests.splice(positionLevelFrom, 1);
@@ -126,6 +127,7 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 					rerenderTests();
 				}
 				else if(type=='test') {
+					//Moving before specified test in root level
 					if(testCustomId != _draggedTestCustomId) {
 						gatherAllParameterValues();
 						var testArr = myTests.splice(positionLevelFrom, 1);
@@ -135,8 +137,25 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 					}
 					else return true;
 				}
-				else {
-					//TODO handle moving to test group
+				else if (type=='lastInGroup') {
+					//Moving to the last position in specified testGroup
+					gatherAllParameterValues();
+					var testArr = myTests.splice(positionLevelFrom, 1);
+					var positionLevelTo = findTestIdByCustomId(testCustomId);
+					var testGroup = findTestByCustomId(testCustomId);
+					testGroup.tests.splice(testGroup.length,0, testArr[0]);
+					rerenderTests();
+				}
+				else if (type=='child') {
+					//Moving before specified test in testGroup
+					
+					gatherAllParameterValues();
+					var testArr = myTests.splice(positionLevelFrom, 1);
+					var testGroup = findParentForCustomId(testCustomId);
+					var id = findTestIdByCustomId(testGroup.customId);
+					var positionLevelTo = findTestIdByCustomId(testCustomId);
+					myTests[id].tests.splice(positionLevelTo, 0, testArr[0]);
+					rerenderTests();
 				}
 			}
 			else {
