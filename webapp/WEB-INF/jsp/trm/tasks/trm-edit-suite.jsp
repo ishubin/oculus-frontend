@@ -66,7 +66,7 @@
 	                </table>
 	            </tag:panel><br/>
                 <tag:panel align="left" title="Tests" width="100%" disclosure="true" closed="false" id="testsPanel"> 
-                            <script language="javascript">
+                            <script>
                             
                             //Array of tests which are belong to the current test suite
                             var myTests = new Array();
@@ -133,20 +133,17 @@
                                 }
                                 else alert(str);
                             }
-                            function addTestToSuite(test)
-                            {
+                            function addTestToSuite(test) {
                                 var testId = myTests.length;
                                 myTests[testId] = test;
-                                if(myTests[testId].customId==null)
-                                {
-                                    myTests[testId].customId = getUniqueCustomTestId();
+                                if(myTests[testId].customId==null) {
+                                	myTests[testId].customId = getUniqueCustomTestId();
                                 }
-                                var testLayout = renderTest(myTests[testId]);
-                        
+                                
                                 var table = document.getElementById("myTestsTable");
                                 var tr = document.createElement("tr");
                                 var td = document.createElement("td");
-                                td.appendChild(testLayout);
+                                td.innerHTML = renderTest(myTests[testId]);
                                 tr.appendChild(td);
                                 table.appendChild(tr);
                                 myTests[testId].tableRowElement = tr;
@@ -297,20 +294,8 @@
                             function renderTest(test)
                             {
                                 var id = test.customId;
+                                var trDescriptionLayout = "<span id='testRunDescription_"+test.customId+"' style='color:#999999;font-weight:normal;'> "+escapeHTML(trDescription)+" </span>";
                                 var str = "";
-                        
-                                var div = document.createElement("div");
-                                div.className="dropArea";
-                                div.onmouseup = function(){
-                                    onDropAreaMouseUp(this, findTestIdByCustomId(id), false); return false;
-                                };
-                                div.onmouseover = function(){
-                                    onDropAreaMouseOver(this, false);
-                                };
-                                div.onmouseout = function(){
-                                    onDropAreaMouseOut(this, false);
-                                };
-
                                 
                                 var trDescription = "";
 
@@ -318,12 +303,10 @@
                                     trDescription = test.testRunDescription;
                                 }
                                 
-                                var trDescriptionLayout = "<span id='testRunDescription_"+test.customId+"' style='color:#999999;font-weight:normal;'> "+trDescription+" </span>";
-                                
-                                str+= "<div class=\"dropArea-line\"></div>";
                                 str+= "<div id=\"divTestMainLayout"+test.customId+"\" class=\"test-layout\">";
-                                str+= " <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
-                                str+= "     <thead>";
+                                str+= "   <div class='dropArea' onmouseup='onDropAreaMouseUp(this, findTestIdByCustomId("+id+"), false); return false;' onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
+                                str+= "      <div class=\"dropArea-line\"></div>";
+                                str+= "      <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
                                 str+= "         <tr>";
                                 str+= "             <td width=\"20px\" height=\"20px\">";
                                 str+= "                 <a class=\"test-layout-remove-link\" href=\"javascript:removeTest("+test.customId+");\"><img src=\"../images/button-close-2.png\"/></a>";
@@ -333,8 +316,16 @@
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
                                 str+= "                      href=\"javascript:onTestPanelClick("+test.customId+");\"><b>"+escapeHTML(test.name)+"</b>";
                                 str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></span>";
-                                str+= "                     <img src=\"../images/iconTest.png\" style=\"float:left;\"/>";
-                                str+= "                     <span style=\"color:#999999\"> #"+test.customId+"</span> " + trDescriptionLayout;
+                                
+                                if(test.tests==null) {
+                                	str+= "                     <img src=\"../images/iconTest.png\" style=\"float:left;\"/>";
+                                	str+= "                     <span style=\"color:#999999\"> #"+test.customId+"</span> ";
+                                }
+                                else { 
+                                	str+= "                     <img src=\"../images/iconTestGroupCustom.png\" style=\"float:left;\"/>";
+                                }
+                                str+= trDescriptionLayout;
+                                
                                 str+= "                 </a>";
                                 str+= "                 </div>";
                                 str+= "             </td>";
@@ -345,72 +336,71 @@
                                 str+= "                 <a class='icon-button' href='../test/display?id="+test.id+"' target='_blank'><img src='../images/workflow-icon-external-link.png'/></a>";
                                 str+= "             </td>";
                                 str+= "         </tr>";
-                                str+= "     </thead>";
-                                str+= "     <tbody>";
-                                str+= "         <tr>";
-                                str+= "             <td colspan=\"4\">";
-                                str+= "                 <div id=\"divTestContent"+test.customId+"\" style=\"display:none;font-size:8pt;\">";
-                                str+= "                     <div class=\"small-description\" style=\"padding-left:50px;padding-bottom:10px;\">";
-                                str+= "                     "+escapeHTML(test.description);
-                                
-                                str+= "                     </div>";
-                                if(test.inputParameters!=null && test.inputParameters.length>0)
-                                {
-                                    str+= "                 <div style=\"padding-left:50px;margin-bottom:10px;\">";
-                                    str+= "                    Input Parameters:<br/>";
-                                    str+= "                    <table border=\"0\">";
-                                    for(var i=0;i<test.inputParameters.length;i++)
-                                    {
-                                        str+= "                   <tr class=\"test-input-parameter-table\">";
-                                        str+= "                       <td onMouseMove=\"showTooltip(event,this,'parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\" onMouseOut=\"hideTooltip('parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\">";
-                                        str+= "                           <img id=\"parameterLogo_"+test.customId+"_"+test.inputParameters[i].name+"\" src=\"../images/trm-parameter-icon.png\"/> <b>"+test.inputParameters[i].name+"</b>";
-                                        str+= "                       <div id=\"parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"\" style=\"display:none;\" class=\"tooltip\"><pre>"+escapeHTML(test.inputParameters[i].description)+"</pre></div>";
-                                        str+= "                       </td>";
-                                        str+= "                       <td width=\"20px\"> = </td>";
-                                        str+= "                       <td>";
-                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Control\">"+renderTestParameterControl(test, test.inputParameters[i])+"</div>";
-                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Link\" style=\"display:none;\"></div>";
-                                        str+= "                       </td>";
-                                        str+= "                       <td width=\"100px\">";
-                                        if(test.inputParameters[i].controlType=="text")
-                                        {
-                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor("+test.customId+",'"+test.inputParameters[i].name+"');\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
-                                        }
-                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter('"+test.inputParameters[i].name+"',"+test.customId+");\"><img src=\"../images/trm-link-icon.png\"/></a>";
-                                        str+= "                       </td>";
-                                        str+= "                   </tr>";
-                                    }
-                                    str+= "                    </table>";
-                                    str+= "                 </div>";
+                                str+= "      </table>";
+                                str+= "   </div>";
+                                str+= "   <div id=\"divTestContent"+test.customId+"\" style=\"display:none;font-size:8pt;\">";
+                                if(test.tests==null) {
+	                                str+= "                     <div class=\"small-description\" style=\"padding-left:50px;padding-bottom:10px;\">";
+	                                str+= "                     "+escapeHTML(test.description);
+	                                
+	                                str+= "                     </div>";
+	                                if(test.inputParameters!=null && test.inputParameters.length>0)
+	                                {
+	                                    str+= "                 <div style=\"padding-left:50px;margin-bottom:10px;\">";
+	                                    str+= "                    Input Parameters:<br/>";
+	                                    str+= "                    <table border=\"0\">";
+	                                    for(var i=0;i<test.inputParameters.length;i++)
+	                                    {
+	                                        str+= "                   <tr class=\"test-input-parameter-table\">";
+	                                        str+= "                       <td onMouseMove=\"showTooltip(event,this,'parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\" onMouseOut=\"hideTooltip('parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\">";
+	                                        str+= "                           <img id=\"parameterLogo_"+test.customId+"_"+test.inputParameters[i].name+"\" src=\"../images/trm-parameter-icon.png\"/> <b>"+test.inputParameters[i].name+"</b>";
+	                                        str+= "                       <div id=\"parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"\" style=\"display:none;\" class=\"tooltip\"><pre>"+escapeHTML(test.inputParameters[i].description)+"</pre></div>";
+	                                        str+= "                       </td>";
+	                                        str+= "                       <td width=\"20px\"> = </td>";
+	                                        str+= "                       <td>";
+	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Control\">"+renderTestParameterControl(test, test.inputParameters[i])+"</div>";
+	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Link\" style=\"display:none;\"></div>";
+	                                        str+= "                       </td>";
+	                                        str+= "                       <td width=\"100px\">";
+	                                        if(test.inputParameters[i].controlType=="text")
+	                                        {
+	                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor("+test.customId+",'"+test.inputParameters[i].name+"');\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
+	                                        }
+	                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter('"+test.inputParameters[i].name+"',"+test.customId+");\"><img src=\"../images/trm-link-icon.png\"/></a>";
+	                                        str+= "                       </td>";
+	                                        str+= "                   </tr>";
+	                                    }
+	                                    str+= "                    </table>";
+	                                    str+= "                 </div>";
+	                                }
+	                                if(test.outputParameters!=null && test.outputParameters.length>0)
+	                                {
+	                                    str+= "                 <div style=\"padding-left:50px;margin-bottom:10px;\">";
+	                                    str+= "                    Output Parameters:<br/>";
+	                                    str+= "                    <table border=\"0\">";
+	                                    for(var i=0;i<test.outputParameters.length;i++)
+	                                    {
+	                                        str+= "                   <tr>";
+	                                        str+= "                       <td onMouseMove=\"showTooltip(event,this,'parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"');\" onMouseOut=\"hideTooltip('parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"');\">";
+	                                        str+= "                           <img src=\"../images/trm-parameter-icon.png\"/> <b>"+test.outputParameters[i].name+"</b>";
+	                                        str+= "                           <div id=\"parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"\" style=\"display:none;\" class=\"tooltip\"><pre>"+escapeHTML(test.outputParameters[i].description)+"</pre></div>";
+	                                        str+= "                       </td>";
+	                                        str+= "                   </tr>";
+	                                        
+	                                    }
+	                                    str+= "                    </table>";
+	                                    str+= "                 </div>";
+	                                }
                                 }
-                                if(test.outputParameters!=null && test.outputParameters.length>0)
-                                {
-                                    str+= "                 <div style=\"padding-left:50px;margin-bottom:10px;\">";
-                                    str+= "                    Output Parameters:<br/>";
-                                    str+= "                    <table border=\"0\">";
-                                    for(var i=0;i<test.outputParameters.length;i++)
-                                    {
-                                        str+= "                   <tr>";
-                                        str+= "                       <td onMouseMove=\"showTooltip(event,this,'parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"');\" onMouseOut=\"hideTooltip('parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"');\">";
-                                        str+= "                           <img src=\"../images/trm-parameter-icon.png\"/> <b>"+test.outputParameters[i].name+"</b>";
-                                        str+= "                           <div id=\"parameterTooltip"+test.customId+"_"+test.outputParameters[i].id+"\" style=\"display:none;\" class=\"tooltip\"><pre>"+escapeHTML(test.outputParameters[i].description)+"</pre></div>";
-                                        str+= "                       </td>";
-                                        str+= "                   </tr>";
-                                        
-                                    }
-                                    str+= "                    </table>";
-                                    str+= "                 </div>";
+                                else {
+                                	//The test is a test group
+                                	str+= "<div class='dropArea-big' onmouseup='onDropAreaMouseUp(this, findTestIdByCustomId("+id+"), true); return false;' onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
+                                	str+= "<div class='dropArea-line'></div> Drop your tests here</div>";
                                 }
-                                
                                 str+= "                 </div>";
-                                str+= "             </td>";
-                                str+= "         </tr>";
-                                str+= "     </tbody>";
-                                str+= " </table>"; 
                                 str+= "</div>";
                                 
-                                div.innerHTML = str;
-                                return div;
+								return str;
                             }
                         
                             var dependentTestCustomId = 0;
@@ -602,11 +592,9 @@
                                     
                                     rerenderTests();
                                 }
-                            }
+                            }	
                             function rerenderTests()
                             {
-                                //alert("todo: rerenderTests");
-                                
                                 var table = document.getElementById("myTestsTable");
                                 while(table.hasChildNodes())
                                 {
@@ -622,11 +610,9 @@
                                 table = document.getElementById("myTestsTable");
                                 for(var i=0; i<myTests.length;i++)
                                 {
-                                    var testLayout = renderTest(myTests[i]);
-                                    
                                     var tr = document.createElement("tr");
                                     var td = document.createElement("td");
-                                    td.appendChild(testLayout);
+                                    td.innerHTML = renderTest(myTests[i]);
                                     tr.appendChild(td);
                                     table.appendChild(tr);
                                     myTests[i].tableRowElement = tr;
@@ -693,39 +679,40 @@
                                  showPopup("divBigEditor", 600, 400);
                             }
                             
+                            var _testGroupEditor= {
+                            };
+                            
+                            function onAddTestGroup() {
+                            	_testGroupEditor = {
+                            		onSave: function () {
+                            			var testGroupName=$("#testGroupEditName").val();
+                            			if(testGroupName!=null && testGroupName!="") {
+                            				var testGroup = {
+                            					name: testGroupName,
+                            					tests: []
+                            				};
+                            				addTestToSuite(testGroup);
+                            			}
+                            			closePopup("divTestGroupEdit");
+                            		}		
+                            	};
+                            	
+                            	$("#testGroupEditName").val("");
+                            	showPopup("divTestGroupEdit", 300, 250);
+                            	$("#testGroupEditName").focus();
+                            }
+                            
                             </script>
                             
-                <div id="divBigEditor" style="position:absolute;display:none;width:600px;height:400px;">
-                    <tag:panel title="Edit parameter" 
-                                align="center"
-                                closeDivName="divBigEditor" 
-                                width="600px" height="400px"
-                                id="bigEditor"
-                                logo="../images/workflow-icon-settings.png"
-                                >
-                        <table border="0px" cellspacing="0px" cellpadding="0px" width="100%" height="100%">
-                            <tr>
-                                <td colspan="2">
-                                    <textarea id="bigEditorTextarea" style="width:100%" rows="18"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <tag:submit value="OK" onclick="javascript:_bigEditor.onSave(); return false;" width="100px"></tag:submit>
-                                </td>
-                                <td>
-                                    <tag:submit value="Cancel" onclick="javascript:closePopup('divBigEditor'); return false;" width="100px"></tag:submit>
-                                </td>
-                            </tr>
-                        </table>
-                    </tag:panel>
-                </div>
+                
                 
                 <div id="divCurrentTests" class="my-suite-tests-layout">
                     <table id="myTestsTable" border="0px" cellspacing="0px" cellpadding="0px" width="100%">
                     </table>
                     <div class="dropArea-big" onMouseUp="onDropAreaMouseUp(this, 'last',true); return false;" onMouseOver="onDropAreaMouseOver(this, true);" onMouseOut="onDropAreaMouseOut(this, true);">
                         <div class="dropArea-line"></div>
+                        <br/>
+                        Drop your tests here
                     </div>
                 </div>
                 <div id="divTestsShort" style="position:absolute;display:none;width:400px;height:500px;">
@@ -739,10 +726,68 @@
                         </div>
                     </tag:panel>
                 </div>
+                
+                <a href="javascript:onAddTestGroup();">Add test group</a>
             </tag:panel>
 </form>
-<script language="javascript">
 
+<div id="divBigEditor" style="position:absolute;display:none;width:600px;height:400px;">
+    <tag:panel title="Edit parameter" 
+                align="center"
+                closeDivName="divBigEditor" 
+                width="600px" height="400px"
+                id="bigEditor"
+                logo="../images/workflow-icon-settings.png"
+                >
+        <table border="0px" cellspacing="0px" cellpadding="0px" width="100%" height="100%">
+            <tr>
+                <td colspan="2">
+                    <textarea id="bigEditorTextarea" style="width:100%" rows="18"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <tag:submit value="OK" onclick="javascript:_bigEditor.onSave(); return false;" width="100px"></tag:submit>
+                </td>
+                <td>
+                    <tag:submit value="Cancel" onclick="javascript:closePopup('divBigEditor'); return false;" width="100px"></tag:submit>
+                </td>
+            </tr>
+        </table>
+    </tag:panel>
+</div>
+
+<div id="divTestGroupEdit" style="position:absolute;display:none;width:300px;height:250px;">
+    <tag:panel title="Add test group" 
+                align="center"
+                closeDivName="divTestGroupEdit" 
+                width="300px" height="200px"
+                id="bigEditor"
+                >
+        <table border="0px" cellspacing="0px" cellpadding="0px" width="100%" height="100%">
+            <tr>
+                <td colspan="2">
+                	Test group allows to unite tests into one instance, so you can use same data (report, browser etc.) within test group.
+                	<br/>
+					<br/>                
+                	Test group name:<br/>
+                    <tag:edit-field name="testGroupName" width="100%" id="testGroupEditName" value=""/>
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <tag:submit value="OK" onclick="javascript:_testGroupEditor.onSave(); return false;" width="100px"></tag:submit>
+                </td>
+                <td align="center">
+                    <tag:submit value="Cancel" onclick="javascript:closePopup('divTestGroupEdit'); return false;" width="100px"></tag:submit>
+                </td>
+            </tr>
+        </table>
+    </tag:panel>
+</div>
+<script language="javascript">
 
 function getTestInputParameterById(test, parameterId)
 {
@@ -778,7 +823,8 @@ function onLoadSuiteData()
 {
     if(loadedSuiteData!=null)
     {
-        
+    	
+    	
         var i=0;
         for(i=0;i<loadedSuiteData.length;i++)
         {
@@ -790,9 +836,7 @@ function onLoadSuiteData()
                 addTestToSuite(ctest);
             }
         }
-        
         renderTestParameters();
-        
     }
 }
 function renderTestParameters(){

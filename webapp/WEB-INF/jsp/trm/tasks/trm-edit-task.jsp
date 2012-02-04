@@ -274,7 +274,7 @@
 			    <c:forEach items="${suites}" var="s">
 				   <tr>
 				       <td><tag:remove-white-space>
-				           <a href="../test-run-manager/edit-suite?id=${s.id}">
+				           <a class="big-link" href="../test-run-manager/edit-suite?id=${s.id}">
 				              <img src="../images/workflow-icon-suite.png"/>
 				              <tag:escape text="${s.name}"/>
 				              <br/>

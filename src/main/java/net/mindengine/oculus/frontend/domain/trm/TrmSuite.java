@@ -182,6 +182,7 @@ public class TrmSuite implements Serializable {
 			JSONObject test = (JSONObject) value;
 			TestDefinition td = new TestDefinition();
 			td.setCustomId(JSONUtils.readInteger(test.get("customId")));
+			td.setTestId(JSONUtils.readInteger(test.get("id")));
 			
 			if(test.containsKey("testRunDescription")){
 			    td.setDescription(JSONUtils.readString(test.get("testRunDescription")));
