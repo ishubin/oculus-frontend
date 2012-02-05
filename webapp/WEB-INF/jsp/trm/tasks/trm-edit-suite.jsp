@@ -25,7 +25,7 @@
     <img src="../images/workflow-icon-suite.png"/>
     <tag:escape text="${suite.name}"/>
 </div>
-   <tag:submit name="Submit" value="Check" onclick="check();" ></tag:submit> 
+    
            
 <form name="editSuiteForm" method="post" onsubmit="return submitEditSuiteForm();">
     <tag:submit name="Submit" value="Save" ></tag:submit><br/>    
@@ -67,11 +67,6 @@
 	            </tag:panel><br/>
                 <tag:panel align="left" title="Tests" width="100%" disclosure="true" closed="false" id="testsPanel"> 
                             <script>
-                            
-                            function check() {
-                            	$("body").html(JSON.stringify(myTests));
-                            }
-                            
                             
                             //Array of tests which are belong to the current test suite
                             var myTests = new Array();
@@ -575,34 +570,39 @@
                                     }
                                 });
                             }
-                            function gatherAllParameterValues() {
-                            	//TODO gather parameter values from child tests of test groups
-                                //Gathering all input parameters values for the tests
-                                for(var i=0;i<myTests.length;i++) {
-                                    if(myTests[i].inputParameters!=null) {
-                                        for(var j=0;j<myTests[i].inputParameters.length;j++) {
-                                            if(myTests[i].inputParameters[j].depends==null) {
-                                                var value = "";
-                                                if(myTests[i].inputParameters[j].controlType == "boolean") {
-                                                    var chk = document.getElementById("test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
-                                                    if(chk.checked) {
-                                                        value="true";
-                                                    }
-                                                    else value = "false";
-                                                }
-                                                else if(myTests[i].inputParameters[j].controlType == "text") {
-                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
-                                                    value = vc.value;
-                                                }
-                                                else if(myTests[i].inputParameters[j].controlType == "list") {
-                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
-                                                    value = vc.value;
-                                                }
-                                                myTests[i].inputParameters[j].value = value;
-                                            }
-                                        }
-                                    }
-                                }
+                            function gatherAllParameterValues(tests) {
+                            	if(tests==null) {
+                            		gatherAllParameterValues(myTests);
+                            	}
+                            	else {
+	                            	//Gathering all input parameters values for the tests
+	                                for(var i=0;i<tests.length;i++) {
+	                                	if(tests[i].tests!=null) {
+	                                		gatherAllParameterValues(tests[i].tests);
+	                                	}
+	                                    if(tests[i].inputParameters!=null) {
+	                                        for(var j=0;j<tests[i].inputParameters.length;j++) {
+	                                            if(tests[i].inputParameters[j].depends==null) {
+	                                                var value = "";
+	                                                if(tests[i].inputParameters[j].controlType == "boolean") {
+	                                                    var chk = document.getElementById("test_"+tests[i].customId+"_parameter_"+tests[i].inputParameters[j].id);
+	                                                    if(chk.checked) {
+	                                                        value="true";
+	                                                    }
+	                                                    else value = "false";
+	                                                }
+	                                                else if(tests[i].inputParameters[j].controlType == "text") {
+	                                                	value = $("[name=\"test_"+tests[i].customId+"_parameter_"+tests[i].inputParameters[j].id+"\"]").val();
+	                                                }
+	                                                else if(tests[i].inputParameters[j].controlType == "list") {
+	                                                	value = $("[name=\"test_"+tests[i].customId+"_parameter_"+tests[i].inputParameters[j].id+"\"]").val();
+	                                                }
+	                                                tests[i].inputParameters[j].value = value;
+	                                            }
+	                                        }
+	                                    }
+	                                }
+                            	}
                             }
                             
                             function clearTrashDataFromTest(test) {
@@ -652,7 +652,6 @@
 
                                 var tests = [];
                                 
-                                //TODO Removing all unwanted stuff from tests to decrease the data to be stored
                                 for(var i=0;i<myTests.length;i++){
                                 	tests[i] = clearTrashDataFromTest(myTests[i]);
                                 }
@@ -968,8 +967,7 @@ function renderTestParameters(tests) {
 	                    }
 	                }
 	                else {
-	                	//TODO fix this. Its a too stupid way to render parameter dependency 
-	                    renderDependentParameter(tests[i], tests[i].inputParameters[j]);
+	                	renderDependentParameter(tests[i], tests[i].inputParameters[j]);
 	                }
 	            }
 	        }
