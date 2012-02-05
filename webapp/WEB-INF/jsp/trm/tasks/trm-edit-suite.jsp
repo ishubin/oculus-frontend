@@ -271,31 +271,46 @@
                                 return findTestByCustomIdInArray(myTests, customId);
                             }
                             
-                            
-                            function removeTest(testCustomId)
-                            {
-                                var id = findTestIdByCustomId(testCustomId);
-                                myTests.remove(id);
-                                
-                                //Checking if there was a depency set to this test
-                                for(var i=0;i<myTests.length;i++)
-                                {
-                                    if(myTests[i].inputParameters!=null)
-                                    {
-                                        for(var j=0;j<myTests[i].inputParameters.length;j++)
-                                        {
-                                            if(myTests[i].inputParameters[j].depends!=null)
-                                            {
-                                                if(myTests[i].inputParameters[j].depends.testCustomId == testCustomId)
-                                                {
-                                                    myTests[i].inputParameters[j].depends = null;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                rerenderTests();
+                            function removeParameterDependenciesForTest(testCustomId, tests) {
+                            	if (tests==null) {
+                            		removeParameterDependenciesForTest(testCustomId, myTests);
+                            	}
+                            	else {
+                            		//Checking if there was a depency set to this test
+	                                for(var i=0; i<tests.length; i++) {
+	                                    if(tests[i].inputParameters!=null) {
+	                                        for(var j=0; j<tests[i].inputParameters.length; j++) {
+	                                            if(tests[i].inputParameters[j].depends!=null) {
+	                                                if(tests[i].inputParameters[j].depends.testCustomId == testCustomId) {
+	                                                    tests[i].inputParameters[j].depends = null;
+	                                                }
+	                                            }
+	                                        }
+	                                    }
+	                                    if(tests[i].tests!=null) {
+	                                    	removeParameterDependenciesForTest(testCustomId, tests[i].tests);
+	                                    }
+	                                }
+                            	}
+                            }
+                            function removeTest(testCustomId, tests) {
+                            	if(tests==null) {
+                            		removeTest(testCustomId, myTests);
+                            		rerenderTests();
+                            	}
+                            	else {
+	                            	var id = findTestIdByCustomId(testCustomId);
+	                            	for(var i=0; i<tests.length; i++) {
+	                            		if(tests[i].customId == testCustomId) {
+	                            			tests.remove(id);
+	                            			removeParameterDependenciesForTest(testCustomId);
+	                            			return;
+	                            		}
+	                            		if(tests[i].tests!=null) {
+	                            			removeTest(testCustomId, tests[i].tests);
+	                            		}
+	                            	}
+                            	}
                             }
                             /**
                             Returns string with html content
