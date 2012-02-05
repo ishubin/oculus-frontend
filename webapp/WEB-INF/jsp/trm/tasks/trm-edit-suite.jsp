@@ -684,11 +684,9 @@
                                     rerenderTests();
                                 }
                             }	
-                            function rerenderTests()
-                            {
+                            function rerenderTests() {
                                 var table = document.getElementById("myTestsTable");
-                                while(table.hasChildNodes())
-                                {
+                                while(table.hasChildNodes()) {
                                     table.removeChild(table.firstChild);
                                 }
                                 
@@ -708,7 +706,7 @@
                                     table.appendChild(tr);
                                     myTests[i].tableRowElement = tr;
                             
-                                    addTestToShortTestsLayout(i);
+                                    addTestToShortTestsLayout(myTests[i]);
                                 }
                                 
                                  renderTestParameters();
