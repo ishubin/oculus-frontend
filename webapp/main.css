@@ -106,8 +106,8 @@ a.disclosure, a.disclosure:ACTIVE, a.disclosure:VISITED, a.disclosure span td, a
     text-decoration: none;
     display: block;
     width: 98%;
-    padding: 4px 0px 4px 4px;
-    margin:0px;
+    padding: 4px;
+    margin:1px;
     font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
@@ -115,10 +115,17 @@ a.disclosure, a.disclosure:ACTIVE, a.disclosure:VISITED, a.disclosure span td, a
     outline-width:medium;
     font-weight:bold;
     font-family:arial;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 }
 a.disclosure:hover{
-    background:#eeeeee;
+	padding: 4px;
+	margin:0px;
+    background:#ffffff;
+    border:1px solid #f0f0f0;
     color: #44444;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 }
 .disclosure-body{
 	background: #f0f0f0;

@@ -10,11 +10,11 @@ function cloneObject(obj){
     return temp;
 }
 
-
-function escapeHTML(html) 
-{
-	if(html==null) return "";
-	return html. replace(/&/gmi, '&amp;'). replace(/"/gmi, '&quot;'). replace(/>/gmi, '&gt;'). replace(/</gmi, '&lt;'); 
+function escapeHTML(html) {
+	if(html!=null && typeof html=="string") {
+		return html.replace(/&/gmi, '&amp;'). replace(/"/gmi, '&quot;'). replace(/>/gmi, '&gt;'). replace(/</gmi, '&lt;');
+	}
+	return "";
 }
 function escapeJSON(json) { return json.replace(/"/gmi,'\\"').replace(/\n/gmi,'\\n');}
 

@@ -168,60 +168,58 @@
                                 table.appendChild(tr);
                                 myTests[testId].tableRowElement = tr;
                         
-                                addTestToShortTestsLayout(testId);
+                                addTestToShortTestsLayout(myTests[testId]);
                             }
-                            function addTestToShortTestsLayout(testId)
-                            {
+                            function addTestToShortTestsLayout(test) {
                                 var table = document.getElementById("myTestsShortTable");
                                 var tr = document.createElement("tr");
                                 var td = document.createElement("td");
-                                td.appendChild(renderShortTestLayout(testId));
+                                td.innerHTML = renderShortTestLayout(test);
                                 tr.appendChild(td);
                                 table.appendChild(tr);
-                                myTests[testId].tableShortRowElement = tr;
+                                test.tableShortRowElement = tr;
                             }
-                            function renderShortTestLayout(testId)
-                            {
-                                var test = myTests[testId];
-                                var div = document.createElement("div");
+                            function renderShortTestLayout(test) {
                                 var str="";
 
-                                str+= "<img style=\"float: left;\" src=\"../images/test-icon.gif\">";
+                                str+= "<img style=\"float: left;\" src=\"../images/iconTest.png\">";
                                 str+= "<div id=\"divIconShortTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></div>";
                                 str+= "<a class=\"disclosure\" href=\"javascript:onDisclosurePanelClick('divTestShortContent"+test.customId+"','divIconShortTC"+test.customId+"');\">";
-                                str+= "<b>"+test.name+"</b>";
+                                str+= "<b>"+escapeHTML(test.name)+"</b>";
                                 str+= "<font color=\"#999999\"> #"+test.customId+"</font>";
                                 str+= "</a>";
                                 str+= "<div id=\"divTestShortContent"+test.customId+"\" style=\"display:none;padding-left:10px\">";
-                                if(test.inputParameters!=null && test.inputParameters.length>0)
-                                {
+                                if(test.inputParameters!=null && test.inputParameters.length>0) {
                                     str+= "Input parameters:";
                                     str+= "<ul>";
                                     for(var i=0;i<test.inputParameters.length;i++)
                                     {
-                                        str+="<li><a href=\"javascript:confirmLinkParameter('"+test.inputParameters[i].name+"',"+test.customId+");\">"+test.inputParameters[i].name+"</a></li>";
+                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.inputParameters[i].id+","+test.customId+");\">"+escapeHTML(test.inputParameters[i].name)+"</a></li>";
                                     }
                                     str+= "</ul>";  
                                 }
-                                if(test.outputParameters!=null && test.outputParameters.length>0)
-                                {
+                                if(test.outputParameters!=null && test.outputParameters.length>0) {
                                     str+= "Output parameters:";
                                     str+= "<ul>";
                                     for(var i=0;i<test.outputParameters.length;i++)
                                     {
-                                        str+="<li><a href=\"javascript:confirmLinkParameter('"+test.outputParameters[i].name+"',"+test.customId+");\">"+test.outputParameters[i].name+"</a></li>";
+                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.outputParameters[i].id+"',"+test.customId+");\">"+escapeHTML(test.outputParameters[i].name)+"</a></li>";
                                     }
                                     str+= "</ul>";  
                                 }
                                 if((test.inputParameters==null || test.inputParameters.length==0)
-                                        &&(test.outputParameters==null || test.outputParameters.length==0))
-                                {
+                                        &&(test.outputParameters==null || test.outputParameters.length==0)
+                                        && test.tests==null) {
                                     str+= "There are no parameters in this test";
+                                }
+                                if(test.tests!=null) {
+                                	for(var i=0;i< test.tests.length; i++) {
+                                		str+= renderShortTestLayout(test.tests[i]);
+                                	}	
                                 }
                                 str+= "</div>";
                                 
-                                div.innerHTML = str;
-                                return div;
+                                return str;
                             }
                             function findTestIdByCustomIdInArray(tests, customId) {
                             	for(var i=0;i<tests.length;i++) {
@@ -315,24 +313,18 @@
                             /**
                             Returns string with html content
                             */
-                            function renderTestParameterControl(test, parameter)
-                            {
+                            function renderTestParameterControl(test, parameter) {
                             	var strControl = "";
-                                if(parameter.controlType == "text")
-                                {
+                                if(parameter.controlType == "text") {
                                     strControl = "<input type='text' class='custom-edit-text' width='100%'";
-                                    strControl+=" name='test_"+test.customId+"_parameter_"+parameter.name+"'";
-                                    strControl+=" value='"+parameter.defaultValue+"'/>";
+                                    strControl+=" name='test_"+test.customId+"_parameter_"+parameter.id+"'";
+                                    strControl+=" value='"+escapeHTML(parameter.defaultValue)+"'/>";
                                 }
-                                else if(parameter.controlType == "list")
-                                {
+                                else if(parameter.controlType == "list") {
                                     strControl = "<select class='custom-dropdown' style='width:100%;' ";
-                                    strControl+=" name='test_"+test.customId+"_parameter_"+parameter.name+"'>";
-                                    for(var j=0; j<parameter.possibleValuesList.length;j++)
-                                    {
-                                        
-                                        if(parameter.defaultValue==parameter.possibleValuesList[j])
-                                        {
+                                    strControl+=" name='test_"+test.customId+"_parameter_"+parameter.id+"'>";
+                                    for(var j=0; j<parameter.possibleValuesList.length;j++) {
+                                        if(parameter.defaultValue==parameter.possibleValuesList[j]) {
                                             strControl+="<option selected='selected'>";
                                         }
                                         else strControl+="<option>";
@@ -342,12 +334,10 @@
                                     }
                                     strControl+="</select>";
                                 }
-                                else if(parameter.controlType == "boolean")
-                                {
-                                    var name="test_"+test.customId+"_parameter_"+parameter.name;
+                                else if(parameter.controlType == "boolean") {
+                                    var name="test_"+test.customId+"_parameter_"+parameter.id;
                                     var checked = "";
-                                    if(parameter.defaultValue=="true")
-                                    {
+                                    if(parameter.defaultValue=="true") {
                                         checked="checked=\"checked\"";
                                     }
                                     
@@ -396,7 +386,6 @@
                                 
                                 if(test.tests==null) {
                                 	str+= "                     <img src=\"../images/iconTest.png\" style=\"float:left;\"/>";
-                                	str+= "                     <span style=\"color:#999999\"> #"+test.customId+"</span> ";
                                 }
                                 else { 
                                 	str+= "                     <img src=\"../images/iconTestGroupCustom.png\" style=\"float:left;\"/>";
@@ -430,20 +419,20 @@
 	                                    {
 	                                        str+= "                   <tr class=\"test-input-parameter-table\">";
 	                                        str+= "                       <td onMouseMove=\"showTooltip(event,this,'parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\" onMouseOut=\"hideTooltip('parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"');\">";
-	                                        str+= "                           <img id=\"parameterLogo_"+test.customId+"_"+test.inputParameters[i].name+"\" src=\"../images/trm-parameter-icon.png\"/> <b>"+test.inputParameters[i].name+"</b>";
+	                                        str+= "                           <img id=\"parameterLogo_"+test.customId+"_"+test.inputParameters[i].id+"\" src=\"../images/trm-parameter-icon.png\"/> <b>"+test.inputParameters[i].name+"</b>";
 	                                        str+= "                       <div id=\"parameterTooltip"+test.customId+"_"+test.inputParameters[i].id+"\" style=\"display:none;\" class=\"tooltip\"><pre>"+escapeHTML(test.inputParameters[i].description)+"</pre></div>";
 	                                        str+= "                       </td>";
 	                                        str+= "                       <td width=\"20px\"> = </td>";
 	                                        str+= "                       <td>";
-	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Control\">"+renderTestParameterControl(test, test.inputParameters[i])+"</div>";
-	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].name+"_Link\" style=\"display:none;\"></div>";
+	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].id+"_Control\">"+renderTestParameterControl(test, test.inputParameters[i])+"</div>";
+	                                        str+= "                           <div id=\"divTest_"+test.customId+"_Parameter_"+test.inputParameters[i].id+"_Link\" style=\"display:none;\"></div>";
 	                                        str+= "                       </td>";
 	                                        str+= "                       <td width=\"100px\">";
 	                                        if(test.inputParameters[i].controlType=="text")
 	                                        {
-	                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor("+test.customId+",'"+test.inputParameters[i].name+"');\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
+	                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor("+test.customId+","+test.inputParameters[i].id+");\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
 	                                        }
-	                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter('"+test.inputParameters[i].name+"',"+test.customId+");\"><img src=\"../images/trm-link-icon.png\"/></a>";
+	                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter("+test.inputParameters[i].id+","+test.customId+");\"><img src=\"../images/trm-link-icon.png\"/></a>";
 	                                        str+= "                       </td>";
 	                                        str+= "                   </tr>";
 	                                    }
@@ -484,77 +473,82 @@
 								return str;
                             }
                         
-                            var dependentTestCustomId = 0;
-                            var dependentTestParameterName = "";
-                            function linkParameter(parameterName, testCustomId)
-                            {
-                                dependentTestCustomId = testCustomId;
-                                dependentTestParameterName = parameterName;
+                            var _dependentTestCustomId = 0;
+                            var _dependentTestParameterId = "";
+                            function linkParameter(parameterId, testCustomId) {
+                                _dependentTestCustomId = testCustomId;
+                                _dependentTestParameterId = parameterId;
                                 //Collapsing all tests in short tests popup
                                 var div = null;
-                                for(var i=0;i<myTests.length;i++)
-                                {
+                                for(var i=0;i<myTests.length;i++) {
                                     div = document.getElementById("divTestShortContent"+myTests[i].customId);
                                     if(div!=null)div.style.display="none";
                                 }
                                 showPopup("divTestsShort",400,500);
                             }
-                            function confirmLinkParameter(parameterName, testCustomId)
-                            {
-                                if(testCustomId == dependentTestCustomId)
-                                {
-                                    alert("Test cannot be linked to itself");
-                                    return;
+                            function renderDependentParameter(test, parameter){
+                            	var prerTest = findTestByCustomId(parameter.depends.testCustomId);
+                                var prerParameterName = findInputParameterNameById(parameter.depends.parameterId, prerTest);
+                        
+                                var parentTest = findParentForCustomId(prerTest.customId);
+                                var parentTitle = "";
+                                if(parentTest!=null) {
+                                	parentTitle = "<b>"+escapeHTML(parentTest.name)+"</b> -&gt; ";
                                 }
-                                var id = findTestIdByCustomId(dependentTestCustomId);
-                                var paramId = findInputParameterIdByName(dependentTestParameterName, id);
-                        
-                                var depends = new Object();
-                                depends.testCustomId = testCustomId;
-                                depends.parameterName = parameterName;
-                                myTests[id].inputParameters[paramId].depends = depends;
-                        
-                        
-                                //Rendering the linked parameter
                                 
-                                var pId = findTestIdByCustomId(testCustomId);
-                        
-                                var html = "<b>"+myTests[pId].name+"</b><font color=\"#999999\">#"+testCustomId+"</font> -&gt; "+parameterName;
-                                html+=" <a href=\"javascript:removeParameterLink("+dependentTestCustomId+",'"+dependentTestParameterName+"');\"><img src=\"../images/button-close-2.png\"/></a>";
+                                var html = parentTitle + "<b>"+escapeHTML(prerTest.name)+"</b> -&gt; "+escapeHTML(prerParameterName);
+                                html+=" <a href=\"javascript:removeParameterLink("+test.customId+","+parameter.id+");\"><img src=\"../images/button-close-2.png\"/></a>";
                                 
-                                var divPC = document.getElementById("divTest_"+dependentTestCustomId+"_Parameter_"+dependentTestParameterName+"_Control");
-                                var divPL = document.getElementById("divTest_"+dependentTestCustomId+"_Parameter_"+dependentTestParameterName+"_Link");
+                                var divPC = document.getElementById("divTest_"+test.customId+"_Parameter_"+parameter.id+"_Control");
+                                var divPL = document.getElementById("divTest_"+test.customId+"_Parameter_"+parameter.id+"_Link");
                                 divPL.innerHTML = html;
                                 divPC.style.display = "none";
                                 divPL.style.display = "block";
                         
-                                closePopup("divTestsShort");
-                        
-                        
-                                var img = document.getElementById("parameterLogo_"+dependentTestCustomId+"_"+dependentTestParameterName);
+                                var img = document.getElementById("parameterLogo_"+test.customId+"_"+parameter.id);
                                 img.src="../images/trm-parameter-icon-linked.png";
                             }
-                            function findInputParameterIdByName(parameterName, testId)
-                            {
-                                for(var i=0;i<myTests[testId].inputParameters.length;i++)
-                                {
-                                    if(myTests[testId].inputParameters[i].name == parameterName) return i;
+                            function confirmLinkParameter(parameterId, testCustomId) {
+                                if(testCustomId == _dependentTestCustomId) {
+                                    alert("Test cannot be linked to itself");
+                                    return;
+                                }
+                                var test = findTestByCustomId(_dependentTestCustomId);
+                                var paramIndex = findInputParameterIndexById(_dependentTestParameterId, test);
+                        
+                                var depends = new Object();
+                                depends.testCustomId = testCustomId;
+                                depends.parameterId = parameterId;
+                                test.inputParameters[paramIndex].depends = depends;
+                        
+                                //Rendering the linked parameter 
+                                renderDependentParameter(test, test.inputParameters[paramIndex]);
+                                closePopup("divTestsShort");
+                            }
+                            function findInputParameterIndexById(parameterId, test) {
+                            	for(var i=0;i<test.inputParameters.length;i++) {
+                                    if(test.inputParameters[i].id == parameterId) return i;
                                 }
                                 return -1;
                             }
-                            function removeParameterLink(testCustomId, parameterName)
-                            {
-                                var tId = findTestIdByCustomId(testCustomId);
-                                var pId = findInputParameterIdByName(parameterName, tId);
+                            function findInputParameterNameById(parameterId, test) {
+                            	for(var i=0;i<test.inputParameters.length;i++) {
+                                    if(test.inputParameters[i].id == parameterId) return test.inputParameters[i].name;
+                                }
+                                return -1;
+                            }
+                            function removeParameterLink(testCustomId, parameterId) {
+                                var test = findTestByCustomId(testCustomId);
+                                var pId = findInputParameterIndexById(parameterId, test);
                         
-                                var divPC = document.getElementById("divTest_"+testCustomId+"_Parameter_"+parameterName+"_Control");
-                                var divPL = document.getElementById("divTest_"+testCustomId+"_Parameter_"+parameterName+"_Link");
+                                var divPC = document.getElementById("divTest_"+testCustomId+"_Parameter_"+parameterId+"_Control");
+                                var divPL = document.getElementById("divTest_"+testCustomId+"_Parameter_"+parameterId+"_Link");
                                 divPL.innerHTML = "";
                                 divPC.style.display = "block";
                                 divPL.style.display = "none";
                         
-                                myTests[tId].inputParameters[pId].depends = null;
-                                var img = document.getElementById("parameterLogo_"+testCustomId+"_"+parameterName);
+                                test.inputParameters[pId].depends = null;
+                                var img = document.getElementById("parameterLogo_"+testCustomId+"_"+parameterId);
                                 img.src="../images/trm-parameter-icon.png";
                             }
                         
@@ -590,18 +584,18 @@
                                             if(myTests[i].inputParameters[j].depends==null) {
                                                 var value = "";
                                                 if(myTests[i].inputParameters[j].controlType == "boolean") {
-                                                    var chk = document.getElementById("test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
+                                                    var chk = document.getElementById("test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
                                                     if(chk.checked) {
                                                         value="true";
                                                     }
                                                     else value = "false";
                                                 }
                                                 else if(myTests[i].inputParameters[j].controlType == "text") {
-                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
+                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
                                                     value = vc.value;
                                                 }
                                                 else if(myTests[i].inputParameters[j].controlType == "list") {
-                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
+                                                    var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].id);
                                                     value = vc.value;
                                                 }
                                                 myTests[i].inputParameters[j].value = value;
@@ -723,29 +717,27 @@
                             var _bigEditor = {
                             };
                             
-                            function showParameterInBigEditor(testCustomId, parameterName) {
+                            function showParameterInBigEditor(testCustomId, parameterId) {
                                 _bigEditor = {
                                         testCustomId: testCustomId,
-                                        parameterName: parameterName,
+                                        parameterId: parameterId,
                                         onSave: function(){
-                                  	var textarea = document.getElementById("bigEditorTextarea");
-                                      var text = textarea.value;
-                                      //Replacing all breaklines with spaces
-                                      text = text.replace(/(\r\n|\n|\r)/gm," ");
-                                      var textfield = eval("document.forms.editSuiteForm.test_"+this.testCustomId+"_parameter_"+this.parameterName);
-                                      textfield.value = text;
-                                      closePopup("divBigEditor");
+                                  			var textarea = document.getElementById("bigEditorTextarea");
+		                                    var text = textarea.value;
+		                                    //Replacing all breaklines with spaces
+		                                    text = text.replace(/(\r\n|\n|\r)/gm," ");
+		                                    $("[name=\"test_"+this.testCustomId+"_parameter_"+this.parameterId+"\"]").val(text);
+		                                    closePopup("divBigEditor");
                                         }
                                  };
                                   
-                                var textfield = eval("document.forms.editSuiteForm.test_"+testCustomId+"_parameter_"+parameterName);
-                                if(textfield!=null) {
-                                    var title = document.getElementById("panel_bigEditor_title");
-                                    title.innerHTML = parameterName;
-                                    var textarea = document.getElementById("bigEditorTextarea");
-                                    textarea.value = textfield.value;
-                                    showPopup("divBigEditor", 600, 400);
-                                }
+                                var text = $("[name=\"test_"+testCustomId+"_parameter_"+parameterId+"\"]").val();
+                                var title = document.getElementById("panel_bigEditor_title");
+                                var test = findTestByCustomId(testCustomId);
+                                var parameterName = findInputParameterNameById(parameterId, test);
+                                title.innerHTML = parameterName;
+                                $("#bigEditorTextarea").text(text);
+                                showPopup("divBigEditor", 600, 400);
                             }
 
                             function editTestRunDescription(testCustomId) {
@@ -951,38 +943,40 @@ function onLoadSuiteData() {
         renderTestParameters();
     }
 }
-function renderTestParameters(){
-    //Setting tests input parameters 
-    //TODO render parameters inside test groups 
-    //TODO change parameter control ids. Should use db ids instead of names 
-    for(i=0;i<myTests.length;i++){
-        if(myTests[i].inputParameters!=null){
-            for(var j=0;j<myTests[i].inputParameters.length;j++){
-                if(myTests[i].inputParameters[j].depends==null) {
-                    if(myTests[i].inputParameters[j].controlType == "boolean") {
-                        var chk = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
-                        if(myTests[i].inputParameters[j].value=="true")
-                        {
-                            chk.checked=true;
-                        }
-                        else 
-                        {
-                            chk.checked=false;
-                        }
-                    }
-                    else {
-                        eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name+".value=\""+escapeJSON(myTests[i].inputParameters[j].value)+"\";");
-                    }
-                }
-                else
-                {
-                    dependentTestCustomId = myTests[i].customId;
-                    dependentTestParameterName = myTests[i].inputParameters[j].name;
-                    confirmLinkParameter(myTests[i].inputParameters[j].depends.parameterName, myTests[i].inputParameters[j].depends.testCustomId);
-                }
-            }
-        }
-    }
+function renderTestParameters(tests) {
+	if(tests==null) {
+		renderTestParameters(myTests);
+	}
+	else {
+		//Setting tests input parameters 
+	    for(var i=0; i<tests.length; i++){
+	    	if(tests[i].tests!=null) {
+	    		renderTestParameters(tests[i].tests);
+	    	}
+	        if(tests[i].inputParameters!=null){
+	            for(var j=0;j<tests[i].inputParameters.length;j++){
+	                if(tests[i].inputParameters[j].depends==null) {
+	                    if(tests[i].inputParameters[j].controlType == "boolean") {
+	                        var chk = eval("document.forms.editSuiteForm.test_"+tests[i].customId+"_parameter_"+tests[i].inputParameters[j].id);
+	                        if(tests[i].inputParameters[j].value=="true") {
+	                            chk.checked=true;
+	                        }
+	                        else {
+	                            chk.checked=false;
+	                        }
+	                    }
+	                    else {
+	                    	$("[name=\"test_"+tests[i].customId+"_parameter_"+tests[i].inputParameters[j].id+"\"]").val(tests[i].inputParameters[j].value);
+	                    }
+	                }
+	                else {
+	                	//TODO fix this. Its a too stupid way to render parameter dependency 
+	                    renderDependentParameter(tests[i], tests[i].inputParameters[j]);
+	                }
+	            }
+	        }
+	    }
+	}
 }
 <%
 net.mindengine.oculus.frontend.domain.trm.TrmSuite suite = (net.mindengine.oculus.frontend.domain.trm.TrmSuite)pageContext.findAttribute("suite"); 
