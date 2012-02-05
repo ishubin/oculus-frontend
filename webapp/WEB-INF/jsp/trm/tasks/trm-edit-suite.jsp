@@ -112,19 +112,15 @@
                                 }
                                 dhtmlxAjax.post("../test/ajax-fetch", "ids="+str, onAjaxTestFetchResponse);
                             }
-                            function onAjaxTestFetchResponse(loader)
-                            {
+                            function onAjaxTestFetchResponse(loader) {
                                 var str = loader.xmlDoc.responseText;
                                 var obj = eval("("+str+")");
                         
-                                if(obj.result != "error")
-                                {
+                                if(obj.result != "error") {
                                     var tests = obj.object;
-                                    if(tests!=null)
-                                    {
+                                    if(tests!=null) {
                                         gatherAllParameterValues();
-                                        for(var i=0; i<tests.length; i++)
-                                        {
+                                        for(var i=0; i<tests.length; i++) {
                                             tests[i].customId = getUniqueCustomTestId();
                                             //As it is a new test need to set the depends and value fields as null
                                             for(var j=0;j<tests[i].inputParameters.length;j++)
@@ -133,7 +129,6 @@
                                                 tests[i].inputParameters[j].value = tests[i].inputParameters[j].defaultValue;
                                             }
                                             
-                                            //addTestToSuite(tests[i]);
                                             if(_droppedTestType=='last') {
                                             	myTests[myTests.length] = tests[i];
                                             }
@@ -141,8 +136,16 @@
                                             	var positionLevelTo = findTestIdByCustomId(_droppedTestCustomId);
                                             	myTests.splice(positionLevelTo+i,0,tests[i]);
                                             }
-                                            else {
-                                            	//TODO Handle test groups
+                                            else if(_droppedTestType=='lastInGroup') {
+                                            	//Adding test to last position in specified test group
+                                            	var testGroupTo = findTestByCustomId(_droppedTestCustomId);
+                                            	testGroupTo.tests.splice(testGroupTo.tests.length, 0, tests[i]);
+                                            }
+                                            else if(_droppedTestType=='child') {
+                                            	//Adding test before child test of specified test group
+                                            	var testGroupTo = findParentForCustomId(_droppedTestCustomId);
+                                            	var positionLevelTo = findTestIdByCustomId(_droppedTestCustomId);
+                                            	testGroupTo.tests.splice(positionLevelTo, 0, tests[i]);
                                             }
                                         }
                                         rerenderTests();
