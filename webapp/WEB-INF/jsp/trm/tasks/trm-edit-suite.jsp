@@ -177,7 +177,11 @@
                             function renderShortTestLayout(test) {
                                 var str="";
 
-                                str+= "<img style=\"float: left;\" src=\"../images/iconTest.png\">";
+                                var icon = "iconTest.png";
+                                if(test.tests!=null) {
+                                	icon = "iconTestGroupCustom.png";
+                                }
+                                str+= "<img style=\"float: left;\" src=\"../images/"+ icon +"\">";
                                 str+= "<div id=\"divIconShortTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></div>";
                                 str+= "<a class=\"disclosure\" href=\"javascript:onDisclosurePanelClick('divTestShortContent"+test.customId+"','divIconShortTC"+test.customId+"');\">";
                                 str+= "<b>"+escapeHTML(test.name)+"</b>";
@@ -186,7 +190,7 @@
                                 str+= "<div id=\"divTestShortContent"+test.customId+"\" style=\"display:none;padding-left:10px\">";
                                 if(test.inputParameters!=null && test.inputParameters.length>0) {
                                     str+= "Input parameters:";
-                                    str+= "<ul>";
+                                    str+= "<ul class='grid-test-short-layout-parameters'>";
                                     for(var i=0;i<test.inputParameters.length;i++)
                                     {
                                         str+="<li><a href=\"javascript:confirmLinkParameter("+test.inputParameters[i].id+","+test.customId+");\">"+escapeHTML(test.inputParameters[i].name)+"</a></li>";
@@ -399,7 +403,7 @@
                                 str+= "         </tr>";
                                 str+= "      </table>";
                                 str+= "   </div>";
-                                str+= "   <div id=\"divTestContent"+test.customId+"\" style=\"display:"+displayContent+";font-size:8pt;\">";
+                                str+= "   <div id=\"divTestContent"+test.customId+"\" style=\"display:"+displayContent+";font-size:8pt;padding-left:10px;\">";
                                 if(test.tests==null) {
 	                                str+= "                     <div class=\"small-description\" style=\"padding-left:50px;padding-bottom:10px;\">";
 	                                str+= "                     "+escapeHTML(test.description);

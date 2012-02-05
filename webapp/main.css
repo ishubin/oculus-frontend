@@ -833,6 +833,9 @@ tr.active-task-table-removed-row, tr.active-task-table-removed-row td{
 	background:#d0d0d0;
 }
 
+ul.grid-test-short-layout-parameters {
+	list-style: url('images/trm-parameter-icon.png');
+}
 div.my-tasks-layout {
     width:100%;
     height:100%;
