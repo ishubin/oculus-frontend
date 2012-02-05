@@ -355,7 +355,17 @@
                                     trDescription = test.testRunDescription;
                                 }
                                 
-                                str+= "<div id=\"divTestMainLayout"+test.customId+"\" class=\"test-layout\">";
+                                var displayContent = "none";
+                                var disclosureIcon = "disclosure-icon-close";
+                                var testLayoutClassName="test-layout";
+                                if(test.isOpen!=null && test.isOpen) {
+                                	displayContent = "block";
+                                	disclosureIcon = "disclosure-icon-open";
+                                	testLayoutClassName="test-layout-selected";
+                                }
+                                
+                                
+                                str+= "<div id=\"divTestMainLayout"+test.customId+"\" class=\""+testLayoutClassName+"\">";
                                 str+= "   <div class='dropArea' onmouseup=\"return onDropAreaMouseUp(this, '"+(isChild?'child':'test')+"', "+id+", false);\" onmouseover='onDropAreaMouseOver(this, false);' onmouseout='onDropAreaMouseOut(this, false);'>";
                                 str+= "      <div class=\"dropArea-line\"></div>";
                                 str+= "      <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
@@ -367,7 +377,7 @@
                                 str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+",'"+(isChild?'child':'test')+"'); return false;\">";
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
                                 str+= "                      href=\"javascript:onTestPanelClick("+test.customId+");\"><b>"+escapeHTML(test.name)+"</b>";
-                                str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></span>";
+                                str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\""+disclosureIcon+"\" style=\"float:left;\"></span>";
                                 
                                 if(test.tests==null) {
                                 	str+= "                     <img src=\"../images/iconTest.png\" style=\"float:left;\"/>";
@@ -390,7 +400,7 @@
                                 str+= "         </tr>";
                                 str+= "      </table>";
                                 str+= "   </div>";
-                                str+= "   <div id=\"divTestContent"+test.customId+"\" style=\"display:none;font-size:8pt;\">";
+                                str+= "   <div id=\"divTestContent"+test.customId+"\" style=\"display:"+displayContent+";font-size:8pt;\">";
                                 if(test.tests==null) {
 	                                str+= "                     <div class=\"small-description\" style=\"padding-left:50px;padding-bottom:10px;\">";
 	                                str+= "                     "+escapeHTML(test.description);
@@ -535,16 +545,22 @@
                         
                         
                         
-                            function onTestPanelClick(testCustomId)
-                            {
+                            function onTestPanelClick(testCustomId) {
                                 var divIcon = document.getElementById("divIconTC"+testCustomId);
                                 var divTestMain = document.getElementById("divTestMainLayout"+testCustomId);
                                 
                                 $("#divTestContent"+testCustomId).slideToggle("fast", function(){
+                                	var test = findTestByCustomId(testCustomId);
                                 	if ($(this).is(':hidden')) {
+                                		if(test!=null) {
+                                			test.isOpen = false;
+                                		}
                                 		divIcon.className = "disclosure-icon-close";
                                 		divTestMain.className="test-layout";
                                     } else {
+                                    	if(test!=null) {
+                                			test.isOpen = true;
+                                		}
                                     	divIcon.className = "disclosure-icon-open";
                                         divTestMain.className="test-layout-selected";
                                     }

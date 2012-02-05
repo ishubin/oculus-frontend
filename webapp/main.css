@@ -953,7 +953,7 @@ div.my-suite-test .my-suite-test-parameter-name{
     display:none;
 }
 .my-suite-tests-layout .test-layout-selected{
-    background:#ffffff;
+    background:#f6f6f6;
     border:1px solid #ddd;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -961,6 +961,9 @@ div.my-suite-test .my-suite-test-parameter-name{
     -moz-box-shadow: 3px 3px 3px #aaa;
     -webkit-box-shadow: 3px 3px 3px #aaa;
     box-shadow: 3px 3px 3px #aaa;
+}
+.my-suite-tests-layout .test-layout-selected .test-layout-selected{
+	background:#ffffff;
 }
 div.test-layout:hover .icon-button, div.test-layout-selected:hover .icon-button{
     display:inline;
