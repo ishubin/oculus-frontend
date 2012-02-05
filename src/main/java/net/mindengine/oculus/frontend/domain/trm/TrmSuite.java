@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -221,6 +222,38 @@ public class TrmSuite implements Serializable {
 
 		return suite;
 	}
+	
+	
+	private static TrmSuiteStub convertTestFromJSONToStub(JSONObject test) throws TokenStreamException, RecognitionException, SecurityException, ClassNotFoundException, NoSuchMethodException, TestIsNotDefinedException {
+	    TrmSuiteStub stub = new TrmSuiteStub();
+	    JSONValue testIdValue = test.get("id");
+	    if(testIdValue!=null) {
+	        stub.setTestId(JSONUtils.readInteger(testIdValue));
+	    }
+	    JSONValue testsValue = test.get("tests");
+	    if(testsValue!=null) {
+	        stub.setTests(new LinkedList<TrmSuiteStub>());
+	        JSONArray testsArr = (JSONArray) testsValue;
+	        for(JSONValue testValue : testsArr.getValue()){
+	            stub.getTests().add(convertTestFromJSONToStub((JSONObject)testValue));
+	        }
+	    }
+	    return stub;
+	}
+	public static List<TrmSuiteStub> convertSuiteFromJSONToStub(String str) throws TokenStreamException, RecognitionException, SecurityException, ClassNotFoundException, NoSuchMethodException, TestIsNotDefinedException {
+	    List<TrmSuiteStub> testsList = new LinkedList<TrmSuiteStub>();
+
+        JSONParser parser = new JSONParser(new StringReader(str));
+
+        JSONArray tests = (JSONArray) parser.nextValue();
+        for (JSONValue value : tests.getValue()) {
+            JSONObject test = (JSONObject) value;
+            
+            testsList.add(convertTestFromJSONToStub(test));
+            
+        }
+        return testsList;
+    }
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;

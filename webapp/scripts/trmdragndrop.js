@@ -31,9 +31,9 @@ var _dragObject = null;
 // checkes whether it is a drag-n-grop within the same area
 var _dragObjectIsAdded = false;
 var _draggedTestCustomId = -1;
-var _draggedTestType = 'test';
+var _draggedTestType = '';
 var _droppedTestCustomId = -1;
-var _droppedTestType = 'last';
+var _droppedTestType = '';
 
 document.onmouseup = function(ev) {
 	if (_dragObject != null) {
@@ -74,9 +74,10 @@ function onTestInTreeMouseDown(testId, div) {
 	_dragObjectIsAdded = false;
 }
 
-function onAddedBrickMouseDown(div, testCustomId) {
+function onAddedBrickMouseDown(div, testCustomId, type) {
 	_testsToDrag = [];
 	_draggedTestCustomId = testCustomId;
+	_draggedTestType = type;
 	_dragObjectIsAdded = true;
 
 	var divContainer = document.getElementById("brickDragContainer");
@@ -135,7 +136,9 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 						myTests.splice(positionLevelTo, 0, testArr[0]);
 						rerenderTests();
 					}
-					else return true;
+					else {
+						return true;
+					}
 				}
 				else if (type=='lastInGroup') {
 					//Moving to the last position in specified testGroup
@@ -164,8 +167,10 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 			
 		} else {
 			//Adding new test to suite
+			
 			_droppedTestCustomId = testCustomId;
 			_droppedTestType = type;
+			
 			var str = "";
 			for ( var i = 0; i < _testsToDrag.length; i++) {
 				if (i > 0)

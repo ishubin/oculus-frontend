@@ -25,7 +25,7 @@
     <img src="../images/workflow-icon-suite.png"/>
     <tag:escape text="${suite.name}"/>
 </div>
-    
+   <tag:submit name="Submit" value="Check" onclick="check();" ></tag:submit> 
            
 <form name="editSuiteForm" method="post" onsubmit="return submitEditSuiteForm();">
     <tag:submit name="Submit" value="Save" ></tag:submit><br/>    
@@ -67,6 +67,11 @@
 	            </tag:panel><br/>
                 <tag:panel align="left" title="Tests" width="100%" disclosure="true" closed="false" id="testsPanel"> 
                             <script>
+                            
+                            function check() {
+                            	$("body").html(JSON.stringify(myTests));
+                            }
+                            
                             
                             //Array of tests which are belong to the current test suite
                             var myTests = new Array();
@@ -236,10 +241,12 @@
                             		if(myTests[i].tests!=null) {
                             			for(var j=0; j<myTests[i].tests.length; j++) {
                             				if(myTests[i].tests[j].customId == customId) {
-                            					return myTests[i].tests[j];
+                            					alert("found "+myTests[i].name);
+                            					return myTests[i];
                             				}
                             			}
                             		}
+                            		
                             	}
                             	return null;
                             }
@@ -293,6 +300,7 @@
                             */
                             function renderTestParameterControl(test, parameter)
                             {
+                            	var strControl = "";
                                 if(parameter.controlType == "text")
                                 {
                                     strControl = "<input type='text' class='custom-edit-text' width='100%'";
@@ -354,7 +362,7 @@
                                 str+= "                 <a class=\"test-layout-remove-link\" href=\"javascript:removeTest("+test.customId+");\"><img src=\"../images/button-close-2.png\"/></a>";
                                 str+= "             </td>";
                                 str+= "             <td>";
-                                str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+"); return false;\">";
+                                str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+",'"+(isChild?'child':'test')+"'); return false;\">";
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
                                 str+= "                      href=\"javascript:onTestPanelClick("+test.customId+");\"><b>"+escapeHTML(test.name)+"</b>";
                                 str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></span>";
@@ -540,34 +548,26 @@
                                     }
                                 });
                             }
-                            function gatherAllParameterValues()
-                            {
+                            function gatherAllParameterValues() {
+                            	//TODO gather parameter values from child tests of test groups
                                 //Gathering all input parameters values for the tests
-                                for(var i=0;i<myTests.length;i++)
-                                {
-                                    if(myTests[i].inputParameters!=null)
-                                    {
-                                        for(var j=0;j<myTests[i].inputParameters.length;j++)
-                                        {
-                                            if(myTests[i].inputParameters[j].depends==null)
-                                            {
+                                for(var i=0;i<myTests.length;i++) {
+                                    if(myTests[i].inputParameters!=null) {
+                                        for(var j=0;j<myTests[i].inputParameters.length;j++) {
+                                            if(myTests[i].inputParameters[j].depends==null) {
                                                 var value = "";
-                                                if(myTests[i].inputParameters[j].controlType == "boolean")
-                                                {
+                                                if(myTests[i].inputParameters[j].controlType == "boolean") {
                                                     var chk = document.getElementById("test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
-                                                    if(chk.checked)
-                                                    {
+                                                    if(chk.checked) {
                                                         value="true";
                                                     }
                                                     else value = "false";
                                                 }
-                                                else if(myTests[i].inputParameters[j].controlType == "text") 
-                                                {
+                                                else if(myTests[i].inputParameters[j].controlType == "text") {
                                                     var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
                                                     value = vc.value;
                                                 }
-                                                else if(myTests[i].inputParameters[j].controlType == "list") 
-                                                {
+                                                else if(myTests[i].inputParameters[j].controlType == "list") {
                                                     var vc = eval("document.forms.editSuiteForm.test_"+myTests[i].customId+"_parameter_"+myTests[i].inputParameters[j].name);
                                                     value = vc.value;
                                                 }
@@ -577,39 +577,57 @@
                                     }
                                 }
                             }
-                            function submitEditSuiteForm()
-                            {
-                                gatherAllParameterValues();
+                            
+                            function clearTrashDataFromTest(test) {
+                            	
+                            	var c = {};
+                            	if(test.id!=null){
+                            		c.id = test.id;	
+                            	}
+                            	c.customId = test.customId;
+                            	if(test.testRunDescription!=null) { 
+                                	c.testRunDescription = test.testRunDescription;
+                            	}
+                                if(test.inputParameters!=null){
+                                	c.inputParameters = [];
+                                    for(var j=0;j<test.inputParameters.length;j++){
+                                    	c.inputParameters[j] = {};
+                                        c.inputParameters[j].id = test.inputParameters[j].id;
+                                        c.inputParameters[j].name = test.inputParameters[j].name;
+                                        c.inputParameters[j].value = test.inputParameters[j].value;
+                                        if(test.inputParameters[j].depends!=null){
+                                        	c.inputParameters[j].depends = test.inputParameters[j].depends;
+                                        }
+                                    }
+                                }
+                                if(test.outputParameters!=null){
+                                	c.outputParameters = [];
+                                    for(var j=0;j<test.outputParameters.length;j++){
+                                    	c.outputParameters[j]={};
+                                    	c.outputParameters[j].id = test.outputParameters[j].id;
+                                    	c.outputParameters[j].name = test.outputParameters[j].name;
+                                    }
+                                }
+                                if(test.tests!=null) {
+                                	//Saving name of test group 
+                                	c.name = test.name;
+                                	
+                                	c.tests = [];
+                                	
+                                	for(var i=0; i<test.tests.length; i++) {
+                                		c.tests[i] = clearTrashDataFromTest(test.tests[i]);
+                                	}
+                               	}
+                                return c;
+                            }
+                            function submitEditSuiteForm() {
+                            	gatherAllParameterValues();
 
                                 var tests = [];
                                 
                                 //TODO Removing all unwanted stuff from tests to decrease the data to be stored
                                 for(var i=0;i<myTests.length;i++){
-                                    tests[i] = {};
-                                    tests[i].id = myTests[i].id;
-                                    tests[i].customId = myTests[i].customId;
-                                    tests[i].testRunDescription = myTests[i].testRunDescription;
-                                    
-                                    if(myTests[i].inputParameters!=null){
-                                        tests[i].inputParameters = [];
-                                        for(var j=0;j<myTests[i].inputParameters.length;j++){
-                                        	tests[i].inputParameters[j] = {};
-                                            tests[i].inputParameters[j].id = myTests[i].inputParameters[j].id;
-                                            tests[i].inputParameters[j].name = myTests[i].inputParameters[j].name;
-                                            tests[i].inputParameters[j].value = myTests[i].inputParameters[j].value;
-                                            if(myTests[i].inputParameters[j].depends!=null){
-                                            	tests[i].inputParameters[j].depends = myTests[i].inputParameters[j].depends;
-                                            }
-                                        }
-                                    }
-                                    if(myTests[i].outputParameters!=null){
-                                    	tests[i].outputParameters = [];
-                                        for(var j=0;j<myTests[i].outputParameters.length;j++){
-                                        	tests[i].outputParameters[j]={};
-                                        	tests[i].outputParameters[j].id = myTests[i].outputParameters[j].id;
-                                        	tests[i].outputParameters[j].name = myTests[i].outputParameters[j].name;
-                                        }
-                                    }
+                                	tests[i] = clearTrashDataFromTest(myTests[i]);
                                 }
                                 var jsonSuiteData = JSON.stringify(tests);
                                 document.forms.editSuiteForm.suiteData.value = jsonSuiteData;
@@ -852,41 +870,58 @@ function adjustTestChanges(c, s)
 {
     c.customId = s.customId;
     c.testRunDescription = s.testRunDescription;
-    for(var i=0;i<c.inputParameters.length;i++)
-    {
-        var sip = getTestInputParameterById(s, c.inputParameters[i].id);
-        if(sip!=null)
-        {
-            c.inputParameters[i].value = sip.value;
-            c.inputParameters[i].depends = sip.depends;
-        }
-        else c.inputParameters[i].value = "";
+    if(c.inputParameters!=null) {
+	    for(var i=0;i<c.inputParameters.length;i++) {
+	        var sip = getTestInputParameterById(s, c.inputParameters[i].id);
+	        if(sip!=null) {
+	            c.inputParameters[i].value = sip.value;
+	            c.inputParameters[i].depends = sip.depends;
+	        }
+	        else c.inputParameters[i].value = "";
+	    }
     }
     
     return c;
 }
-function onLoadSuiteData()
-{
-    if(loadedSuiteData!=null)
-    {
-    	
-    	
-        var i=0;
-        for(i=0;i<loadedSuiteData.length;i++)
-        {
-            var ctest = cloneObject(cashedTests[loadedSuiteData[i].id]);
-            if(ctest!=null)
-            {
-                ctest = adjustTestChanges(ctest, loadedSuiteData[i]);
-                //addTestToSuite(loadedSuiteData[i]);
-                addTestToSuite(ctest);
-            }
+
+function loadTestGroupUsingCache(testGroup) {
+	var tg = {};
+	tg.customId = testGroup.customId;
+	tg.name = testGroup.name;
+	tg.testRunDescription = testGroup.testRunDescription;
+	tg.tests = [];
+	
+	for(var i=0; i<testGroup.tests.length; i++) {
+		var ctest = cloneObject(cashedTests[testGroup.tests[i].id]);
+		if(ctest!=null) {
+			ctest = adjustTestChanges(ctest, testGroup.tests[i]);
+            tg.tests[i] = ctest;
+		}
+	}
+	return tg;
+}
+function onLoadSuiteData() {
+    if(loadedSuiteData!=null) {
+    	for(var i=0;i<loadedSuiteData.length;i++) {
+    		if(loadedSuiteData[i].tests!=null) {
+    			var testGroup = loadTestGroupUsingCache(loadedSuiteData[i]);
+    			addTestToSuite(testGroup);
+    		}
+    		else {
+	            var ctest = cloneObject(cashedTests[loadedSuiteData[i].id]);
+	            if(ctest!=null) {
+	                ctest = adjustTestChanges(ctest, loadedSuiteData[i]);
+	                addTestToSuite(ctest);
+	            }
+    		}
         }
         renderTestParameters();
     }
 }
 function renderTestParameters(){
-    //Setting tests input parameters
+    //Setting tests input parameters 
+    //TODO render parameters inside test groups 
+    //TODO change parameter control ids. Should use db ids instead of names 
     for(i=0;i<myTests.length;i++){
         if(myTests[i].inputParameters!=null){
             for(var j=0;j<myTests[i].inputParameters.length;j++){

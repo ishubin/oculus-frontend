@@ -1,15 +1,15 @@
 package net.mindengine.oculus.frontend.web.controllers.trm.tasks;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.mindengine.oculus.experior.suite.Suite;
-import net.mindengine.oculus.experior.test.descriptors.TestDefinition;
 import net.mindengine.oculus.frontend.domain.customization.Customization;
 import net.mindengine.oculus.frontend.domain.test.Test;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
+import net.mindengine.oculus.frontend.domain.trm.TrmSuiteStub;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.customization.CustomizationDAO;
@@ -56,13 +56,22 @@ public class EditSuiteController extends SecureSimpleViewController {
 		Map<Long, Test> cashedTest = new HashMap<Long, Test>();
 
 		if (trmSuite.getSuiteData() != null && !trmSuite.getSuiteData().isEmpty()) {
-			Suite convertedSuite = TrmSuite.convertSuiteFromJSON(trmSuite.getSuiteData());
+		    List<TrmSuiteStub> suite = TrmSuite.convertSuiteFromJSONToStub(trmSuite.getSuiteData());
 
-			for (TestDefinition td : convertedSuite.getTests()) {
+			for (TrmSuiteStub td : suite) {
 				if (td.getTestId() != null) {
 					if (!cashedTest.containsKey(td.getTestId())) {
 						cashedTest.put(td.getTestId(), testDAO.fetchTestWithParameterById(td.getTestId()));
 					}
+				}
+				if(td.getTests()!=null) {
+				    for (TrmSuiteStub childTd : td.getTests()) {
+		                if (childTd.getTestId() != null) {
+		                    if (!cashedTest.containsKey(childTd.getTestId())) {
+		                        cashedTest.put(childTd.getTestId(), testDAO.fetchTestWithParameterById(childTd.getTestId()));
+		                    }
+		                }
+				    }
 				}
 			}
 		}
