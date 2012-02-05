@@ -241,7 +241,6 @@
                             		if(myTests[i].tests!=null) {
                             			for(var j=0; j<myTests[i].tests.length; j++) {
                             				if(myTests[i].tests[j].customId == customId) {
-                            					alert("found "+myTests[i].name);
                             					return myTests[i];
                             				}
                             			}
@@ -448,7 +447,7 @@
                                 		str+=renderTest(test.tests[k], true);
                                 	}
                                 	
-                                	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup',"+id+", true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
+                                	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup',"+test.customId+", true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
                                 	str+= "<div class='dropArea-line'></div> Drop your tests here</div>";
                                 }
                                 str+= "                 </div>";

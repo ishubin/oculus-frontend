@@ -144,9 +144,8 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 					//Moving to the last position in specified testGroup
 					gatherAllParameterValues();
 					var testArr = myTests.splice(positionLevelFrom, 1);
-					var positionLevelTo = findTestIdByCustomId(testCustomId);
 					var testGroup = findTestByCustomId(testCustomId);
-					testGroup.tests.splice(testGroup.length,0, testArr[0]);
+					testGroup.tests.splice(testGroup.tests.length,0, testArr[0]);
 					rerenderTests();
 				}
 				else if (type=='child') {
@@ -161,8 +160,46 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 					rerenderTests();
 				}
 			}
-			else {
-				//TODO handle moving from test group
+			else if(_draggedTestType=='child') {
+				var positionLevelFrom = findTestIdByCustomId(_draggedTestCustomId);
+				var testGroupFrom = findParentForCustomId(_draggedTestCustomId);
+				
+				if(type=='lastInGroup') {
+					var testGroupTo = findTestByCustomId(testCustomId);
+					
+					//Moving to the last position of specified testGroup
+					gatherAllParameterValues();
+					var testArr = testGroupFrom.tests.splice(positionLevelFrom, 1);
+					testGroupTo.tests.splice(testGroupTo.tests.length, 0, testArr[0]);
+					rerenderTests();
+				}
+				else if (type=='child') {
+					//Moving to the last position of specified testGroup
+					if(_draggedTestCustomId!=testCustomId) {
+						var testGroupTo = findParentForCustomId(testCustomId);
+						
+						gatherAllParameterValues();
+						var testArr = testGroupFrom.tests.splice(positionLevelFrom, 1);
+						var positionLevelTo = findTestIdByCustomId(testCustomId);
+						testGroupTo.tests.splice(positionLevelTo, 0, testArr[0]);
+						rerenderTests();
+					}
+				}
+				else if (type=='last') {
+					//Moving to the last position in root level
+					gatherAllParameterValues();
+					var testArr = testGroupFrom.tests.splice(positionLevelFrom, 1);
+					myTests.splice(myTests.length, 0, testArr[0]);
+					rerenderTests();
+				}
+				else if (type=='test') {
+					//Moving before specified test in root level
+					gatherAllParameterValues();
+					var testArr = testGroupFrom.tests.splice(positionLevelFrom, 1);
+					var positionLevelTo = findTestIdByCustomId(testCustomId);
+					myTests.splice(positionLevelTo, 0, testArr[0]);
+					rerenderTests();
+				}
 			}
 			
 		} else {
