@@ -10,11 +10,13 @@
     <tr>
         <th>Name</th>
         <th>Created</th>
+        <th>Action</th>
     </tr>
     <c:forEach items="${tasks}" var="task">
         <tr>
             <td><a class="big-link" href="../test-run-manager/edit-task?id=${task.id}"><img src="../images/workflow-icon-task.png" width="16px"/> <tag:escape text="${task.name}"/></a><c:if test="${task.description!=null && task.description!=''}"><br/><span class="small-description"><tag:escape text="${task.description}"></tag:escape></span></c:if></td>
             <td width="120px"><tag:date date="${task.date}"/></td>
+            <td width="120px"><a href="../test-run-manager/run-task?taskId=${task.id}"><img src="../images/workflow-icon-prepare-run.png" width="16px"/> Run Task</a></td>
         </tr>
     </c:forEach>
 </table>

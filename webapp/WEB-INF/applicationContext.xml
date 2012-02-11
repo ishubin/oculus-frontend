@@ -23,7 +23,6 @@
         </property>
     </bean>
     
-    
     <bean id="userDAO" class="net.mindengine.oculus.frontend.service.user.JdbcUserDAO">
 	   <property name="dataSource" ref="dataSource" />
 	   <property name="beanMappingFactory" ref="beanMappingFactory"/>

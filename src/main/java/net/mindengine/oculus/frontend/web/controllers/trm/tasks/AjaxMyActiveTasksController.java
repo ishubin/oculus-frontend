@@ -120,7 +120,7 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
     }
     
     public ClientServerRemoteInterface server() throws Exception{
-        return config.getTRMServer();
+        return config.getGridServer();
     }
     
     public Row convertTask(TaskInformation task, int parentLevel, String parentId, ClientServerRemoteInterface server){

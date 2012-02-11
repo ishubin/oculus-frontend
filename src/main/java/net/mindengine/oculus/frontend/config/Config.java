@@ -2,10 +2,10 @@ package net.mindengine.oculus.frontend.config;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.Properties;
 
+import net.mindengine.jeremy.registry.Lookup;
+import net.mindengine.oculus.grid.GridUtils;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
 import org.apache.commons.logging.Log;
@@ -46,20 +46,10 @@ public class Config {
 	 * @return Remote instance of the {@link TRMServer}
 	 * @throws Exception
 	 */
-	public ClientServerRemoteInterface getTRMServer() throws Exception {
-		String serverAddress = "rmi://" + getTrmServerHost() + "/" + getTrmServerName();
-		logger.info("Locating registry " + getTrmServerHost() + " port " + getTrmServerPort());
-		Registry registry = LocateRegistry.getRegistry(getTrmServerHost(), Integer.parseInt(getTrmServerPort()));
-		logger.info("Looking for " + serverAddress);
-
-		ClientServerRemoteInterface server = (ClientServerRemoteInterface) registry.lookup(serverAddress);
-		if (server != null) {
-			logger.info("Server was found");
-		}
-		else {
-			logger.error("Server wasn't found");
-		}
-		return server;
+	public ClientServerRemoteInterface getGridServer() throws Exception {
+	    Lookup lookup = GridUtils.createDefaultLookup();
+        lookup.setUrl("http://localhost:8081");
+        return lookup.getRemoteObject("grid", ClientServerRemoteInterface.class);
 	}
 
 	public String getDataFolder() {

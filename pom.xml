@@ -125,8 +125,8 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-lgpl</artifactId>
-      <version>0.9.5</version>
+      <artifactId>jackson-xc</artifactId>
+      <version>1.8.0</version>
     </dependency>
     <dependency>
       <groupId>jfreechart</groupId>

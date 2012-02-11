@@ -45,7 +45,7 @@ public class UploadProjectController extends SecureSimpleFormController {
 		Project project = projectDAO.getProject(Long.parseLong(request.getParameter("projectId")));
 		if (project == null)
 			throw new UnexistentResource("Project with id " + request.getParameter("projectId") + " doesn't exist");
-		ClientServerRemoteInterface server = config.getTRMServer();
+		ClientServerRemoteInterface server = config.getGridServer();
 
 		/*
 		 * Uploading project to server

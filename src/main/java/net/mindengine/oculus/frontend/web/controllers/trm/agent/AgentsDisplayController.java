@@ -14,7 +14,7 @@ public class AgentsDisplayController extends SecureSimpleViewController {
 
 	@Override
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
-		AgentStatus[] agents = config.getTRMServer().getAgents();
+		AgentStatus[] agents = config.getGridServer().getAgents();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("agents", agents);
 

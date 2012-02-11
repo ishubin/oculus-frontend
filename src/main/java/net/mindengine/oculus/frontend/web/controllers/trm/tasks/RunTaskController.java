@@ -58,7 +58,6 @@ public class RunTaskController extends SecureSimpleViewController {
 	private ProjectDAO projectDAO;
 	private Log logger = LogFactory.getLog(getClass());
 
-	
 	/**
 	 * Sends the task to {@link TRMServer} and updates the user tasks in
 	 * {@link Session}
@@ -90,7 +89,7 @@ public class RunTaskController extends SecureSimpleViewController {
             taskUser.setId(user.getId());
             taskUser.setName(user.getName());
 
-            ClientServerRemoteInterface server = config.getTRMServer();
+            ClientServerRemoteInterface server = config.getGridServer();
             DefaultTask task = new DefaultTask();
             task.setTaskUser(taskUser);
             task.setName(trmTask.getName());
@@ -167,7 +166,7 @@ public class RunTaskController extends SecureSimpleViewController {
     
                     suiteTask.setAgentNames(agentNames);
                     tasks.add(suiteTask);
-                }
+                } 
             }
 
             task.setSuiteTasks(tasks);
@@ -284,7 +283,7 @@ public class RunTaskController extends SecureSimpleViewController {
 	         */
 	        ClientServerRemoteInterface server = null;
 	        try {
-	            server = config.getTRMServer();
+	            server = config.getGridServer();
 	        }
 	        catch (Exception e) {
 	            logger.error("Can't connect to TRMServer", e);

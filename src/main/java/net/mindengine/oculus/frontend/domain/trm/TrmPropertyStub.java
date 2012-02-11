@@ -2,8 +2,6 @@ package net.mindengine.oculus.frontend.domain.trm;
 
 import java.util.List;
 
-import com.sdicons.json.mapper.JSONMapper;
-
 /**
  * This class is used for saving the property to JSON format with
  * {@link JSONMapper} The instance of this class is filled with data from
