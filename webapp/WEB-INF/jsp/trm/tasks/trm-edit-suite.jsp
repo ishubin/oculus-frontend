@@ -77,9 +77,13 @@
                                     	if(tests[i].tests!=null) {
                                     		max = findMaxCustomId(tests[i].tests, max);
                                     	}
-                                    	if(max<tests[i].customId){
-                                            max = tests[i].customId;
-                                        }
+                                    	
+                                    	if(!isNaN(tests[i].customId)) {
+                                    		cId = parseInt(tests[i].customId);
+                                    		if(max < cId){
+                                                max = cId;
+                                            }	
+                                    	}
                                     }
                                 }
                             	return max;
@@ -94,7 +98,7 @@
                                 
                                 //Incrementing it so it becomes unique
                                 uid++;
-                                return uid;
+                                return uid.toString();
                             }
                             
                             function addSelectedTestsToMySuite()
@@ -193,7 +197,7 @@
                                     str+= "<ul class='grid-test-short-layout-parameters'>";
                                     for(var i=0;i<test.inputParameters.length;i++)
                                     {
-                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.inputParameters[i].id+","+test.customId+");\">"+escapeHTML(test.inputParameters[i].name)+"</a></li>";
+                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.inputParameters[i].id+",'"+test.customId+"');\">"+escapeHTML(test.inputParameters[i].name)+"</a></li>";
                                     }
                                     str+= "</ul>";  
                                 }
@@ -202,7 +206,7 @@
                                     str+= "<ul>";
                                     for(var i=0;i<test.outputParameters.length;i++)
                                     {
-                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.outputParameters[i].id+"',"+test.customId+");\">"+escapeHTML(test.outputParameters[i].name)+"</a></li>";
+                                        str+="<li><a href=\"javascript:confirmLinkParameter("+test.outputParameters[i].id+",'"+test.customId+"');\">"+escapeHTML(test.outputParameters[i].name)+"</a></li>";
                                     }
                                     str+= "</ul>";  
                                 }
@@ -274,11 +278,11 @@
                             	}
                             	else {
                             		//Checking if there was a depency set to this test
-	                                for(var i=0; i<tests.length; i++) {
+                            		for(var i=0; i<tests.length; i++) {
 	                                    if(tests[i].inputParameters!=null) {
 	                                        for(var j=0; j<tests[i].inputParameters.length; j++) {
-	                                            if(tests[i].inputParameters[j].depends!=null) {
-	                                                if(tests[i].inputParameters[j].depends.testCustomId == testCustomId) {
+	                                        	if(tests[i].inputParameters[j].depends!=null) {
+	                                        		if(tests[i].inputParameters[j].depends.testCustomId == testCustomId) {
 	                                                    tests[i].inputParameters[j].depends = null;
 	                                                }
 	                                            }
@@ -299,8 +303,16 @@
 	                            	var id = findTestIdByCustomId(testCustomId);
 	                            	for(var i=0; i<tests.length; i++) {
 	                            		if(tests[i].customId == testCustomId) {
-	                            			tests.remove(id);
+	                            			
+	                            			//Removing parameter dependencies for subtests 
+	                            			if(tests[i].tests!=null) {
+	                            				for(var k=0;k < tests[i].tests.length; k++) {
+	                            					removeParameterDependenciesForTest(tests[i].tests[k].customId);		
+	                            				}
+	                            			}
+	                            			//Removing parameter dependencies for this test 
 	                            			removeParameterDependenciesForTest(testCustomId);
+	                            			tests.remove(id);
 	                            			return;
 	                            		}
 	                            		if(tests[i].tests!=null) {
@@ -375,12 +387,12 @@
                                 str+= "      <table border=\"0\" width=\"100%\" cellpadding=\"0px\" cellspacing=\"0px\">";
                                 str+= "         <tr>";
                                 str+= "             <td width=\"20px\" height=\"20px\">";
-                                str+= "                 <a class=\"test-layout-remove-link\" href=\"javascript:removeTest("+test.customId+");\"><img src=\"../images/button-close-2.png\"/></a>";
+                                str+= "                 <a class=\"test-layout-remove-link\" href=\"javascript:removeTest('"+test.customId+"');\"><img src=\"../images/button-close-2.png\"/></a>";
                                 str+= "             </td>";
                                 str+= "             <td>";
                                 str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+",'"+(isChild?'child':'test')+"'); return false;\">";
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
-                                str+= "                      href=\"javascript:onTestPanelClick("+test.customId+");\"><b>"+escapeHTML(test.name)+"</b>";
+                                str+= "                      href=\"javascript:onTestPanelClick('"+test.customId+"');\"><b>"+escapeHTML(test.name)+"</b>";
                                 str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\""+disclosureIcon+"\" style=\"float:left;\"></span>";
                                 
                                 if(test.tests==null) {
@@ -429,9 +441,9 @@
 	                                        str+= "                       <td width=\"100px\">";
 	                                        if(test.inputParameters[i].controlType=="text")
 	                                        {
-	                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor("+test.customId+","+test.inputParameters[i].id+");\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
+	                                              str+="<a class=\"icon-button\" href=\"javascript:showParameterInBigEditor('"+test.customId+"',"+test.inputParameters[i].id+");\"><img src=\"../images/trm-icon-show-in-editor.png\"/></a>";   
 	                                        }
-	                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter("+test.inputParameters[i].id+","+test.customId+");\"><img src=\"../images/trm-link-icon.png\"/></a>";
+	                                        str+= "                           <a class=\"icon-button\" href=\"javascript:linkParameter("+test.inputParameters[i].id+",'"+test.customId+"');\"><img src=\"../images/trm-link-icon.png\"/></a>";
 	                                        str+= "                       </td>";
 	                                        str+= "                   </tr>";
 	                                    }
@@ -463,7 +475,7 @@
                                 		str+=renderTest(test.tests[k], true);
                                 	}
                                 	
-                                	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup',"+test.customId+", true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
+                                	str+= "<div class='dropArea-big' onmouseup=\"onDropAreaMouseUp(this, 'lastInGroup','"+test.customId+"', true); return false;\" onmouseover='onDropAreaMouseOver(this, true);' onmouseout='onDropAreaMouseOut(this, true);'>";
                                 	str+= "<div class='dropArea-line'></div> Drop your tests here</div>";
                                 }
                                 str+= "                 </div>";
@@ -496,7 +508,7 @@
                                 }
                                 
                                 var html = parentTitle + "<b>"+escapeHTML(prerTest.name)+"</b> -&gt; "+escapeHTML(prerParameterName);
-                                html+=" <a href=\"javascript:removeParameterLink("+test.customId+","+parameter.id+");\"><img src=\"../images/button-close-2.png\"/></a>";
+                                html+=" <a href=\"javascript:removeParameterLink('"+test.customId+"',"+parameter.id+");\"><img src=\"../images/button-close-2.png\"/></a>";
                                 
                                 var divPC = document.getElementById("divTest_"+test.customId+"_Parameter_"+parameter.id+"_Control");
                                 var divPL = document.getElementById("divTest_"+test.customId+"_Parameter_"+parameter.id+"_Link");
