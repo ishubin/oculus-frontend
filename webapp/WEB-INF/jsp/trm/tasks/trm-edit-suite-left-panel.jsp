@@ -276,7 +276,7 @@
 <script>
 	$(document).ready(function() {
 		$("#treeNavigationPanel").stickySidebar({
-			speed : 100,
+			speed : 0,
 			padding : 30,
 			constrain : true
 		});

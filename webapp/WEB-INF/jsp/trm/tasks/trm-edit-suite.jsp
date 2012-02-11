@@ -181,11 +181,11 @@
                                 if(test.tests!=null) {
                                 	icon = "iconTestGroupCustom.png";
                                 }
-                                str+= "<img style=\"float: left;\" src=\"../images/"+ icon +"\">";
-                                str+= "<div id=\"divIconShortTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></div>";
                                 str+= "<a class=\"disclosure\" href=\"javascript:onDisclosurePanelClick('divTestShortContent"+test.customId+"','divIconShortTC"+test.customId+"');\">";
+                                str+= "<div id=\"divIconShortTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></div>";
+                                str+= "<img style=\"float: left;\" src=\"../images/"+ icon +"\">";
+                                
                                 str+= "<b>"+escapeHTML(test.name)+"</b>";
-                                str+= "<font color=\"#999999\"> #"+test.customId+"</font>";
                                 str+= "</a>";
                                 str+= "<div id=\"divTestShortContent"+test.customId+"\" style=\"display:none;padding-left:10px\">";
                                 if(test.inputParameters!=null && test.inputParameters.length>0) {
