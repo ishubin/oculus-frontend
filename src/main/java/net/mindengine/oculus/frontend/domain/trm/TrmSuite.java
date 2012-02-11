@@ -182,7 +182,7 @@ public class TrmSuite implements Serializable {
 		for (JSONValue value : tests.getValue()) {
 			JSONObject test = (JSONObject) value;
 			TestDefinition td = new TestDefinition();
-			td.setCustomId(JSONUtils.readInteger(test.get("customId")));
+			td.setCustomId(JSONUtils.readString(test.get("customId")));
 			td.setTestId(JSONUtils.readInteger(test.get("id")));
 			
 			if(test.containsKey("testRunDescription")){
@@ -211,8 +211,8 @@ public class TrmSuite implements Serializable {
 					    
 						td.setParameterDependencies(new ArrayList<TestDependency>());
 					TestDependency testDependency = new TestDependency();
-					testDependency.setPrerequisiteTestId(JSONUtils.readInteger(depends.get("testCustomId")));
-					testDependency.setPrerequisiteParameterName(JSONUtils.readString(depends.get("parameterName")));
+					testDependency.setRefTestId(JSONUtils.readString(depends.get("testCustomId")));
+					testDependency.setRefParameterName(JSONUtils.readString(depends.get("parameterName")));
 					testDependency.setDependentParameterName(JSONUtils.readString(parameter.get("name")));
 					td.getParameterDependencies().add(testDependency);
 				}
