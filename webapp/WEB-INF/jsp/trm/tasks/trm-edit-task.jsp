@@ -135,7 +135,7 @@
 	
 	<div id="reportBody" style="position:relative; display:block;">
 	    <c:if test="${fn:length(taskDependencies) > 0 && group == null}">
-	        <script language="javascript">
+	        <script>
 	        var _taskDependencyIds = [
 	        <%
 	        //Printing depencies ids so later this could be used for checkboxes in table
@@ -190,7 +190,7 @@
 	                <td></td>
 	                <td><tag:remove-white-space>
 	                    <input type="checkbox" id="chkTaskDependency${td.id}"/>
-	                    <a href="../grid/${td.ownerId==user.id ? 'edit-task':'shared-task'}?id=${td.refTaskId}" class="table-body-cell">
+	                    <a href="../grid/${td.ownerId==user.id ? 'edit-task':'shared-task'}?id=${td.refTaskId}" class="big-link">
 	                        <img src="../images/workflow-icon-task.png"/>
 	                        <tag:escape text="${td.refTaskName}"/>
 	                    </a>
@@ -212,9 +212,8 @@
 		        });
 		    });
 		    </script>
-	        <div style="text-align:right;width:100%;">
-	           <a href="javascript:deleteSelectedTaskDependecies();">Delete selected dependencies</a>
-	        </div>
+		    <a href="javascript:deleteSelectedTaskDependecies();"><img src="../images/workflow-icon-delete.png"/> Delete selected dependencies</a>
+	        
 	    </c:if>
 	    
 	    

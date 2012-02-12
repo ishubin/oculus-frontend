@@ -30,6 +30,17 @@
 		           <tag:escape text="${agent.agentInformation.description}" nl2br="true"></tag:escape>
 		       </td>
 		    </tr>
+		    <c:if test="${agent.agentInformation.tags!=null}">
+		    <tr>
+		    	<td colspan="2">
+		    		<b>Tags: </b>
+		    		<c:forEach items="${agent.agentInformation.tags }" var="tag" varStatus="tagStatus">
+		    			<c:if test="${!tagStatus.first}">, </c:if>
+		    			<tag:escape text="${tag}"/>
+		    		</c:forEach>
+		    	</td>
+		    </tr>
+		    </c:if>
 		</table>
     </div>
 </c:forEach>

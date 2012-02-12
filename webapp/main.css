@@ -24,7 +24,7 @@ body{
 }
 
 body, td, pre{
-    font-size:8pt;
+    font-size:10pt;
     color:black;
     font-family:arial;
         
@@ -136,7 +136,7 @@ a.disclosure:hover{
 }
 
 a.small-link, a.small-link:ACTIVE, a.small-link:VISITED {
-    font-size:8pt;
+    font-size:10pt;
     font-weight: bold;
     text-decoration:none;
     font-family:tahoma,verdana,helvetica;
@@ -350,7 +350,7 @@ ul.workflow-list li.workflow-item a.workflow-panel-link{
     width: 98%;
     padding: 4px 0px 4px 4px;
     margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -552,7 +552,7 @@ a.report-row-collapse{
     text-decoration:underline;
 }
 .project-browse-project .small{
-	font-size:8pt;
+	font-size:10pt;
 	color:black;
 	font-weight:normal;
 	padding:5px;
@@ -747,7 +747,7 @@ trm test search list
 .test-search-list li a{
 	color:black;
 	font-weight:normal;
-	font-size:8pt;
+	font-size:10pt;
 }
 
 /*
@@ -1115,12 +1115,12 @@ table.grid td.grid select.grid-select{
 
 
 .ui-jqgrid-hbox th div{
-	font-size:8pt;
+	font-size:10pt;
 	font-weight:bold;
 }
 
 .ui-jqgrid-btable td a{
-    font-size:8pt;
+    font-size:10pt;
     font-weight:bold;
     color:black;
 }
