@@ -24,7 +24,7 @@
 		    </tr>
 		    <tr>
 		       <td class="description">
-		           <b>HostName:</b> <tag:escape text="${agent.agentInformation.hostName}"></tag:escape>
+		           <b>HostName:</b> <tag:escape text="${agent.agentInformation.host}"></tag:escape>
 		           <br/>
 		           <b>Description:</b><br/>
 		           <tag:escape text="${agent.agentInformation.description}" nl2br="true"></tag:escape>

@@ -4,12 +4,12 @@
 <%@ include file="/session-handler.jsp" %>
 
 <div class="breadcrump" align="center">
-    <a href="../test-run-manager/main">Test Run Manager</a>
+    <a href="../grid/main">Test Run Manager</a>
     <img src="../images/breadcrump-arrow.png"/> 
     
-    <a href="../test-run-manager/customize">Customize Settings</a>
+    <a href="../grid/customize">Customize Settings</a>
     <img src="../images/breadcrump-arrow.png"/>
-    <a href="../test-run-manager/customize-suite-parameters">Customize Suite Parameters</a>
+    <a href="../grid/customize-suite-parameters">Customize Suite Parameters</a>
     <img src="../images/breadcrump-arrow.png"/>
     Customize Suite Parameters
 </div>

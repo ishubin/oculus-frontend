@@ -37,7 +37,7 @@ public class DeleteTaskDependenciesController extends SecureSimpleViewController
             trmDAO.deleteTaskDependency(Long.parseLong(depId), taskId);
         }
         
-        return new ModelAndView(new RedirectView("../test-run-manager/edit-task?id="+taskId));
+        return new ModelAndView(new RedirectView("../grid/edit-task?id="+taskId));
     }
 
     public TrmDAO getTrmDAO() {

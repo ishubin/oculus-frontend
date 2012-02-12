@@ -3,16 +3,16 @@
 
 
 <div class="breadcrump">
-    <a href="../test-run-manager/my-tasks">My Tasks</a>
+    <a href="../grid/my-tasks">My Tasks</a>
     <img src="../images/breadcrump-arrow.png"/>
     
-    <a href="../test-run-manager/edit-task?id=${task.id}">
+    <a href="../grid/edit-task?id=${task.id}">
         <img src="../images/workflow-icon-task.png"/> 
         <tag:escape text="${task.name}"/>
     </a>
     <c:if test="${group!=null }">
         <img src="../images/breadcrump-arrow.png"/>
-        <a href="../test-run-manager/edit-task?id=${task.id}&groupId=${group.id}">
+        <a href="../grid/edit-task?id=${task.id}&groupId=${group.id}">
             <img src="../images/workflow-icon-test-group.png"/> 
             <tag:escape text="${group.name}"/>
         </a>
@@ -24,7 +24,7 @@
 </div>
 
 <tag:panel title="Create suite" align="center">
-    <form action="../test-run-manager/create-suite?taskId=${task.id}" method="post">
+    <form action="../grid/create-suite?taskId=${task.id}" method="post">
         <table border="0" align="center">
             <tr>
                 <td>Name:</td>

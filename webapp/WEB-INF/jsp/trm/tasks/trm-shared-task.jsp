@@ -4,7 +4,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <div class="breadcrump">
-    <a href="../test-run-manager/shared-tasks"><img src="../images/workflow-icon-shared-task.png"/>  Shared Tasks</a>
+    <a href="../grid/shared-tasks"><img src="../images/workflow-icon-shared-task.png"/>  Shared Tasks</a>
     <img src="../images/breadcrump-arrow.png"/> 
     ${task.name} 
 </div>
@@ -18,7 +18,7 @@ function showSopySharedTaskDialog()
 
 <div id="divCopySuiteDialog" style="position:absolute;display:none;width:300px;height:250px;">
     <tag:panel align="center" title="Copy this task" closeDivName="divCopySuiteDialog" width="300px" height="250px">
-        <form action="../test-run-manager/copy-shared-task">
+        <form action="../grid/copy-shared-task">
             <input type="hidden" name="taskId" value="${task.id}"/>
 	        <table border="0" cellpadding="5" width="100%">
 	            <tr>

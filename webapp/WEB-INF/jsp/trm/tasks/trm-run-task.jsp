@@ -10,9 +10,9 @@
 <%@ include file="/session-handler.jsp" %>
 
 <div class="breadcrump">
-    <a href="../test-run-manager/my-tasks">My Tasks</a>
+    <a href="../grid/my-tasks">My Tasks</a>
     <img src="../images/breadcrump-arrow.png"/> 
-    <a href="../test-run-manager/edit-task?id=${task.id}">
+    <a href="../grid/edit-task?id=${task.id}">
         <img src="../images/workflow-icon-task.png"/> 
         <tag:escape text="${task.name}"/>
     </a>

@@ -22,7 +22,7 @@ $(document).ready(function() {
     	treeGrid: true,
         treeGridModel: 'adjacency',
         ExpandColumn : 'name',
-        url: '../test-run-manager/ajax-my-active-tasks',
+        url: '../grid/ajax-my-active-tasks',
         datatype: "xml",
         mtype: "GET",
         colNames:["id","Name","Created", "Completed", "Progress","Status","Report","Actions"],
@@ -53,7 +53,7 @@ $(document).ready(function() {
 }); 
 
 function updateTasks(){
-	$.getJSON('../test-run-manager/ajax-fetch-tasks', function(data) {
+	$.getJSON('../grid/ajax-fetch-tasks', function(data) {
         if(data.result=="error"){
             alert("Error occured: "+data.object.text);
         }
@@ -178,7 +178,7 @@ function operationsFormatter(cellValue, options, rowObject){
 function stopTask(taskId){
 	if(confirm("Are you sure you want to stop this task?")){
 		$('#operations_tsk'+taskId).html('');
-        $.getJSON('../test-run-manager/ajax-stop-task?taskId='+taskId, function(data) {
+        $.getJSON('../grid/ajax-stop-task?taskId='+taskId, function(data) {
             if(data.result=="error"){
                 alert("Error occured: "+data.object.text);
             }
@@ -188,7 +188,7 @@ function stopTask(taskId){
 
 function removeTask(taskId){
 	if(confirm("Are you sure you want to remove this task?")){
-	    $.getJSON('../test-run-manager/ajax-remove-completed-task?taskId='+taskId, function(data) {
+	    $.getJSON('../grid/ajax-remove-completed-task?taskId='+taskId, function(data) {
 	        if(data.result=="removed"){
 	            $('#jqgTreeGrid').delTreeNode('tsk'+taskId);
 	        }

@@ -38,7 +38,7 @@ public class CreateTaskController extends SecureSimpleFormController {
 		task.setUserId(user.getId());
 
 		long taskId = trmDAO.saveTask(task);
-		return new ModelAndView(new RedirectView("../test-run-manager/edit-task?id=" + taskId));
+		return new ModelAndView(new RedirectView("../grid/edit-task?id=" + taskId));
 	}
 
 	public void setTrmDAO(TrmDAO trmDAO) {

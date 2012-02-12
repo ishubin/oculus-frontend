@@ -56,7 +56,7 @@ public class CreateSuiteGroupController extends SecureSimpleFormController {
 		group.setEnabled(true);
 		Long groupId = trmDAO.createSuiteGroup(group);
 
-		return new ModelAndView("redirect:../test-run-manager/edit-task?id=" + group.getTaskId() + "&groupId=" + groupId);
+		return new ModelAndView("redirect:../grid/edit-task?id=" + group.getTaskId() + "&groupId=" + groupId);
 	}
 
 	public TrmDAO getTrmDAO() {

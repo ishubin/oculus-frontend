@@ -120,7 +120,7 @@ public class EditTaskController extends SecureSimpleViewController {
 		if (!user.getId().equals(task.getUserId())) {
 			
 			if(task.getShared()){
-				throw new RedirectException("../test-run-manager/shared-task?id="+task.getId());
+				throw new RedirectException("../grid/shared-task?id="+task.getId());
 			}
 			else throw new PermissionDeniedException("You are not authorized to edit tasks of other users");
 		}

@@ -12,7 +12,7 @@
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency"%>
 
 <div class="breadcrump">
-    <a href="../test-run-manager/my-tasks">My Tasks</a>
+    <a href="../grid/my-tasks">My Tasks</a>
     <img src="../images/breadcrump-arrow.png"/>
     
     <c:choose>
@@ -21,7 +21,7 @@
             <tag:escape text="${task.name}"/>
         </c:when>
         <c:otherwise>
-            <a href="../test-run-manager/edit-task?id=${task.id}">
+            <a href="../grid/edit-task?id=${task.id}">
                 <img src="../images/workflow-icon-task.png"/> 
                 <tag:escape text="${task.name}"/>
             </a>
@@ -190,13 +190,13 @@
 	                <td></td>
 	                <td><tag:remove-white-space>
 	                    <input type="checkbox" id="chkTaskDependency${td.id}"/>
-	                    <a href="../test-run-manager/${td.ownerId==user.id ? 'edit-task':'shared-task'}?id=${td.refTaskId}" class="table-body-cell">
+	                    <a href="../grid/${td.ownerId==user.id ? 'edit-task':'shared-task'}?id=${td.refTaskId}" class="table-body-cell">
 	                        <img src="../images/workflow-icon-task.png"/>
 	                        <tag:escape text="${td.refTaskName}"/>
 	                    </a>
 	                </tag:remove-white-space></td>
 	                <td width="100px"><tag:remove-white-space>
-	                    <a href="../test-run-manager/delete-task-dependencies?taskId=${td.taskId}&dependencies=${td.id}" class="table-body-cell"><img src="../images/workflow-icon-delete.png"/> Remove</a>
+	                    <a href="../grid/delete-task-dependencies?taskId=${td.taskId}&dependencies=${td.id}" class="table-body-cell"><img src="../images/workflow-icon-delete.png"/> Remove</a>
 	                </tag:remove-white-space></td>
 	            </tr>
 	            </c:forEach>
@@ -231,7 +231,7 @@
 		               <tr>
 		                   <td></td>
 		                   <td><tag:remove-white-space>
-		                       <a class="big-link" href="../test-run-manager/edit-task?id=${task.id}&groupId=${g.id}" class="table-body-cell">
+		                       <a class="big-link" href="../grid/edit-task?id=${task.id}&groupId=${g.id}" class="table-body-cell">
 		                           <img src="../images/iconTestGroup.png"/>
 		                           <tag:escape text="${g.name}"/>
 		                       </a>
@@ -274,7 +274,7 @@
 			    <c:forEach items="${suites}" var="s">
 				   <tr>
 				       <td><tag:remove-white-space>
-				           <a class="big-link" href="../test-run-manager/edit-suite?id=${s.id}">
+				           <a class="big-link" href="../grid/edit-suite?id=${s.id}">
 				              <img src="../images/workflow-icon-suite.png"/>
 				              <tag:escape text="${s.name}"/>
 				              <br/>
@@ -287,7 +287,7 @@
                            <input type="checkbox" id="enableSuite${s.id}" name="enableSuite${s.id}" <c:if test="${s.enabled==true}">checked="checked"</c:if>/>
                        </tag:remove-white-space></td>
                        <td width="100px"><tag:remove-white-space>
-				          <a href="../test-run-manager/delete-suite?id=${s.id}"
+				          <a href="../grid/delete-suite?id=${s.id}"
 			                                         onclick="return confirm('Are you sure you want to delete the suite?');"><img src="../images/workflow-icon-delete.png"/> Remove</a>
 			           </tag:remove-white-space></td>
 				   </tr>
@@ -309,7 +309,7 @@
     <tag:submit value="Save" name="Submit"></tag:submit>
 </form>
 
-<form name="deleteTaskDependencies" action="../test-run-manager/delete-task-dependencies" method="post">
+<form name="deleteTaskDependencies" action="../grid/delete-task-dependencies" method="post">
     <input name="taskId" type="hidden" value="${task.id}"/>
     <input name="dependencies" type="hidden"/>
 </form>

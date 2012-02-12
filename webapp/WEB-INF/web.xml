@@ -125,7 +125,7 @@
 
 	<servlet-mapping>
 		<servlet-name>trm</servlet-name>
-		<url-pattern>/test-run-manager/*</url-pattern>
+		<url-pattern>/grid/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

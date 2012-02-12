@@ -73,7 +73,7 @@ public class CreateSuiteController extends SecureSimpleFormController {
 		suite.setTaskId(taskId);
 		Long suiteId = trmDAO.saveSuite(suite);
 
-		return new ModelAndView(new RedirectView("../test-run-manager/edit-suite?id=" + suiteId));
+		return new ModelAndView(new RedirectView("../grid/edit-suite?id=" + suiteId));
 	}
 
 	public void setTrmDAO(TrmDAO trmDAO) {

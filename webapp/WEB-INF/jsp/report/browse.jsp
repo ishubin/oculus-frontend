@@ -100,7 +100,7 @@
      {
          var projectId = _savedTestRuns[0].parentProjectId;
          document.forms.linkToIssue.projectId.value = projectId;
-         dhtmlxAjax.post("../test-run-manager/ajax-fetch-suite-parameters", "projectId="+projectId, onAjaxFetchSuiteParametersResponse);
+         dhtmlxAjax.post("../grid/ajax-fetch-suite-parameters", "projectId="+projectId, onAjaxFetchSuiteParametersResponse);
      }
      function onAjaxFetchSuiteParametersResponse(loader)
      {

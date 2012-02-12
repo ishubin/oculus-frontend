@@ -72,7 +72,7 @@ public class CopySharedTaskController extends SecureSimpleViewController {
 			trmDAO.saveSuite(suite);
 		}
 
-		return new ModelAndView("redirect:../test-run-manager/edit-task?id=" + newTaskId);
+		return new ModelAndView("redirect:../grid/edit-task?id=" + newTaskId);
 	}
 
 	public void setTrmDAO(TrmDAO trmDAO) {

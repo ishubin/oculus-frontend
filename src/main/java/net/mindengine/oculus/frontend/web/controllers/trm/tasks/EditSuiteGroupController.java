@@ -52,7 +52,7 @@ public class EditSuiteGroupController extends SecureSimpleFormController {
 		TrmSuiteGroup group = (TrmSuiteGroup) command;
 		trmDAO.updateSuiteGroup(group);
 
-		return new ModelAndView("redirect:../test-run-manager/edit-suite-group?groupId=" + group.getId());
+		return new ModelAndView("redirect:../grid/edit-suite-group?groupId=" + group.getId());
 	}
 
 	public TrmDAO getTrmDAO() {

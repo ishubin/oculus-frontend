@@ -23,7 +23,7 @@ public class DeleteSuiteGroupController extends SecureSimpleViewController {
 
 		trmDAO.removeSuiteGroup(group.getId());
 
-		return new ModelAndView("redirect:../test-run-manager/edit-task?id=" + group.getTaskId());
+		return new ModelAndView("redirect:../grid/edit-task?id=" + group.getTaskId());
 	}
 
 	public void setTrmDAO(TrmDAO trmDAO) {

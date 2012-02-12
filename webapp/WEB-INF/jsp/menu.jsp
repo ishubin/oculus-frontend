@@ -62,31 +62,31 @@
 	        <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-trm.png"/> Grid</a>
             <ul>
                   <li>
-                      <a class="sf-with-ul" href="../test-run-manager/create-task">
+                      <a class="sf-with-ul" href="../grid/create-task">
                           <img src="../images/workflow-icon-task.png"/>
                           Create Task
                       </a>
                   </li>
                   <li>
-                      <a class="sf-with-ul" href="../test-run-manager/my-active-tasks">
+                      <a class="sf-with-ul" href="../grid/my-active-tasks">
                           <img src="../images/workflow-icon-monitor.png"/>
                           My Active Tasks
                       </a>
                   </li>
                   <li>
-                      <a class="sf-with-ul" href="../test-run-manager/my-tasks">
+                      <a class="sf-with-ul" href="../grid/my-tasks">
                           <img src="../images/workflow-icon-save.png"/>
                           My Saved Tasks
                       </a>
                   </li>
                   <li>
-                      <a class="sf-with-ul" href="../test-run-manager/shared-tasks">
+                      <a class="sf-with-ul" href="../grid/shared-tasks">
                           <img src="../images/workflow-icon-shared-task.png"/>
                           Shared Tasks
                       </a>
                   </li>
                   <li>
-                      <a class="sf-with-ul" href="../test-run-manager/agents">
+                      <a class="sf-with-ul" href="../grid/agents">
                           <img src="../images/workflow-icon-agents.png"/>
                           Agents
                       </a>
@@ -99,13 +99,13 @@
                        </a>
                        <ul>
                               <li>
-                                  <a class="sf-with-ul" href="../test-run-manager/customize-suite-parameters">
+                                  <a class="sf-with-ul" href="../grid/customize-suite-parameters">
                                       <img src="../images/workflow-icon-settings.png"/>
                                       Suite Parameters
                                   </a>
                               </li>
                               <li>
-                                  <a class="sf-with-ul" href="../test-run-manager/upload-project-choose-project">
+                                  <a class="sf-with-ul" href="../grid/upload-project-choose-project">
                                       <img src="../images/workflow-icon-upload.png"/>
                                       Upload Project
                                   </a>

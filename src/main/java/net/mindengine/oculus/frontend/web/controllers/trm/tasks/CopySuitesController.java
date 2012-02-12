@@ -44,7 +44,7 @@ public class CopySuitesController extends SecureSimpleViewController {
 				}
 			}
 		}
-		return new ModelAndView("redirect:../test-run-manager/edit-task?id=" + taskId + "&groupId=" + groupId);
+		return new ModelAndView("redirect:../grid/edit-task?id=" + taskId + "&groupId=" + groupId);
 	}
 
 	public TrmDAO getTrmDAO() {

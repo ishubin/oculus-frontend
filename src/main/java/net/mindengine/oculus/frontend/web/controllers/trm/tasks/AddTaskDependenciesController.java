@@ -53,7 +53,7 @@ public class AddTaskDependenciesController extends SecureSimpleViewController {
             }
         }
         
-        return new ModelAndView(new RedirectView("../test-run-manager/edit-task?id="+taskId));
+        return new ModelAndView(new RedirectView("../grid/edit-task?id="+taskId));
     }
     
     public boolean contains(Collection<TrmTaskDependency> dependencies, Long refTaskId){

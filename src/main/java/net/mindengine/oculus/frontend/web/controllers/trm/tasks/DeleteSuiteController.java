@@ -45,7 +45,7 @@ public class DeleteSuiteController extends SecureSimpleViewController {
 		}
 
 		trmDAO.deleteSuite(suiteId);
-		return new ModelAndView(new RedirectView("../test-run-manager/edit-task?id=" + task.getId()));
+		return new ModelAndView(new RedirectView("../grid/edit-task?id=" + task.getId()));
 	}
 
 	public void setTrmDAO(TrmDAO trmDAO) {

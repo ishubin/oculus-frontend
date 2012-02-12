@@ -80,7 +80,7 @@ function isRequestParameterSet(value)
 }
 function redirectSearchFilterForm(form)
 {
-    var str = "../test-run-manager/shared-tasks";
+    var str = "../grid/shared-tasks";
     str+=generateRequest(form);
     window.location = str;
 }
@@ -93,7 +93,7 @@ function onSubmitTaskSearchForm(form)
 
 <tag:pickuser-setup></tag:pickuser-setup>
 
-<form onsubmit="return onSubmitTaskSearchForm(this);" method="get" name="searchFilter" action="../test-run-manager/shared-tasks" >
+<form onsubmit="return onSubmitTaskSearchForm(this);" method="get" name="searchFilter" action="../grid/shared-tasks" >
     <tag:submit value="Apply Filter" onclick="redirectSearchFilterForm(document.forms.searchFilter);return false;"></tag:submit>
     <table border="0" width="100%">
         <tr>

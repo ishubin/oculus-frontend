@@ -3,10 +3,10 @@
 <%@ taglib prefix="tiles" uri="/WEB-INF/tld/struts-tiles.tld" %>
 
 <div class="breadcrump" align="center">
-    <a href="../test-run-manager/main">Test Run Manager</a>
+    <a href="../grid/main">Test Run Manager</a>
     <img src="../images/breadcrump-arrow.png"/> 
     
-    <a href="../test-run-manager/customize">Customize Settings</a>
+    <a href="../grid/customize">Customize Settings</a>
     <img src="../images/breadcrump-arrow.png"/>
     Upload Project
 </div>

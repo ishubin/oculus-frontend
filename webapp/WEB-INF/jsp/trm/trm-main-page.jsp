@@ -8,16 +8,16 @@
 You have to be logged in.
 </c:if>
 <c:if test="${user != null}">
-    <div class="project-layout" onclick="window.location='../test-run-manager/my-tasks';">
+    <div class="project-layout" onclick="window.location='../grid/my-tasks';">
 	    <table border="0" cellpadding="0" cellspacing="0">
 	        <tr>
 	            <td>
-	               <a href="../test-run-manager/my-tasks">
+	               <a href="../grid/my-tasks">
 	                <img src="../images/trm-main-my-tasks.png"/>
 	               </a>
 	            </td>
 	            <td valign="top" align="left">
-	                <a style="font-size:12pt;font-weight:bold;width:100%;height:100%;display:block;color:black;" href="../test-run-manager/my-tasks">
+	                <a style="font-size:12pt;font-weight:bold;width:100%;height:100%;display:block;color:black;" href="../grid/my-tasks">
 	                My Tasks
 	                </a>
 	            </td>
@@ -26,17 +26,17 @@ You have to be logged in.
 	</div>
 </c:if>
 <c:if test="${user.hasPermissions.trm_administration == true}">
-   <div class="project-layout" onclick="window.location='../test-run-manager/customize';">
+   <div class="project-layout" onclick="window.location='../grid/customize';">
 		<table border="0" cellpadding="0" cellspacing="0">
 		    <tr>
 		        <td>
-		            <a href="../test-run-manager/customize">
+		            <a href="../grid/customize">
 		               <img src="../images/trm-main-customize.png"/>
 		            </a>
 		        </td>
 		        <td valign="top" align="left">
 		            <a style="font-size:12pt;font-weight:bold;width:100%;height:100%;display:block;color:black;" 
-		                href="../test-run-manager/customize">
+		                href="../grid/customize">
 		                Customize Settings
 		            </a>
 		        </td>

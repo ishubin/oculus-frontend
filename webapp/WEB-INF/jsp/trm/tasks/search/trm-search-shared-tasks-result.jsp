@@ -190,10 +190,10 @@ $(function(){
 function nameFormatter(cellValue, options, rowObject){
     if(cellValue!=null){
         if(cellValue.belongs){
-        	return "<a href='../test-run-manager/edit-task?id="+cellValue.id+"'><img src='../images/workflow-icon-task.png'/> "+escapeHTML(cellValue.name)+"</a>";
+        	return "<a href='../grid/edit-task?id="+cellValue.id+"'><img src='../images/workflow-icon-task.png'/> "+escapeHTML(cellValue.name)+"</a>";
         }
         else{
-        	return "<a href='../test-run-manager/shared-task?id="+cellValue.id+"'><img src='../images/workflow-icon-task.png'/> "+escapeHTML(cellValue.name)+"</a>";
+        	return "<a href='../grid/shared-task?id="+cellValue.id+"'><img src='../images/workflow-icon-task.png'/> "+escapeHTML(cellValue.name)+"</a>";
         }
     }
     return "";

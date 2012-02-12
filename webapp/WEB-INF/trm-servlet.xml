@@ -53,7 +53,7 @@
     </bean>
     
     <bean name="/delete-task" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.DeleteTaskController">
-        <property name="view" value="redirect:../test-run-manager/my-tasks"/>
+        <property name="view" value="redirect:../grid/my-tasks"/>
         <property name="trmDAO" ref="trmDAO"/>
         <property name="authorizationCheck" value="true"/>
     </bean>

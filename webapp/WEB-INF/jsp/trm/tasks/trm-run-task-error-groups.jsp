@@ -12,7 +12,7 @@ Please check you suite groups in the following list:<br/>
 <c:forEach items="${errorGroups}" var="group">
     <br/>
     <br/>
-    <a href="../test-run-manager/edit-task?id=${group.group.taskId}&groupId=${group.group.id}">
+    <a href="../grid/edit-task?id=${group.group.taskId}&groupId=${group.group.id}">
         <img src="../images/workflow-icon-test-group.png"/>
         <tag:escape text="${group.group.name}"></tag:escape>
     </a>
@@ -21,7 +21,7 @@ Please check you suite groups in the following list:<br/>
         <c:forEach items="${group.suites}" var="suite">
             <tag:table-row>
                 <tag:table-cell style="padding:4px;">
-                    <a href="../test-run-manager/edit-suite?id=${suite.id}">
+                    <a href="../grid/edit-suite?id=${suite.id}">
                         <c:choose>
                             <c:when test="${suite.uniteTests==true}">
                                 <img src="../images/workflow-icon-united-suite.png"/>

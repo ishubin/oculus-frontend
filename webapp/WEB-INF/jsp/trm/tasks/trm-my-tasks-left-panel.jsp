@@ -10,10 +10,10 @@
             <tr>
                 <td>
                     <tag:workflow-panel title="My Tasks" width="100%" id="workflow_MyTasks">
-                        <tag:workflow-element icon="task" link="../test-run-manager/create-task">New Task</tag:workflow-element>
-                        <tag:workflow-element icon="monitor" link="../test-run-manager/my-active-tasks">My Active Tasks</tag:workflow-element>
-                        <tag:workflow-element icon="save" link="../test-run-manager/my-tasks">My Saved Tasks</tag:workflow-element>
-                        <tag:workflow-element icon="schedule" link="../test-run-manager/scheduler">Scheduler</tag:workflow-element>
+                        <tag:workflow-element icon="task" link="../grid/create-task">New Task</tag:workflow-element>
+                        <tag:workflow-element icon="monitor" link="../grid/my-active-tasks">My Active Tasks</tag:workflow-element>
+                        <tag:workflow-element icon="save" link="../grid/my-tasks">My Saved Tasks</tag:workflow-element>
+                        <tag:workflow-element icon="schedule" link="../grid/scheduler">Scheduler</tag:workflow-element>
                     </tag:workflow-panel>
                 </td>
             </tr>
@@ -21,28 +21,28 @@
             <tr>
                 <td>
                     <tag:workflow-panel title="Task Actions" width="100%" id="workflow_TaskActions">
-                        <tag:workflow-element icon="prepare-run" link="../test-run-manager/run-task?taskId=${task.id}" onclick="return onPrepareTaskClicked();" title="Customize suite settings for running on server">Prepare task</tag:workflow-element>
+                        <tag:workflow-element icon="prepare-run" link="../grid/run-task?taskId=${task.id}" onclick="return onPrepareTaskClicked();" title="Customize suite settings for running on server">Prepare task</tag:workflow-element>
                         <tag:workflow-element link="" onclick="openTaskDependenciesDialog();return false;">Add Dependencies</tag:workflow-element>
-                        <tag:workflow-element icon="delete" link="../test-run-manager/delete-task?taskId=${task.id}" onclick="if(confirm('Are you sure you want to delete this task'))return true; else return false;">Delete</tag:workflow-element>
+                        <tag:workflow-element icon="delete" link="../grid/delete-task?taskId=${task.id}" onclick="if(confirm('Are you sure you want to delete this task'))return true; else return false;">Delete</tag:workflow-element>
                     </tag:workflow-panel>
                     
                     <tag:workflow-panel title="Suite Groups" width="100%" id="workflow_SuiteGroupActions">
                         <c:if test="${group==null }">
-                            <tag:workflow-element icon="create" link="../test-run-manager/create-suite-group?taskId=${task.id}" >Create Suite Group</tag:workflow-element>
+                            <tag:workflow-element icon="create" link="../grid/create-suite-group?taskId=${task.id}" >Create Suite Group</tag:workflow-element>
                         </c:if>
                         <c:if test="${group!=null }">
-                            <tag:workflow-element icon="edit" link="../test-run-manager/edit-suite-group?groupId=${group.id}" >Edit Suite Group</tag:workflow-element>
-                            <tag:workflow-element icon="delete" link="../test-run-manager/delete-suite-group?groupId=${group.id}" onclick="if(confirm('Are you sure you want to delete this group'))return true; else return false;">Delete Suite Group</tag:workflow-element>
+                            <tag:workflow-element icon="edit" link="../grid/edit-suite-group?groupId=${group.id}" >Edit Suite Group</tag:workflow-element>
+                            <tag:workflow-element icon="delete" link="../grid/delete-suite-group?groupId=${group.id}" onclick="if(confirm('Are you sure you want to delete this group'))return true; else return false;">Delete Suite Group</tag:workflow-element>
                         </c:if>
                     </tag:workflow-panel>
                     
                     <tag:workflow-panel title="Suite Actions" width="100%" id="workflow_SuiteActions">
                         <c:choose>
                             <c:when test="${group!=null }">
-                                <tag:workflow-element icon="suite" link="../test-run-manager/create-suite?taskId=${task.id}&groupId=${group.id}" >Create Suite</tag:workflow-element>
+                                <tag:workflow-element icon="suite" link="../grid/create-suite?taskId=${task.id}&groupId=${group.id}" >Create Suite</tag:workflow-element>
                             </c:when>
                             <c:otherwise>
-                                <tag:workflow-element icon="suite" link="../test-run-manager/create-suite?taskId=${task.id}" >Create Suite</tag:workflow-element>
+                                <tag:workflow-element icon="suite" link="../grid/create-suite?taskId=${task.id}" >Create Suite</tag:workflow-element>
                             </c:otherwise>
                         </c:choose>
                         
@@ -59,11 +59,11 @@
                         tree.enableDragAndDrop(0);
                         tree.enableTreeLines(true);
                         tree.enableCheckBoxes(1);
-                        tree.setXMLAutoLoading("../test-run-manager/ajax-suite-search");
+                        tree.setXMLAutoLoading("../grid/ajax-suite-search");
                         
                         var d = new Date();
                         var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
-                        tree.loadXML("../test-run-manager/ajax-suite-search?id=mytasks0&tmstp="+str);
+                        tree.loadXML("../grid/ajax-suite-search?id=mytasks0&tmstp="+str);
 
                         tree.attachEvent("onSelect", onTreeElementSelect);
                     }
@@ -97,11 +97,11 @@
                     	treeTaskDependencies.enableDragAndDrop(0);
                     	treeTaskDependencies.enableTreeLines(true);
                     	treeTaskDependencies.enableCheckBoxes(1);
-                    	treeTaskDependencies.setXMLAutoLoading("../test-run-manager/ajax-task-search");
+                    	treeTaskDependencies.setXMLAutoLoading("../grid/ajax-task-search");
                         
                         var d = new Date();
                         var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
-                        treeTaskDependencies.loadXML("../test-run-manager/ajax-task-search?id=0&tmstp="+str);
+                        treeTaskDependencies.loadXML("../grid/ajax-task-search?id=0&tmstp="+str);
                     }
                     
                     function openTaskDependenciesDialog()
@@ -121,7 +121,7 @@
                     }
                     
                     </script>
-                    <form name="copySuites" action="../test-run-manager/copy-suites" method="post">
+                    <form name="copySuites" action="../grid/copy-suites" method="post">
                         <input type="hidden" name="taskId" value=""/>
                         <c:choose>
                             <c:when test="${group!=null }">
@@ -136,7 +136,7 @@
                     </form>
                     
                     
-                    <form name="addDependencies" action="../test-run-manager/add-task-dependencies" method="post">
+                    <form name="addDependencies" action="../grid/add-task-dependencies" method="post">
                         <input type="hidden" name="taskId" value=""/>
                         <input type="hidden" name="refTaskIds" value=""/>
                     </form>

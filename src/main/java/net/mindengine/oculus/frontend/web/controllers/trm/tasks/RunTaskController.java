@@ -311,10 +311,10 @@ public class RunTaskController extends SecureSimpleViewController {
 		    }
 			
 			if ("on".equals(request.getParameter("useScheduler"))) {
-                return new ModelAndView(new RedirectView("../test-run-manager/scheduler"));
+                return new ModelAndView(new RedirectView("../grid/scheduler"));
             }
             else {
-                return new ModelAndView(new RedirectView("../test-run-manager/my-active-tasks"));
+                return new ModelAndView(new RedirectView("../grid/my-active-tasks"));
             }
 		}
 		else if (submit.equals("Export Task")) {
