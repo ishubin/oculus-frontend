@@ -139,6 +139,7 @@
     
     <bean name="/agents" class="net.mindengine.oculus.frontend.web.controllers.trm.agent.AgentsDisplayController">
         <property name="config" ref="oculusConfig"/>
+        <property name="agentTagRulesContainer" ref="agentTagRulesContainer"/>
         <property name="view" value="trm-agents"/>
         <property name="authorizationCheck" value="true"/>
     </bean>

@@ -8,9 +8,6 @@ import net.mindengine.jeremy.registry.Lookup;
 import net.mindengine.oculus.grid.GridUtils;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * This class is an entry point to Oculus configuration file. It could also be
  * used to obtain the remote instance of the {@link TRMServer}
@@ -19,11 +16,10 @@ import org.apache.commons.logging.LogFactory;
  * 
  */
 public class Config {
-	private Log logger = LogFactory.getLog(getClass());
-
+	
 	/**
 	 * Used as a Java bean property for specifiying the oculus path from
-	 * <b>applicationContext.xml</b>
+	 * applicationContext.xml
 	 */
 	private File file;
 	private String dataFolder;

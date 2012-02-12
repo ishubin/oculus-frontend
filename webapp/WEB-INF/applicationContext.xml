@@ -15,6 +15,10 @@
     	<property name="file" value="oculus.properties"/>
     </bean>
     
+    <bean id="agentTagRulesContainer" class="net.mindengine.oculus.frontend.service.trm.AgentTagRulesContainer">
+    	<property name="file" value="agent.tags.rules"/>
+    </bean>
+    
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

@@ -33,10 +33,23 @@
 		    <c:if test="${agent.agentInformation.tags!=null}">
 		    <tr>
 		    	<td colspan="2">
-		    		<b>Tags: </b>
-		    		<c:forEach items="${agent.agentInformation.tags }" var="tag" varStatus="tagStatus">
-		    			<c:if test="${!tagStatus.first}">, </c:if>
-		    			<tag:escape text="${tag}"/>
+		    		<c:forEach items="${agent.agentInformation.tags }" var="tag">
+		    			<p>
+		    			<b><tag:escape text="${tag.name}"/>: </b>
+		    			<c:choose>
+		    				<c:when test="${tag.type=='string'}">
+		    					<c:if test="${tag.wrappedValue.iconImage!=null}"><img src="${tag.wrappedValue.iconImage}"/></c:if>
+		    					<tag:escape text="${tag.wrappedValue.value}"/>
+		    				</c:when>
+		    				<c:when test="${tag.type=='list'}">
+		    					<c:forEach items="${tag.wrappedValues}" var="tagItem" varStatus="tagItemStatus">
+		    						<c:if test="${!tagItemStatus.first }">, </c:if>
+		    						<c:if test="${tagItem.iconImage!=null}"><img src="${tagItem.iconImage}"/></c:if>
+		    						<tag:escape text="${tagItem.value}"/>
+		    					</c:forEach>
+		    				</c:when>
+		    			</c:choose>
+		    			</p>
 		    		</c:forEach>
 		    	</td>
 		    </tr>

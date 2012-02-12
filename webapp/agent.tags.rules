@@ -1,0 +1,10 @@
+OS/Linux.*=../images/agent-tags/os-linux.png
+OS/Windows.*=../images/agent-tags/os-windows.png
+OS/Mac.*=../images/agent-tags/os-mac.png
+
+Browser.*/Firefox.*=../images/agent-tags/browser-firefox.png
+Browser.*/IE.*=../images/agent-tags/browser-ie.png
+Browser.*/Internet Explorer.*=../images/agent-tags/browser-ie.png
+Browser.*/Chrome.*=../images/agent-tags/browser-chrome.png
+Browser.*/Safari.*=../images/agent-tags/browser-safari.png
+Browser.*/Opera.*=../images/agent-tags/browser-opera.png
