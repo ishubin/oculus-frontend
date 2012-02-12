@@ -179,8 +179,11 @@
                                 test.tableShortRowElement = tr;
                             }
                             function renderShortTestLayout(test) {
+                                var trDescription = "";
+                                if(test.testRunDescription!=null){
+                                    trDescription = test.testRunDescription;
+                                }
                                 var str="";
-
                                 var icon = "iconTest.png";
                                 if(test.tests!=null) {
                                 	icon = "iconTestGroupCustom.png";
@@ -189,7 +192,7 @@
                                 str+= "<div id=\"divIconShortTC"+test.customId+"\" class=\"disclosure-icon-close\" style=\"float:left;\"></div>";
                                 str+= "<img style=\"float: left;\" src=\"../images/"+ icon +"\">";
                                 
-                                str+= "<b>"+escapeHTML(test.name)+"</b>";
+                                str+= "<b>"+escapeHTML(test.name)+"</b> " + escapeHTML(trDescription);
                                 str+= "</a>";
                                 str+= "<div id=\"divTestShortContent"+test.customId+"\" style=\"display:none;padding-left:10px\">";
                                 if(test.inputParameters!=null && test.inputParameters.length>0) {
@@ -360,17 +363,14 @@
                             * Generates div element with test layout view 
                             */
                             function renderTest(test, isChild) {
-                            	
-                                var id = test.customId;
-                                var trDescriptionLayout = "<span id='testRunDescription_"+test.customId+"' style='color:#999999;font-weight:normal;'> "+escapeHTML(trDescription)+" </span>";
-                                var str = "";
-                                
                                 var trDescription = "";
-
                                 if(test.testRunDescription!=null){
                                     trDescription = test.testRunDescription;
                                 }
-                                
+                                var id = test.customId;
+                                var trDescriptionLayout = "<span id='testRunDescription_"+test.customId+"' style='color:#999999;font-weight:normal;'> "+escapeHTML(trDescription)+" </span>";
+                                var str = "";
+                                                                
                                 var displayContent = "none";
                                 var disclosureIcon = "disclosure-icon-close";
                                 var testLayoutClassName="test-layout";
@@ -504,10 +504,18 @@
                                 var parentTest = findParentForCustomId(prerTest.customId);
                                 var parentTitle = "";
                                 if(parentTest!=null) {
-                                	parentTitle = "<b>"+escapeHTML(parentTest.name)+"</b> -&gt; ";
+                                	var parentDescription = "";
+                                	if(parentTest.testRunDescription != null) {
+                                		parentDescription = parentTest.testRunDescription;
+                                	}
+                                	parentTitle = "<b>"+escapeHTML(parentTest.name)+"</b> " + escapeHTML(parentDescription) + " -&gt; ";
                                 }
                                 
-                                var html = parentTitle + "<b>"+escapeHTML(prerTest.name)+"</b> -&gt; "+escapeHTML(prerParameterName);
+                                var description = "";
+                                if(prerTest.testRunDescription != null){
+                                    description = prerTest.testRunDescription;
+                                }
+                                var html = parentTitle + "<b>"+escapeHTML(prerTest.name)+"</b> " + escapeHTML(description) + " -&gt; <b>" + escapeHTML(prerParameterName) + "</b>";
                                 html+=" <a href=\"javascript:removeParameterLink('"+test.customId+"',"+parameter.id+");\"><img src=\"../images/button-close-2.png\"/></a>";
                                 
                                 var divPC = document.getElementById("divTest_"+test.customId+"_Parameter_"+parameter.id+"_Control");
@@ -763,9 +771,7 @@
                                             var textarea = document.getElementById("bigEditorTextarea");
                                             var text = textarea.value;
                                             this.test.testRunDescription = text;
-                                            var el = document.getElementById("testRunDescription_"+this.testCustomId);
-                                            
-                                            el.innerHTML = escapeHTML(text);
+                                            $("#testRunDescription_"+this.testCustomId).html(escapeHTML(text));
                                             closePopup("divBigEditor");
                                         }
                                  };

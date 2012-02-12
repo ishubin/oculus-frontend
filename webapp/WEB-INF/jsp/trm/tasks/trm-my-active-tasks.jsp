@@ -25,7 +25,7 @@ $(document).ready(function() {
         url: '../test-run-manager/ajax-my-active-tasks',
         datatype: "xml",
         mtype: "GET",
-        colNames:["id","Name","Created", "Completed", "Progress","Status","Report","Operations"],
+        colNames:["id","Name","Created", "Completed", "Progress","Status","Report","Actions"],
         colModel:[
              {name:'id',index:'id', width:1,hidden:true,key:true},
              {name:'name',index:'name', width:180, formatter:nameFormatter},

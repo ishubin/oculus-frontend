@@ -206,10 +206,12 @@ public class RunTaskController extends SecureSimpleViewController {
 	 * @throws Exception 
 	 */
 	public void fillTestDefinition(TestDefinition td, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
-	    Test test = fetchTest(td.getTestId(), cashedTests, cashedProjectPath);
-	    td.setMapping(test.getMapping());
-	    td.setProject(test.getParentProjectPath());
-	    td.setName(test.getName());
+	    if(td.getTestId() != null) {
+	        Test test = fetchTest(td.getTestId(), cashedTests, cashedProjectPath);
+	        td.setMapping(test.getMapping());
+	        td.setProject(test.getParentProjectPath());
+	        td.setName(test.getName());
+	    }
 	}
 
 	/**

@@ -180,47 +180,63 @@ public class TrmSuite implements Serializable {
 
 		JSONArray tests = (JSONArray) parser.nextValue();
 		for (JSONValue value : tests.getValue()) {
-			JSONObject test = (JSONObject) value;
-			TestDefinition td = new TestDefinition();
-			td.setCustomId(JSONUtils.readString(test.get("customId")));
-			td.setTestId(JSONUtils.readInteger(test.get("id")));
-			
-			if(test.containsKey("testRunDescription")){
-			    td.setDescription(JSONUtils.readString(test.get("testRunDescription")));
-			}
-			
-			// Generating parameters injections
-			JSONArray inputParameters = (JSONArray) test.get("inputParameters");
-			for (JSONValue jsParameter : inputParameters.getValue()) {
-				JSONObject parameter = (JSONObject) jsParameter;
-				JSONValue jsDepends = parameter.get("depends");
-				if (jsDepends == null || jsDepends.isNull()) {
-					// Creating parameter value injection
-					if (td.getParameters() == null) {
-						td.setParameters(new HashMap<String, TestParameter>());
-					}
-					TestParameter testParameter = new TestParameter();
-					testParameter.setName(JSONUtils.readString(parameter.get("name")));
-					testParameter.setValue(JSONUtils.readString(parameter.get("value")));
-					td.getParameters().put(testParameter.getName(), testParameter);
-				}
-				else {
-					// Creating parameter dependency
-					JSONObject depends = (JSONObject) jsDepends;
-					if (td.getDependencies() == null)
-					    
-						td.setParameterDependencies(new ArrayList<TestDependency>());
-					TestDependency testDependency = new TestDependency();
-					testDependency.setRefTestId(JSONUtils.readString(depends.get("testCustomId")));
-					testDependency.setRefParameterName(JSONUtils.readString(depends.get("parameterName")));
-					testDependency.setDependentParameterName(JSONUtils.readString(parameter.get("name")));
-					td.getParameterDependencies().add(testDependency);
-				}
-			}
-			suite.addTest(td);
+			JSONObject testObject = (JSONObject) value;
+			suite.addTest(readTestFromJsonValue(testObject));
 		}
 
 		return suite;
+	}
+	
+	private static TestDefinition readTestFromJsonValue(JSONObject test) {
+        TestDefinition td = new TestDefinition();
+        td.setCustomId(JSONUtils.readString(test.get("customId")));
+        if(test.containsKey("id")) {
+            td.setTestId(JSONUtils.readInteger(test.get("id")));
+        }
+        if(test.containsKey("testRunDescription")){
+            td.setDescription(JSONUtils.readString(test.get("testRunDescription")));
+        }
+        if(test.containsKey("tests")) {
+            List<TestDefinition> injectedTests = new LinkedList<TestDefinition>();
+            JSONArray childTests = (JSONArray)test.get("tests");
+            for (JSONValue value : childTests.getValue()) {
+                JSONObject childTestObject = (JSONObject) value;
+                injectedTests.add(readTestFromJsonValue(childTestObject));
+            }
+            td.setInjectedTests(injectedTests);
+        }
+        
+        // Generating parameters injections
+        JSONArray inputParameters = (JSONArray) test.get("inputParameters");
+        if(inputParameters != null) {
+            for (JSONValue jsParameter : inputParameters.getValue()) {
+                JSONObject parameter = (JSONObject) jsParameter;
+                JSONValue jsDepends = parameter.get("depends");
+                if (jsDepends == null || jsDepends.isNull()) {
+                    // Creating parameter value injection
+                    if (td.getParameters() == null) {
+                        td.setParameters(new HashMap<String, TestParameter>());
+                    }
+                    TestParameter testParameter = new TestParameter();
+                    testParameter.setName(JSONUtils.readString(parameter.get("name")));
+                    testParameter.setValue(JSONUtils.readString(parameter.get("value")));
+                    td.getParameters().put(testParameter.getName(), testParameter);
+                }
+                else {
+                    // Creating parameter dependency
+                    JSONObject depends = (JSONObject) jsDepends;
+                    if (td.getDependencies() == null){
+                        td.setParameterDependencies(new ArrayList<TestDependency>());
+                    }
+                    TestDependency testDependency = new TestDependency();
+                    testDependency.setRefTestId(JSONUtils.readString(depends.get("testCustomId")));
+                    testDependency.setRefParameterName(JSONUtils.readString(depends.get("parameterName")));
+                    testDependency.setDependentParameterName(JSONUtils.readString(parameter.get("name")));
+                    td.getParameterDependencies().add(testDependency);
+                }
+            }
+        }
+        return td;
 	}
 	
 	
