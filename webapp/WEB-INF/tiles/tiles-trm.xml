@@ -65,7 +65,7 @@
     <definition name="trm-run-task" extends="html-container">
         <put name="left-panel" type="page" value="/WEB-INF/jsp/trm/tasks/trm-run-task-left-panel.jsp"/>
         <put name="content" value="/WEB-INF/jsp/trm/tasks/trm-run-task.jsp" type="page"/>
-        <put name="right-panel" value="" type="string"/>
+        <put name="right-panel" value="/WEB-INF/jsp/trm/tasks/trm-run-task-right-panel.jsp" type="page"/>
     </definition>
     
     <definition name="trm-run-task-error-groups" extends="html-container">

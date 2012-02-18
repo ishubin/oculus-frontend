@@ -542,7 +542,6 @@ div.table-header-column:hover ul{
 a.pick-button, a.pick-button:ACTIVE, a.pick-button:VISITED{
 	vertical-align:middle;
     color: #2779AA;
-    background: white;
     padding:4px;
     border:1px solid #AED0EA;
     -moz-border-radius: 6px;
@@ -574,9 +573,6 @@ select.small-select{
 }
 
 
-
-
-
 .panel-dashboard{
     display:inline-block;
     padding:5px;
@@ -590,8 +586,6 @@ select.small-select{
     -webkit-box-shadow: 6px 6px 6px #ccc;
     box-shadow: 6px 6px 6px #ccc;
 }
-
-
 
 
 table.project-layout:hover .project-layout-corner-1{
@@ -680,4 +674,9 @@ div.tooltip{
 }
 .context-menu-list .icon-close-column{
 	background: url('images/workflow-icon-delete.png') no-repeat;
+}
+
+
+input.custom-button-text {
+	font-size:9pt;
 }

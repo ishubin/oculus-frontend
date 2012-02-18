@@ -422,8 +422,7 @@ function onReportRowClick(rowId)
 </script>
 
 
-            
-Search Results: <b>${searchResult.numberOfResults}</b><br/><br/>
+Search Results: <b>${searchResult.numberOfResults}</b><br/>
 <tag:pagination pageLimitArray="${reportSearchFilter.pageLimitArray}" 
     numberOfResults="${searchResult.numberOfResults}" 
     onPageScript="onPageClick" 

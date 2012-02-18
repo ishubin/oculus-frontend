@@ -1,7 +1,6 @@
 package net.mindengine.oculus.frontend.web.controllers.trm.tasks;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +27,7 @@ import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.test.TestDAO;
+import net.mindengine.oculus.frontend.service.trm.AgentTagRulesContainer;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
 import net.mindengine.oculus.frontend.utils.FileUtils;
 import net.mindengine.oculus.frontend.web.Session;
@@ -56,6 +56,7 @@ public class RunTaskController extends SecureSimpleViewController {
 	private TestDAO testDAO;
 	private Config config;
 	private ProjectDAO projectDAO;
+	private AgentTagRulesContainer agentTagRulesContainer;
 	private Log logger = LogFactory.getLog(getClass());
 
 	/**
@@ -246,9 +247,6 @@ public class RunTaskController extends SecureSimpleViewController {
 		if (task == null)
 			throw new UnexistentResource("The task doesn't exist");
 
-		
-		//TODO Fetch all tasks from dependencies and order them by dependency
-		//TODO For each task fetch related parameters
 		Collection<TrmTask> tasks = new LinkedList<TrmTask>();
 		tasks.add(task);
 		tasks.addAll(trmDAO.getDependentTasks(taskId));
@@ -264,21 +262,6 @@ public class RunTaskController extends SecureSimpleViewController {
 		if (submit == null) {
 			map.put("task", task);
 			map.put("tasks", tasks);
-			
-			String[] dayHours = new String[24];
-			for (int i = 0; i < 24; i++) {
-				dayHours[i] = "" + i;
-			}
-			List<String> weekDays = new ArrayList<String>();
-			weekDays.add("Sunday");
-			weekDays.add("Monday");
-			weekDays.add("Tuesday");
-			weekDays.add("Wednesday");
-			weekDays.add("Thursday");
-			weekDays.add("Friday");
-			weekDays.add("Saturday");
-			map.put("weekDays", weekDays);
-			map.put("dayHours", dayHours);
 			
 			/*
 	         * Checking the connection with the TRMServer.
@@ -296,8 +279,10 @@ public class RunTaskController extends SecureSimpleViewController {
 			 * Fetching all available agents
 			 */
 			AgentStatus[] agents = server.getAgents();
+			agentTagRulesContainer.wrapAgentTags(agents);
 			map.put("agents", agents);
 			map.put("agentsCount", agents.length);
+			map.put("agentTags", agentTagRulesContainer.fetchAllAgentWrappedTags(agents));
 			
 			ModelAndView mav = new ModelAndView("trm-run-task", map);
 			return mav;
@@ -424,5 +409,15 @@ public class RunTaskController extends SecureSimpleViewController {
 
     public void setTestDAO(TestDAO testDAO) {
         this.testDAO = testDAO;
+    }
+
+
+    public AgentTagRulesContainer getAgentTagRulesContainer() {
+        return agentTagRulesContainer;
+    }
+
+
+    public void setAgentTagRulesContainer(AgentTagRulesContainer agentTagRulesContainer) {
+        this.agentTagRulesContainer = agentTagRulesContainer;
     }
 }

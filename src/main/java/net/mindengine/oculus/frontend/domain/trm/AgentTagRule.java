@@ -7,6 +7,9 @@ public class AgentTagRule {
     private Pattern pattern;
     private String imageUrl;
     
+    //If specified as null then image size will not be applied, meaning that image will be shown as is.
+    private Dimension imageSize;
+    
     public String getImageUrl() {
         return imageUrl;
     }
@@ -18,6 +21,12 @@ public class AgentTagRule {
     }
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
+    }
+    public Dimension getImageSize() {
+        return imageSize;
+    }
+    public void setImageSize(Dimension imageSize) {
+        this.imageSize = imageSize;
     }
 
 }

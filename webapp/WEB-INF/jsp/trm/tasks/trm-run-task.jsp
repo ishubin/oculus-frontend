@@ -1,3 +1,7 @@
+<%@page import="java.io.StringWriter"%>
+<%@page import="org.codehaus.jackson.map.ObjectMapper"%>
+<%@page import="net.mindengine.oculus.frontend.utils.JSONUtils"%>
+<%@page import="net.mindengine.oculus.grid.domain.agent.AgentStatus"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmProperty"%>
 <%@page import="java.util.Map"%>
@@ -25,9 +29,136 @@
     
 </div>
 
+<script>
+
+<%
+AgentStatus[] agents = (AgentStatus[])pageContext.findAttribute("agents");
+ObjectMapper mapper = new ObjectMapper();
+out.print("var agents = ");
+StringWriter writer = new StringWriter();
+mapper.writeValue(writer, agents);
+out.print(writer.getBuffer());
+out.println(";");
+%>
+
+function findAgentByName(name) {
+	for(var i=0; i<agents.length; i++) {
+		if(agents[i].agentInformation.name == name) {
+			return agents[i];
+		}
+	}
+	return null;
+}
+function containsAgentTag(agent, tagName) {
+	var tags = agent.agentInformation.tags;
+	
+	for(var i=0; i<tags.length; i++) {
+		if(tags[i].type == "string") {
+			if(tags[i].wrappedValue.value.toLowerCase() == tagName.toLowerCase()) {
+				return true;
+			}
+		}
+		else if(tags[i].type == "list") {
+			for(var j=0; j<tags[i].wrappedValues.length; j++) {
+				if(tags[i].wrappedValues[j].value.toLowerCase() == tagName.toLowerCase()) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+} 
 
 
-<script language="javascript">
+var agentFilter = {
+	selectedTags:[],
+	agentNames:[],
+	
+	selectTag: function (tag) {
+		if(!this.isTagSelected(tag)) {
+			this.selectedTags[this.selectedTags.length] = tag;
+			this.updateAgentsLayout();
+			this.updateSelectedTagsLayout();
+		}
+	},
+	
+	isTagSelected: function (tag) {
+		for( var i=0; i<this.selectedTags.length; i++) {
+			if(this.selectedTags[i].toLowerCase() == tag.toLowerCase()) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	removeSelectedTag: function (tag) {
+		for( var i=0; i<this.selectedTags.length; i++) {
+			if(this.selectedTags[i].toLowerCase() == tag.toLowerCase()) {
+				this.selectedTags.splice(i, 1);
+			}
+		}
+		this.updateAgentsLayout();
+		this.updateSelectedTagsLayout();
+	},
+	
+	updateAgentsLayout: function() {
+		this.agentNames = [];
+		
+		$(".run-task-agent-layout").each(function(index){
+			var agentName = $(this).attr("agent-name");
+			var agent = findAgentByName(agentName);
+			if(agent!=null) {
+				var tags = agentFilter.selectedTags;
+				var showAgent = true;
+				for (var i=0; i<tags.length; i++) {
+					if(!containsAgentTag(agent, tags[i])) {
+						showAgent = false;
+						break;
+					}
+				}
+				if(showAgent) {
+					$(this).show();
+					agentFilter.agentNames[agentFilter.agentNames.length] = agentName;  
+				}
+				else {
+					$(this).hide();
+				}
+			}
+		});
+	},
+	
+	updateSelectedTagsLayout: function () {
+		$(".agent-selected-tag-layout").each(function(index){
+			var tag = $(this).attr("agent-tag");
+			if(agentFilter.isTagSelected(tag)) {
+				$(this).show();
+			}
+			else {
+				$(this).hide();
+			}
+		});
+	}
+};
+
+
+$(document).ready(function () {
+	$('.agent-tag-click-add').click(function (){
+		var tag = $(this).attr('agent-tag');
+    	agentFilter.selectTag(tag);
+    	return false;
+    });
+	
+	$('.agent-tag-click-remove').click(function (){
+		var tag = $(this).attr('agent-tag');
+    	agentFilter.removeSelectedTag(tag);
+    	return false;
+    });
+});
+
+</script>
+
+
+<script>
 var pickBuild_taskId = null;
 var pickBuild_projectId = null;
 function onPickBuildClick(taskId, projectId)
@@ -166,8 +297,19 @@ function onUseSchedulerClick(checkbox)
 }
 
 function submitRunTask(){
-	document.forms.formTasks.Submit.value = "Run Task";
-	document.forms.formTasks.submit();
+	if(agentFilter.agentNames.length>0) {
+		var str = "";
+		for(var i=0; i<agentFilter.agentNames.length; i++) {
+			if(i>0)str+=",";
+			str+=agentFilter.agentNames[i];
+		}
+		
+		document.forms.formTasks.selectedAgents.value = str;
+		document.forms.formTasks.Submit.value = "Run Task";
+		document.forms.formTasks.submit();	
+	}
+	else alert("There are no agents that match your filter");
+	
 }
 function submitExportTask(){
 	document.forms.formTasks.Submit.value = "Export Task";
@@ -195,112 +337,68 @@ function submitExportTask(){
 </div>
 <form method="post" name="formTasks">
     <input type="hidden" name="Submit" value="Run Task"/>
+    <input type="hidden" name="selectedAgents" value=""/>
     
-    <input type="hidden" id="agentsCount" name="agentsCount" value="${agentsCount}"/>
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100px">
-        <c:forEach items="${tasks}" var="task" varStatus="taskVarStatus">
-            <tr>
-                <td width="50%">
-                    <tag:panel align="left" title="${task.name}" width="100%" height="100%" logo="../images/workflow-icon-task.png">
-                        <table border="0" width="100%" cellpadding="0px" cellspacing="0px">
-                            <tr>
-                                <td valign="top" align="left">
-                                    <div class="small-description">
-                                        ${task.description}
-                                    </div>
-                                    <br/>
-                                    <tag:panel-border title="Parameters" align="left" width="100%">
-                                        <table border="0" cellpadding="5px" cellspacing="0px">
-                                            <tr>
-                                                <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
-                                                <td>
-                                                    <input type="hidden" name="task_${task.id}_build" id="task_${task.id}_build_control" value="Current Version"/>
-                                                    <div style="width:134px;height:19px;margin-bottom:5px;">
-                                                      <a class="pick-button" id="linkPickBuild_task_${task.id}" href="javascript:onPickBuildClick('${task.id}',${task.projectId});">Current Version</a>
-                                                    </div> 
-                                                    
-                                                </td>
-                                            </tr>
-                                            <c:forEach items="${task.parameters}" var="parameter">
-                                            <tr>
-                                                <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
-                                                <td>
-                                                <c:choose>
-                                                    <c:when test="${parameter.subtype == 'text'}">
-                                                        <tag:edit-field-simple name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
-                                                    </c:when>
-                                                    <c:when test="${parameter.subtype == 'list'}">
-                                                        <select name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}" style="width:100%;">
-                                                            <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
-                                                                <option value="${possibleValue}">${possibleValue}</option>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </c:when>
-                                                    <c:when test="${parameter.subtype == 'checkbox'}">
-                                                        <input type="checkbox" name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
-                                                    </c:when>
-                                                    <c:otherwise>Undefined Control</c:otherwise>
-                                                </c:choose>
-                                                </td>
-                                            </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </tag:panel-border>
-                                    <br/>
-                                </td>
-                            </tr>
-                        </table>
-                    </tag:panel>
-                </td>
-                <td valign="middle" width="50px">
-                    <img src="../images/arrow-blue.png"/>
-                </td>
-                <td width="50%">
-                    <tag:panel align="left" title="Available Agents" width="100%" height="100%" id="availableAganetsFor_${task.id}">
-                        <c:choose>
-                            <c:when test="${agentsCount>0}">
-                                <input type="checkbox"  onchange="onChangeCheckboxChooseAgents(this,${agentsCount},'${task.id}');" name="task_${task.id}_choose_agents" id="task_${task.id}_choose_agents"/>
-                                <label for="task_${task.id}_choose_agents">Choose Agents</label>
-                                <div id="divTask_${task.id}_agents" class="element-low-opacity">
-                                    <tag:table columns=" ,Name,Status" width="100%">
-                                        <c:forEach items="${agents}" var="agent" varStatus="agentVarStatus">
-                                            <tag:table-row>
-                                                <tag:table-cell width="40px">
-                                                    <input type="checkbox" id="task_${task.id}_agent_chk_${agentVarStatus.index}" name="task_${task.id}_agent_chk_${agentVarStatus.index}" checked="checked" disabled="disabled"/>
-                                                    <input type="hidden" name="task_${task.id}_agent_name_${agentVarStatus.index}" value="${agent.agentInformation.name}"/>
-                                                </tag:table-cell>
-                                                <tag:table-cell>
-                                                    ${agent.agentInformation.name}
-                                                </tag:table-cell>
-                                                <tag:table-cell width="70px">
-                                                    <c:choose>
-                                                        <c:when test="${agent.state==1}">
-                                                            <div style="color:#009900;">Free</div>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <div style="color:#990000;">Busy</div>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </tag:table-cell>
-                                            </tag:table-row>
-                                        </c:forEach>
-                                    </tag:table>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="small-description">
-                                    No agents available
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-                    </tag:panel>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" height="30px">
-                    <p></p>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
+    
+    <c:forEach items="${tasks}" var="task" varStatus="taskVarStatus">
+       <tag:panel align="left" title="${task.name}" width="100%" height="100%" logo="../images/workflow-icon-task.png">
+           <table border="0" width="100%" cellpadding="0px" cellspacing="0px">
+               <tr>
+                   <td valign="top" align="left">
+                       <div class="small-description">
+                           ${task.description}
+                       </div>
+                       <br/>
+                       <tag:panel-border title="Parameters" align="left" width="100%">
+                           <table border="0" cellpadding="5px" cellspacing="0px">
+                               <tr>
+                                   <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
+                                   <td>
+                                       <input type="hidden" name="task_${task.id}_build" id="task_${task.id}_build_control" value="Current Version"/>
+                                       <div style="width:134px;height:19px;margin-bottom:5px;">
+                                         <a class="pick-button" id="linkPickBuild_task_${task.id}" href="javascript:onPickBuildClick('${task.id}',${task.projectId});">Current Version</a>
+                                       </div> 
+                                       
+                                   </td>
+                               </tr>
+                               <c:forEach items="${task.parameters}" var="parameter">
+                               <tr>
+                                   <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
+                                   <td>
+                                   <c:choose>
+                                       <c:when test="${parameter.subtype == 'text'}">
+                                           <tag:edit-field-simple name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
+                                       </c:when>
+                                       <c:when test="${parameter.subtype == 'list'}">
+                                           <select name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}" style="width:100%;">
+                                               <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
+                                                   <option value="${possibleValue}">${possibleValue}</option>
+                                               </c:forEach>
+                                           </select>
+                                       </c:when>
+                                       <c:when test="${parameter.subtype == 'checkbox'}">
+                                           <input type="checkbox" name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
+                                       </c:when>
+                                       <c:otherwise>Undefined Control</c:otherwise>
+                                   </c:choose>
+                                   </td>
+                               </tr>
+                               </c:forEach>
+                           </table>
+                       </tag:panel-border>
+                       <br/>
+                   </td>
+               </tr>
+           </table>
+       </tag:panel>
+       <br/>
+    </c:forEach>
+    
+    <h2>Agents:</h2>
+    
+	<c:forEach items="${agents}" var="agent">
+		<div class="run-task-agent-layout" agent-name="${agent.agentInformation.name}">
+	    	<tag:agent-layout agent="${agent}"/>
+	    </div>
+	</c:forEach>
 </form>

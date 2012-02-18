@@ -212,12 +212,12 @@ label {
 
 
 .small-description, a span.small-description{
-	font-size:8pt;
+	font-size:10pt;
 	color:#444444;
 	font-family: tahoma,verdana,helvetica;
 }
 .small-description a, .small-description a:ACTIVE, .small-description a:VISITED {
-    font-size:8pt;
+    font-size:10pt;
     color: #444444;
     font-weight: normal;
     text-decoration:none;
@@ -366,7 +366,7 @@ ul.workflow-list li.workflow-item a.workflow-panel-link{
     text-decoration: none;
     display: block;
 	margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -380,7 +380,7 @@ ul.workflow-list li.workflow-item a.workflow-panel-link{
     text-decoration: none;
     display: block;
     margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -395,7 +395,7 @@ a.small-button-close{
     text-decoration: none;
     display: block;
     margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -412,7 +412,7 @@ a.small-button-maximize{
     text-decoration: none;
     display: block;
     margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -429,7 +429,7 @@ a.small-button-minimize{
     text-decoration: none;
     display: block;
     margin:0px;
-    font-size:8pt;
+    font-size:10pt;
     white-space:nowrap;
     outline-color:invert;
     outline-style:none;
@@ -584,7 +584,7 @@ table.customization-possible-values thead td{
 
 
 #reportBody td.table-body-cell a{
-	font-size:8pt;
+	font-size:10pt;
 	color:black;
 }
 #reportBody td.table-body-cell a:hover{
@@ -1030,7 +1030,7 @@ tr.test-input-parameter-table:hover a.test-input-parameter-link{
 
 
 input.small-textfield{
-	font-size:8pt;
+	font-size:10pt;
 	border:1px solid black;
 	background:#ffffff;
 	height:18px;
@@ -1038,7 +1038,7 @@ input.small-textfield{
 }
 
 select.small-dropdown{
-    font-size:8pt;
+    font-size:10pt;
     border:1px solid black;
     background:#ffffff;
     height:18px;
@@ -1334,3 +1334,45 @@ ul.pick-button-list li a:hover {
     border-radius: 5px 5px 5px 5px;
 }
 
+
+/* Agents layout */
+div.grid-agent-layout {
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	display:block;
+	padding:10px;
+	border:1px solid #aaa;
+	background:#f0f0f0;
+	-moz-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
+    box-shadow: 2px 2px 2px #ccc;
+}
+
+.agent-tag {
+	white-space:nowrap;
+	padding:3px;
+	width:100px;
+	color: #2779AA;
+    padding:4px;
+    border:1px solid #AED0EA;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background:#D7EBF9;
+    -moz-box-shadow: 2px 2px 2px #ddd;
+    -webkit-box-shadow: 2px 2px 2px #ddd;
+    box-shadow: 2px 2px 2px #ddd;
+}
+.agent-tag span {
+	color:#2779AA;
+	white-space:nowrap;
+}
+.agent-tag:hover {
+	background:#e7fBFf;
+	-moz-box-shadow: 0px 0px 2px #ddd;
+    -webkit-box-shadow: 0px 0px 2px #ddd;
+    box-shadow: 0px 0px 2px #ddd;
+}

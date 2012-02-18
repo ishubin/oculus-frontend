@@ -93,6 +93,7 @@
         <property name="testDAO" ref="testDAO"/>
         <property name="projectDAO" ref="projectDAO"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="agentTagRulesContainer" ref="agentTagRulesContainer"/>
     </bean>
     
     <bean name="/ajax-fetch-tasks" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.AjaxFetchTasks">

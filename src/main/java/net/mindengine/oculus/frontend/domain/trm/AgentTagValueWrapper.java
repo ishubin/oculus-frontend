@@ -10,6 +10,7 @@ public class AgentTagValueWrapper {
 
     private String value;
     private String iconImage;
+    private Dimension iconSize;
     public String getIconImage() {
         return iconImage;
     }
@@ -21,5 +22,11 @@ public class AgentTagValueWrapper {
     }
     public void setValue(String value) {
         this.value = value;
+    }
+    public Dimension getIconSize() {
+        return iconSize;
+    }
+    public void setIconSize(Dimension iconSize) {
+        this.iconSize = iconSize;
     }
 }
