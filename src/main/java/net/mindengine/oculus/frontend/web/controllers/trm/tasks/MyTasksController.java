@@ -25,7 +25,7 @@ public class MyTasksController extends SecureSimpleViewController {
 		User user = session.getAuthorizedUser();
 		if (user == null)
 			throw new NotAuthorizedException();
-		List<TrmTask> tasks = trmDAO.getUserTasks(user.getId());
+		List<TrmTask> tasks = trmDAO.getUserTasks(user.getId(), null);
 		map.put("tasks", tasks);
 		map.put("tasksAmount", tasks.size());
 		return map;

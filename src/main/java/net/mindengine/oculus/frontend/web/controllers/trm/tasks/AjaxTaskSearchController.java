@@ -45,12 +45,18 @@ public class AjaxTaskSearchController extends SecureSimpleViewController {
             User user = getUser(request);
             
             Collection<TrmTask> tasks = null;
+            Long projectId = null;
+            String strProject = request.getParameter("projectId");
+            if(strProject!=null) {
+                projectId = Long.parseLong(strProject);
+            }
+            
             if (rId.equals("mytasks")) {
-                tasks = trmDAO.getUserTasks(user.getId());
+                tasks = trmDAO.getUserTasks(user.getId(), projectId);
                 
             }
             else if (rId.equals("shared")){
-                Collection<User> users = trmDAO.getUsersWithSharedTasks(user.getId());
+                Collection<User> users = trmDAO.getUsersWithSharedTasks(user.getId(), projectId);
                 for(User u : users){
                     w.write("<item text=\"" + XmlUtils.escapeXml(u.getName()) + "\" " + "id=\"u" + u.getId() + "\" " + "im0=\"workflow-icon-user.png\" im1=\"workflow-icon-user.png\" im2=\"workflow-icon-user.png\" child=\"1\" " + " nocheckbox=\"1\" >");
                     w.write("</item>");
@@ -58,7 +64,7 @@ public class AjaxTaskSearchController extends SecureSimpleViewController {
             }
             else if (rId.startsWith("u")) {
                 Long userId = Long.parseLong(rId.substring(1));
-                tasks = trmDAO.getUserSharedTasks(userId);
+                tasks = trmDAO.getUserSharedTasks(userId, projectId);
             }
             
             if(tasks!=null){

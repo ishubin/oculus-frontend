@@ -43,8 +43,14 @@ public class AjaxSuiteSearchController extends SecureSimpleViewController {
 		List<TrmSuiteGroup> groups = null;
 		List<TrmSuite> suites = null;
 		if (rId.startsWith("mytasks")) {
+		    Long projectId = null;
+		    String strProjectId = request.getParameter("projectId");
+		    if(strProjectId!=null) {
+		        projectId = Long.parseLong(strProjectId);
+		    }
+		    
 			// Displaying a list of all user tasks
-			List<TrmTask> tasks = trmDAO.getUserTasks(user.getId());
+			List<TrmTask> tasks = trmDAO.getUserTasks(user.getId(), projectId);
 			for (TrmTask task : tasks) {
 				w.write("<item text=\"" + XmlUtils.escapeXml(task.getName()) + "\" " + "id=\"t" + task.getId() + "\" " + "im0=\"iconTask.png\" im1=\"iconTask.png\" im2=\"iconTask.png\" child=\"1\" " + " nocheckbox=\"1\" >");
 				w.write("</item>");

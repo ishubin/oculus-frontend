@@ -89,10 +89,11 @@ public interface TrmDAO {
 	 * 
 	 * @param userId
 	 *            Id of the current user
+	 * @param projectId 
 	 * @return All user tasks saved in DB
 	 * @throws Exception
 	 */
-	public List<TrmTask> getUserTasks(Long userId) throws Exception;
+	public List<TrmTask> getUserTasks(Long userId, Long projectId) throws Exception;
 
 	/**
 	 * Return the task with the specified id.
@@ -211,18 +212,20 @@ public interface TrmDAO {
 	/**
 	 * Fetches only those users who have shared tasks
 	 * @param exceptUserId Id of user which shouldn't appear in the list.
+	 * @param projectId 
 	 * @return
 	 * @throws Exception
 	 */
-	public Collection<User> getUsersWithSharedTasks(Long exceptUserId) throws Exception;
+	public Collection<User> getUsersWithSharedTasks(Long exceptUserId, Long projectId) throws Exception;
 	
 	/**
 	 * Returns shared tasks only of the specified user
 	 * @param userId
+	 * @param projectId 
 	 * @return
 	 * @throws Exception
 	 */
-	public Collection<TrmTask> getUserSharedTasks(Long userId) throws Exception;
+	public Collection<TrmTask> getUserSharedTasks(Long userId, Long projectId) throws Exception;
 
 	public void removeSuiteGroup(Long groupId) throws Exception;
 	

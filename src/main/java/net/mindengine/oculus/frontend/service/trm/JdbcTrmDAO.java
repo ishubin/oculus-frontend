@@ -109,8 +109,14 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<TrmTask> getUserTasks(Long userId) throws Exception {
-		List<TrmTask> list = (List<TrmTask>) query("select id,name,description,user_id,date from trm_tasks where user_id = :userId order by date desc", TrmTask.class, "userId", userId);
+	public List<TrmTask> getUserTasks(Long userId, Long projectId) throws Exception {
+	    
+	    StringBuffer buffer = new StringBuffer("select id,name,description,user_id,date from trm_tasks where user_id = ").append(userId);
+	    if(projectId!=null) {
+	        buffer.append(" and project_id = ").append(projectId);
+	    }
+	    buffer.append(" order by date desc");
+		List<TrmTask> list = (List<TrmTask>) query(buffer.toString(), TrmTask.class);
 		return list;
 	}
 
@@ -360,13 +366,24 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
     }
 
     @Override
-    public Collection<TrmTask> getUserSharedTasks(Long userId) throws Exception {
-        return query("select * from trm_tasks where user_id = "+userId+" and shared=1 order by name asc", TrmTask.class);
+    public Collection<TrmTask> getUserSharedTasks(Long userId, Long projectId) throws Exception {
+        StringBuffer query = new StringBuffer("select * from trm_tasks where user_id = ").append(userId);
+        if(projectId!=null) {
+            query.append(" and project_id = ").append(projectId);
+        }
+        query.append(" and shared=1 order by name asc");
+        return query(query.toString(), TrmTask.class);
     }
 
     @Override
-    public Collection<User> getUsersWithSharedTasks(Long exceptUserId) throws Exception {
-        return query("select u.* from trm_tasks t left join users u on u.id = t.user_id where t.shared = 1 and t.user_id<>"+exceptUserId+" group by t.user_id order by u.name asc", User.class);
+    public Collection<User> getUsersWithSharedTasks(Long exceptUserId, Long projectId) throws Exception {
+        StringBuffer query = new StringBuffer("select u.* from trm_tasks t left join users u on u.id = t.user_id where t.shared = 1 and t.user_id<>").append(exceptUserId);
+        if(projectId!=null) {
+            query.append(" and t.project_id = ");
+            query.append(projectId);
+        }
+        query.append(" group by t.user_id order by u.name asc");
+        return query(query.toString(), User.class);
     }
 
     @Override

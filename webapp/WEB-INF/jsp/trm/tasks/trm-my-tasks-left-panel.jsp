@@ -4,6 +4,16 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
+<script>
+<%
+TrmTask task = (TrmTask)pageContext.findAttribute("task");
+if(task!=null) {
+	out.println("var _taskProjectId = " + task.getProjectId() + ";");
+}
+else out.println("_taskProjectId = 0;");
+%>
+</script>
+
 <div class="left-panel">
     <b>Work-flow:</b><br/><br/>
     <table border="0" width="100%" cellspacing="5px">
@@ -49,7 +59,7 @@
                         <tag:workflow-element icon="subcreate" link="" onclick="openCopySuitesDialog();return false;">Copy Suites</tag:workflow-element>
                     </tag:workflow-panel>
                     
-                    <script language="javascript">
+                    <script>
                     var tree = null;
                     function loadFolderTree()
                     {
@@ -59,11 +69,11 @@
                         tree.enableDragAndDrop(0);
                         tree.enableTreeLines(true);
                         tree.enableCheckBoxes(1);
-                        tree.setXMLAutoLoading("../grid/ajax-suite-search");
+                        tree.setXMLAutoLoading("../grid/ajax-suite-search?projectId=" + _taskProjectId);
                         
                         var d = new Date();
                         var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
-                        tree.loadXML("../grid/ajax-suite-search?id=mytasks0&tmstp="+str);
+                        tree.loadXML("../grid/ajax-suite-search?projectId=" + _taskProjectId + "&id=mytasks0&tmstp="+str);
 
                         tree.attachEvent("onSelect", onTreeElementSelect);
                     }
@@ -89,19 +99,19 @@
                     }
 
                     var treeTaskDependencies = null;
-                    function loadTaskDependenciesTree()
-                    {
+                    
+                    function loadTaskDependenciesTree() {
                     	treeTaskDependencies = new dhtmlXTreeObject("treebox_taskDependency", "100%", "100%", 0);
                     	treeTaskDependencies.setSkin('dhx_skyblue');
                     	treeTaskDependencies.setImagePath("../dhtmlxTree/imgs/csh_dhx_skyblue/");
                     	treeTaskDependencies.enableDragAndDrop(0);
                     	treeTaskDependencies.enableTreeLines(true);
                     	treeTaskDependencies.enableCheckBoxes(1);
-                    	treeTaskDependencies.setXMLAutoLoading("../grid/ajax-task-search");
+                    	treeTaskDependencies.setXMLAutoLoading("../grid/ajax-task-search?projectId=" + _taskProjectId);
                         
                         var d = new Date();
                         var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
-                        treeTaskDependencies.loadXML("../grid/ajax-task-search?id=0&tmstp="+str);
+                        treeTaskDependencies.loadXML("../grid/ajax-task-search?projectId=" + _taskProjectId + "&id=0&tmstp="+str);
                     }
                     
                     function openTaskDependenciesDialog()
