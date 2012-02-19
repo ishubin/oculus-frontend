@@ -262,56 +262,52 @@ function submitExportTask(){
     <input type="hidden" name="selectedAgents" value=""/>
     
     
-    <c:forEach items="${tasks}" var="task" varStatus="taskVarStatus">
-       <tag:panel align="left" title="${task.name}" width="100%" height="100%" logo="../images/workflow-icon-task.png">
-           <table border="0" width="100%" cellpadding="0px" cellspacing="0px">
-               <tr>
-                   <td valign="top" align="left">
-                       <div class="small-description">
-                           ${task.description}
-                       </div>
-                       <br/>
-                       <tag:panel-border title="Parameters" align="left" width="100%">
-                           <table border="0" cellpadding="5px" cellspacing="0px">
-                               <tr>
-                                   <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
-                                   <td>
-                                       <tag:pickbuild-button build="Current Version" id="task_${task.id}_build" projectId="${task.projectId}"></tag:pickbuild-button>
-                                   </td>
-                               </tr>
-                               <c:forEach items="${task.parameters}" var="parameter">
-                               <tr>
-                                   <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
-                                   <td>
-                                   <c:choose>
-                                       <c:when test="${parameter.subtype == 'text'}">
-                                           <tag:edit-field-simple name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
-                                       </c:when>
-                                       <c:when test="${parameter.subtype == 'list'}">
-                                           <select name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}" style="width:100%;">
-                                               <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
-                                                   <option value="${possibleValue}">${possibleValue}</option>
-                                               </c:forEach>
-                                           </select>
-                                       </c:when>
-                                       <c:when test="${parameter.subtype == 'checkbox'}">
-                                           <input type="checkbox" name="task_${task.id}_parameter_${parameter.id}" id="task_${task.id}_parameter_${parameter.id}"/>
-                                       </c:when>
-                                       <c:otherwise>Undefined Control</c:otherwise>
-                                   </c:choose>
-                                   </td>
-                               </tr>
-                               </c:forEach>
-                           </table>
-                       </tag:panel-border>
-                       <br/>
-                   </td>
-               </tr>
-           </table>
-       </tag:panel>
-       <br/>
-    </c:forEach>
-    
+    <tag:panel align="left" title="${task.name}" width="100%" height="100%" logo="../images/workflow-icon-task.png">
+        <table border="0" width="100%" cellpadding="0px" cellspacing="0px">
+            <tr>
+                <td valign="top" align="left">
+                    <div class="small-description">
+                        ${task.description}
+                    </div>
+                    <br/>
+                    <tag:panel-border title="Parameters" align="left" width="100%">
+                        <table border="0" cellpadding="5px" cellspacing="0px">
+                            <tr>
+                                <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
+                                <td>
+                                    <tag:pickbuild-button build="Current Version" id="build" projectId="${task.projectId}"></tag:pickbuild-button>
+                                </td>
+                            </tr>
+                            <c:forEach items="${task.parameters}" var="parameter">
+                            <tr>
+                                <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
+                                <td>
+                                <c:choose>
+                                    <c:when test="${parameter.subtype == 'text'}">
+                                        <tag:edit-field-simple name="sp_${parameter.id}" id="sp_${parameter.id}"/>
+                                    </c:when>
+                                    <c:when test="${parameter.subtype == 'list'}">
+                                        <select name="sp_${parameter.id}" id="sp_${parameter.id}" style="width:100%;">
+                                            <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
+                                                <option value="${possibleValue}">${possibleValue}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </c:when>
+                                    <c:when test="${parameter.subtype == 'checkbox'}">
+                                        <input type="checkbox" name="sp_${parameter.id}" id="sp_${parameter.id}"/>
+                                    </c:when>
+                                    <c:otherwise>Undefined Control</c:otherwise>
+                                </c:choose>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                        </table>
+                    </tag:panel-border>
+                    <br/>
+                </td>
+            </tr>
+        </table>
+    </tag:panel>
     <h2>Agents:</h2>
     
 	<c:forEach items="${agents}" var="agent">

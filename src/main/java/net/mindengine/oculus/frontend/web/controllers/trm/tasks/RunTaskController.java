@@ -97,27 +97,20 @@ public class RunTaskController extends SecureSimpleViewController {
             List<SuiteTask> tasks = new LinkedList<SuiteTask>();
             
             /*
-             * Fetching the agents list
-             */
-            
-
-            /*
              * Gathering all task parameters sent from client
              */
             Map<String, String> suiteParameters = new HashMap<String, String>();
             for (TrmProperty property : trmTask.getParameters()) {
-                String value = request.getParameter("task_" + trmTask.getId() + "_parameter_" + property.getId());
+                String value = request.getParameter("sp_" + property.getId());
                 if (value == null)
                     value = "";
                 suiteParameters.put(property.getName(), value);
             }
 
-
             //Used for fetching the mapping, name, parent project path
             Map<Long, Test> cashedTests = new HashMap<Long, Test>();
             //Used for fetching parent project path for tests
             Map<Long, String> cashedProjectPath = new HashMap<Long, String>();
-            
             
             for (TrmSuite trmSuite : trmTask.getSuites()) {
                 if(trmSuite.getSuiteData()!=null && !trmSuite.getSuiteData().isEmpty()) {
@@ -129,8 +122,7 @@ public class RunTaskController extends SecureSimpleViewController {
                     suiteTask.setProjectName(project.getPath());
                     suiteTask.setName(trmSuite.getName());
                     
-                    
-                    String build = request.getParameter("task_" + trmTask.getId() + "_build");
+                    String build = request.getParameter("build");
                     if (!build.equals("Current Version")) {
                         suiteTask.setProjectVersion(build);
                     }
@@ -207,25 +199,6 @@ public class RunTaskController extends SecureSimpleViewController {
 	    }
 	}
 
-	/**
-	 * Used for cashing trm properties for common projects
-	 * 
-	 * @param projectId
-	 * @param cashedProjectProperties
-	 * @return
-	 * @throws Exception
-	 */
-	public Collection<TrmProperty> fetchTrmProperty(Long projectId, Map<Long, Collection<TrmProperty>> cashedProjectProperties) throws Exception {
-		if (cashedProjectProperties.containsKey(projectId)) {
-			return cashedProjectProperties.get(projectId);
-		}
-		else {
-			Collection<TrmProperty> properties = trmDAO.getProperties(projectId, TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER);
-			cashedProjectProperties.put(projectId, properties);
-			return properties;
-		}
-	}	
-
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		/*
@@ -239,21 +212,13 @@ public class RunTaskController extends SecureSimpleViewController {
 		if (task == null)
 			throw new UnexistentResource("The task doesn't exist");
 
-		Collection<TrmTask> tasks = new LinkedList<TrmTask>();
-		tasks.addAll(trmDAO.getDependentTasks(taskId));
-		tasks.add(task);
-		
-		Map<Long, Collection<TrmProperty>> cashedProjectProperties = new HashMap<Long, Collection<TrmProperty>>();
-		
-		for (TrmTask trmTask : tasks){
-		    trmTask.setParameters(fetchTrmProperty(trmTask.getProjectId(), cashedProjectProperties));
-		}
-		
+		Collection<TrmTask> taskDependencies = trmDAO.getDependentTasks(taskId);
 		String submit = request.getParameter("Submit");
-
+		task.setParameters(trmDAO.getProperties(task.getProjectId(), TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER));
+		
 		if (submit == null) {
-			map.put("task", task);
-			map.put("tasks", tasks);
+		    map.put("task", task);
+			map.put("tasks", taskDependencies);
 			
 			/*
 	         * Checking the connection with the TRMServer.
@@ -283,9 +248,11 @@ public class RunTaskController extends SecureSimpleViewController {
 		    /*
 		     * Sending all tasks to TRMServer
 		     */
-		    for(TrmTask trmTask : tasks){
+		    for(TrmTask trmTask : taskDependencies){
+		        trmTask.setParameters(task.getParameters());
 		        runTask(trmTask, request);
 		    }
+		    runTask(task, request);
 			
 			if ("on".equals(request.getParameter("useScheduler"))) {
                 return new ModelAndView(new RedirectView("../grid/scheduler"));
@@ -295,7 +262,8 @@ public class RunTaskController extends SecureSimpleViewController {
             }
 		}
 		else if (submit.equals("Export Task")) {
-			return exportTasks(tasks, request, response);
+		    taskDependencies.add(task);
+			return exportTasks(taskDependencies, request, response);
 		}
 		else
 			throw new InvalidRequest();
@@ -351,7 +319,7 @@ public class RunTaskController extends SecureSimpleViewController {
          */
         Map<String, String> suiteParameters = new HashMap<String, String>();
         for (TrmProperty property : suiteProperties) {
-            String value = request.getParameter("task_" + trmTask.getId() + "_parameter_" + property.getId());
+            String value = request.getParameter("sp_" + property.getId());
             if (value == null)
                 value = "";
             suiteParameters.put(property.getName(), value);

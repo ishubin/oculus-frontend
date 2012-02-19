@@ -32,7 +32,7 @@ else out.println("_taskProjectId = 0;");
                 <td>
                     <tag:workflow-panel title="Task Actions" width="100%" id="workflow_TaskActions">
                         <tag:workflow-element icon="prepare-run" link="../grid/run-task?taskId=${task.id}" onclick="return onPrepareTaskClicked();" title="Customize suite settings for running on server">Prepare task</tag:workflow-element>
-                        <tag:workflow-element link="" onclick="openTaskDependenciesDialog();return false;">Add Dependencies</tag:workflow-element>
+                        <tag:workflow-element link="" onclick="openTaskDependenciesDialog();return false;">Include Tasks</tag:workflow-element>
                         <tag:workflow-element icon="delete" link="../grid/delete-task?taskId=${task.id}" onclick="if(confirm('Are you sure you want to delete this task'))return true; else return false;">Delete</tag:workflow-element>
                     </tag:workflow-panel>
                     

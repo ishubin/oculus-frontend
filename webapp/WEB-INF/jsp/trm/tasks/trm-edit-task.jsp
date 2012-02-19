@@ -176,7 +176,7 @@
 	        
 	        
             
-		    <h2>Task Dependencies: </h2>
+		    <h2>Included Tasks: </h2>
 		    
 		    <table id="taskDependenciesTable">
 		        <tr>
@@ -212,7 +212,7 @@
 		        });
 		    });
 		    </script>
-		    <a href="javascript:deleteSelectedTaskDependecies();"><img src="../images/workflow-icon-delete.png"/> Delete selected dependencies</a>
+		    <a href="javascript:deleteSelectedTaskDependecies();"><img src="../images/workflow-icon-delete.png"/> Delete selected tasks</a>
 	        
 	    </c:if>
 	    
