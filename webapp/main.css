@@ -1352,16 +1352,13 @@ div.grid-agent-layout {
     box-shadow: 2px 2px 2px #ccc;
 }
 
-.agent-tag {
+.agent-tag, .agent-tag-selected{
 	white-space:nowrap;
 	padding:3px;
 	width:100px;
-	color: #2779AA;
-    padding:4px;
-    border:1px solid #AED0EA;
-    -moz-border-radius: 6px;
+	padding:4px;
+	-moz-border-radius: 6px;
     border-radius: 6px;
-    background:#D7EBF9;
     -moz-box-shadow: 2px 2px 2px #ddd;
     -webkit-box-shadow: 2px 2px 2px #ddd;
     box-shadow: 2px 2px 2px #ddd;
@@ -1370,9 +1367,33 @@ div.grid-agent-layout {
 	color:#2779AA;
 	white-space:nowrap;
 }
+.agent-tag {
+	color: #2779AA;
+    border:1px solid #AED0EA;
+    background:#D7EBF9;
+}
+.agent-tag-selected span {
+	color:white;
+	white-space:nowrap;
+}
+.agent-tag-selected {
+	color: white;
+    border:1px solid #AED0EA;
+    background:#2779AA;
+}
+
 .agent-tag:hover {
 	background:#e7fBFf;
 	-moz-box-shadow: 0px 0px 2px #ddd;
     -webkit-box-shadow: 0px 0px 2px #ddd;
     box-shadow: 0px 0px 2px #ddd;
+}
+
+#selectedAgentsList {
+	margin-left: 5px;
+	list-style-image: url("images/workflow-icon-monitor.png");
+}
+
+#selectedAgentsList li {
+	font-weight: bold;
 }

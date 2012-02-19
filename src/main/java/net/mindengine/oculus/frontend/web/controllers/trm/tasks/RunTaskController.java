@@ -99,24 +99,7 @@ public class RunTaskController extends SecureSimpleViewController {
             /*
              * Fetching the agents list
              */
-            String[] agentNames = null;
-            if ("on".equals(request.getParameter("task_" + trmTask.getId() + "_choose_agents"))) {
-                Integer agentsCount = Integer.parseInt(request.getParameter("agentsCount"));
-                List<String> agentList = new LinkedList<String>();
-                for (int i = 0; i < agentsCount; i++) {
-                    if ("on".equals(request.getParameter("task_" + trmTask.getId() + "_agent_chk_" + i))) {
-                        agentList.add(request.getParameter("task_" + trmTask.getId() + "_agent_name_" + i));
-                    }
-                }
-                if (agentList.size() > 0) {
-                    agentNames = new String[agentList.size()];
-                    int i = 0;
-                    for (String agentName : agentList) {
-                        agentNames[i] = agentName;
-                        i++;
-                    }   
-                }
-            }
+            
 
             /*
              * Gathering all task parameters sent from client
@@ -165,7 +148,7 @@ public class RunTaskController extends SecureSimpleViewController {
                     suite.setRunnerId(user.getId());
                     suiteTask.setSuite(suite);
     
-                    suiteTask.setAgentNames(agentNames);
+                    suiteTask.setAgentNames(fetchSelectedAgents(request.getParameter("selectedAgents")));
                     tasks.add(suiteTask);
                 } 
             }
@@ -180,7 +163,16 @@ public class RunTaskController extends SecureSimpleViewController {
 	}
 	
 	
-	public Test fetchTest(Long testId, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
+	private String[] fetchSelectedAgents(String agentsString) {
+	    if(agentsString!=null && !agentsString.trim().isEmpty()) {
+	        String[] agents = agentsString.split(",");
+	        return agents;
+	    }
+        return null;
+    }
+
+
+    public Test fetchTest(Long testId, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
 	    Test test = cashedTests.get(testId);
 	    if(test==null){
 	        test = testDAO.getTest(testId);

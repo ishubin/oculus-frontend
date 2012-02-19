@@ -8,7 +8,7 @@
  * The following code should be placed only once per page and is used by pickuser button
  */
 %>
-<script language="javascript">
+<script>
 var _pickUserButtonInputId = null;
 var _pickUserButtonTitleDiv = null;
 function onPickUserClick(pickUserButtonInputId, pickUserButtonTitleDiv)
@@ -82,11 +82,8 @@ function onAjaxUserFetchResponse(loader)
         html+="<a class=\"pick-table\" href=\"javascript:onPickUserPicked('Pick User...',null);\"><i>None</i></a>";
         html+="</td></tr>";
         var rowOrder = "even";
-        for(var i=0;i<users.length;i++)
-        {
-            
-            if(i%2==0)
-            {
+        for(var i=0;i<users.length;i++) {
+            if(i%2==0) {
                 rowOrder="even";
             }
             else rowOrder="odd";
@@ -100,8 +97,7 @@ function onAjaxUserFetchResponse(loader)
     }
     else alert(str);
 }
-function onPickUserPicked(name, id)
-{
+function onPickUserPicked(name, id) {
     var userLink = document.getElementById(_pickUserButtonTitleDiv);
     userLink.innerHTML = name;
     var input = document.getElementById(_pickUserButtonInputId);

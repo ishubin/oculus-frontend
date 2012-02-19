@@ -35,14 +35,14 @@
 	    			<b><tag:escape text="${tag.name}"/>: </b>
 	    			<c:choose>
 	    				<c:when test="${tag.type=='string'}">
-	    					<a href="#" class="agent-tag agent-tag-click-add" agent-tag="${tag.wrappedValue.value}">
+	    					<a href="#" class="agent-tag agent-tag-click" agent-tag="${tag.wrappedValue.value}">
 	    						<c:if test="${tag.wrappedValue.iconImage!=null}"><img src="${tag.wrappedValue.iconImage}" <c:if test="${tag.wrappedValue.iconSize!=null}">width="${tag.wrappedValue.iconSize.width}px" height="${tag.wrappedValue.iconSize.height}px"</c:if> /></c:if>
 	    						<span><tag:escape text="${tag.wrappedValue.value}"/></span>
 	    					</a>
 	    				</c:when>
 	    				<c:when test="${tag.type=='list'}">
 	    					<c:forEach items="${tag.wrappedValues}" var="tagItem" varStatus="tagItemStatus">
-	    						<a href="#" class="agent-tag agent-tag-click-add" agent-tag="${tagItem.value}">
+	    						<a href="#" class="agent-tag agent-tag-click" agent-tag="${tagItem.value}">
 		    						<c:if test="${tagItem.iconImage!=null}"><img src="${tagItem.iconImage}" <c:if test="${tagItem.iconSize!=null}">width="${tagItem.iconSize.width}px" height="${tagItem.iconSize.height}px"</c:if> /></c:if>
 		    						<span><tag:escape text="${tagItem.value}"/></span>
 	    						</a>

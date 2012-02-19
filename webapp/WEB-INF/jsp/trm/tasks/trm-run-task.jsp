@@ -13,6 +13,8 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
+<tag:pickbuild-setup/>
+
 <div class="breadcrump">
     <a href="../grid/my-tasks">My Tasks</a>
     <img src="../images/breadcrump-arrow.png"/> 
@@ -78,7 +80,7 @@ var agentFilter = {
 		if(!this.isTagSelected(tag)) {
 			this.selectedTags[this.selectedTags.length] = tag;
 			this.updateAgentsLayout();
-			this.updateSelectedTagsLayout();
+			this.updateTagsLayout();
 		}
 	},
 	
@@ -98,43 +100,74 @@ var agentFilter = {
 			}
 		}
 		this.updateAgentsLayout();
-		this.updateSelectedTagsLayout();
+		this.updateTagsLayout();
+	},
+	
+	isAgentIncluded: function (name) {
+		var agent = findAgentByName(name);
+		if(agent!=null) {
+			var tags = this.selectedTags;
+			for (var i=0; i<tags.length; i++) {
+				if(!containsAgentTag(agent, tags[i])) {
+					return false;
+				}
+			}	
+		}
+		return true;
 	},
 	
 	updateAgentsLayout: function() {
 		this.agentNames = [];
+		$(".run-task-agent-layout").sortElements(function(a,b){
+			var nameA = $(a).attr("agent-name");
+			var nameB = $(b).attr("agent-name");
+			
+			var isIncludedA = agentFilter.isAgentIncluded(nameA);
+			var isIncludedB = agentFilter.isAgentIncluded(nameB);
+			
+			if(isIncludedA == isIncludedB) {
+				return nameA > nameB ? 1 : -1;	
+			}
+			else {
+				if(isIncludedB) {
+					return 1;
+				}
+				else return -1;
+			}
+		});
 		
 		$(".run-task-agent-layout").each(function(index){
 			var agentName = $(this).attr("agent-name");
-			var agent = findAgentByName(agentName);
-			if(agent!=null) {
-				var tags = agentFilter.selectedTags;
-				var showAgent = true;
-				for (var i=0; i<tags.length; i++) {
-					if(!containsAgentTag(agent, tags[i])) {
-						showAgent = false;
-						break;
-					}
-				}
-				if(showAgent) {
-					$(this).show();
-					agentFilter.agentNames[agentFilter.agentNames.length] = agentName;  
-				}
-				else {
-					$(this).hide();
-				}
-			}
-		});
-	},
-	
-	updateSelectedTagsLayout: function () {
-		$(".agent-selected-tag-layout").each(function(index){
-			var tag = $(this).attr("agent-tag");
-			if(agentFilter.isTagSelected(tag)) {
-				$(this).show();
+			if(agentFilter.isAgentIncluded(agentName)) {
+				$(this).fadeTo("fast", 1.0);
+				agentFilter.agentNames[agentFilter.agentNames.length] = agentName;  
 			}
 			else {
-				$(this).hide();
+				$(this).fadeTo("fast", 0.2);
+			}
+		});
+		
+		if(this.agentNames.length==0) {
+			$("#selectedAgentsLayout_No_Agents").show();
+			$("#selectedAgentsList li").remove();
+		}
+		else {
+			$("#selectedAgentsLayout_No_Agents").hide();
+			$("#selectedAgentsList li").remove();
+			for(var i=0; i<this.agentNames.length; i++) {
+				$("#selectedAgentsList").append("<li>" + escapeHTML(this.agentNames[i]) + "</li>");	
+			}
+		}
+	},
+	
+	updateTagsLayout: function () {
+		$(".agent-tag-click").each(function(index) {
+			var tag = $(this).attr("agent-tag");
+			if(agentFilter.isTagSelected(tag)) {
+				$(this).removeClass("agent-tag").addClass("agent-tag-selected");
+			}
+			else {
+				$(this).removeClass("agent-tag-selected").addClass("agent-tag");
 			}
 		});
 	}
@@ -142,159 +175,20 @@ var agentFilter = {
 
 
 $(document).ready(function () {
-	$('.agent-tag-click-add').click(function (){
+	$('.agent-tag-click').click(function (){
 		var tag = $(this).attr('agent-tag');
-    	agentFilter.selectTag(tag);
+		if(agentFilter.isTagSelected(tag)){
+			agentFilter.removeSelectedTag(tag);
+		}
+		else {
+			agentFilter.selectTag(tag);
+		}
     	return false;
     });
 	
-	$('.agent-tag-click-remove').click(function (){
-		var tag = $(this).attr('agent-tag');
-    	agentFilter.removeSelectedTag(tag);
-    	return false;
-    });
+	agentFilter.updateAgentsLayout();
+	agentFilter.updateTagsLayout();
 });
-
-</script>
-
-
-<script>
-var pickBuild_taskId = null;
-var pickBuild_projectId = null;
-function onPickBuildClick(taskId, projectId)
-{
-    pickBuild_taskId = taskId;
-    pickBuild_projectId = projectId;
-
-    updateBuilds(1, projectId,"");
-}
-function updateBuilds(page, projectId, name)
-{
-    var divBuilds = document.getElementById("divPickBuildBuilds");
-    var divNavigation = document.getElementById("divPickBuildNavigation");
-    var divLoading = document.getElementById("divPickBuildLoadingIcon");
-    divBuilds.innerHTML = "";
-    divNavigation.innerHTML = "";
-    divLoading.style.display = "block";
-    showPopup("divPickBuild",400,400);
-    
-    dhtmlxAjax.post("../project/ajax-build-fetch", "projectId="+projectId+"&page="+page+"&name="+escape(name), onAjaxBuildFetchResponse);
-}
-function onAjaxBuildFetchResponse(loader)
-{
-    var str = loader.xmlDoc.responseText;
-    var obj = eval("("+str+")");
-
-    if(obj.result != "error")
-    {
-        var namePattern = document.getElementById("textPickBuildNamePattern").value;
-        var result = obj.object;
-        var pages = Math.round(result.numberOfResults/result.limit);
-
-        
-        //Rendering the navigation panel
-        var divLoading = document.getElementById("divPickBuildLoadingIcon");
-        divLoading.style.display = "none";
-        var divNavigation = document.getElementById("divPickBuildNavigation");
-        var html = "";
-
-        html+="<div class=\"small-description\">Found Results: "+result.numberOfResults+"</div>";
-        html+="<table border=\"0\">";
-        html+="<tr>";
-        html+="<td width=\"15px\">";
-        
-        if(result.page>1)
-        {
-            var prevPage = result.page-1;
-            html+="<a href=\"javascript:updateBuilds("+prevPage+","+pickBuild_projectId+",'"+namePattern+"');\">&lt;</a>";
-        }
-
-        html+="</td>";
-        html+="<td>";
-        html+=result.page;
-        html+="</td>";
-        html+="<td width=\"15px\">";
-        if(result.page<pages)
-        {
-            var nextPage = result.page+1;
-            html+="<a href=\"javascript:updateBuilds("+nextPage+","+pickBuild_projectId+",'"+namePattern+"');\">&gt;</a>";
-        }
-        html+="</td>";
-        html+="</tr>";
-        html+="</table>";
-        divNavigation.innerHTML = html;
-
-        var builds = result.results;
-        html="";
-        html+="<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\" style=\"border:1px solid #909090;\">";
-        var color = "";
-        html+="<tr><td style=\"width:100%;background:#e0e0e0;\">";
-        html+="<a class=\"disclosure\" href=\"javascript:onPickBuildPicked('Current Version');\">Current Version</a>";
-        html+="</td></tr>";
-        for(var i=0;i<builds.length;i++)
-        {
-            if(i%2==0)
-            {
-                color="#d0d0d0";
-            }
-            else color="#a0a0a0";
-            html+="<tr><td style=\"width:100%;background:"+color+";\">";
-            html+="<a class=\"disclosure\" href=\"javascript:onPickBuildPicked('"+builds[i].name+"');\">"+builds[i].name+"</a>";
-            html+="</td></tr>";
-        }
-        html+="</table>";
-        var divBuilds = document.getElementById("divPickBuildBuilds");
-        divBuilds.innerHTML = html;
-    }
-    else alert(str);
-}
-function onPickBuildPicked(name)
-{
-    var buildLink = document.getElementById("linkPickBuild_task_"+pickBuild_taskId);
-    buildLink.innerHTML = name;
-    document.forms.formTasks.elements["task_"+pickBuild_taskId+"_build"].value = name;
-    closePopup("divPickBuild");
-}
-var pickBuild_timer = null;
-function onPickBuildNameChange(control)
-{
-    if(pickBuild_timer!=null)
-    {
-        clearTimeout(pickBuild_timer);
-    }
-    updateBuilds(1, pickBuild_projectId, control.value);
-}
-function onChangeCheckboxChooseAgents(checkbox,agentsCount, taskId)
-{
-    var divAgents = document.getElementById("divTask_"+taskId+"_agents");
-    if(checkbox.checked)
-    {
-        divAgents.className="element-high-opacity";
-    }
-    else divAgents.className="element-low-opacity";
-
-    for(var i=0;i<agentsCount;i++)
-    {
-        var chk = document.getElementById("task_"+taskId+"_agent_chk_"+i);
-        chk.disabled = !checkbox.checked;
-    }
-}
-function onUseSchedulerClick(checkbox)
-{
-	var div = document.getElementById("divScheduler");
-	var link = document.getElementById("workflowRunTaskLink");
-	if(checkbox.checked)
-	{
-		div.style.display = "block";
-		link.innerHTML="<img class=\"workflow-icon\" src=\"../images/workflow-icon-schedule.png\"/> Send To Scheduler";
-	}
-	else
-	{
-		div.style.display = "none";
-		link.innerHTML="<img class=\"workflow-icon\" src=\"../images/workflow-icon-run.png\"/> Run Task On Server ";
-	}
-	 
-}
 
 function submitRunTask(){
 	if(agentFilter.agentNames.length>0) {
@@ -318,23 +212,6 @@ function submitExportTask(){
 </script>
 
 
-<div id="divPickBuild" class="popup" style="position:absolute;display:none;width:400px;height:500px;">
-    <tag:panel title="Pick build" 
-                align="center"
-                closeDivName="divPickBuild" 
-                width="400px" height="400px">
-        <input id="textPickBuildNamePattern" type="text" onchange="onPickBuildNameChange(this);"/>
-        <div id="divPickBuildNavigation" style="width:360px;height:30px;">
-        </div>
-        <div style="overflow:auto;width:360px;height:330px;">
-            <div id="divPickBuildLoadingIcon" style="display:none;">
-                <img src="../images/loading.gif"/>
-            </div>
-            <div id="divPickBuildBuilds">
-            </div>
-        </div>
-    </tag:panel>
-</div>
 <form method="post" name="formTasks">
     <input type="hidden" name="Submit" value="Run Task"/>
     <input type="hidden" name="selectedAgents" value=""/>
@@ -354,11 +231,7 @@ function submitExportTask(){
                                <tr>
                                    <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
                                    <td>
-                                       <input type="hidden" name="task_${task.id}_build" id="task_${task.id}_build_control" value="Current Version"/>
-                                       <div style="width:134px;height:19px;margin-bottom:5px;">
-                                         <a class="pick-button" id="linkPickBuild_task_${task.id}" href="javascript:onPickBuildClick('${task.id}',${task.projectId});">Current Version</a>
-                                       </div> 
-                                       
+                                       <tag:pickbuild-button build="Current Version" id="task_${task.id}_build" projectId="${task.projectId}"></tag:pickbuild-button>
                                    </td>
                                </tr>
                                <c:forEach items="${task.parameters}" var="parameter">

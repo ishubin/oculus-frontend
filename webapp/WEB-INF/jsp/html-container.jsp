@@ -41,10 +41,13 @@
         <script type="text/javascript"  src="../scripts/jquery.easing.1.3.js"></script>
         <script type="text/javascript"  src="../scripts/stickysidebar.jquery.js"></script>
         
+        <script type="text/javascript"  src="../scripts/jquery.sort.js"></script>
         
         <link rel="STYLESHEET" type="text/css" href="../dhtmlxTree/dhtmlxtree.css"/>
         <script  src="../dhtmlxTree/dhtmlxcommon.js"></script>
-        <script  src="../dhtmlxTree/dhtmlxtree.js"></script>    
+        <script  src="../dhtmlxTree/dhtmlxtree.js"></script>
+        
+            
     </head>
     
     <body  <c:if test="${bodyOnLoad!=null}">onload="${bodyOnLoad}"</c:if>>
