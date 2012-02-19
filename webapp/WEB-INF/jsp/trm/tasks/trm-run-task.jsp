@@ -74,7 +74,17 @@ function containsAgentTag(agent, tagName) {
 
 var agentFilter = {
 	selectedTags:[],
+	strictAgentNames:[],
 	agentNames:[],
+	
+	findStrictAgent: function (name) {
+		for(var i=0; i<this.strictAgentNames.length; i++) {
+			if(this.strictAgentNames[i] == name) {
+				return i;
+			}
+		}	
+		return -1;
+	},
 	
 	selectTag: function (tag) {
 		if(!this.isTagSelected(tag)) {
@@ -106,11 +116,21 @@ var agentFilter = {
 	isAgentIncluded: function (name) {
 		var agent = findAgentByName(name);
 		if(agent!=null) {
-			var tags = this.selectedTags;
-			for (var i=0; i<tags.length; i++) {
-				if(!containsAgentTag(agent, tags[i])) {
-					return false;
+			if(this.strictAgentNames.length > 0) {
+				for(var i=0; i<this.strictAgentNames.length; i++) {
+					if(this.strictAgentNames[i] == name){
+						return true;
+					}
 				}
+				return false;
+			}
+			else {
+				var tags = this.selectedTags;
+				for (var i=0; i<tags.length; i++) {
+					if(!containsAgentTag(agent, tags[i])) {
+						return false;
+					}
+				}	
 			}	
 		}
 		return true;
@@ -176,6 +196,12 @@ var agentFilter = {
 
 $(document).ready(function () {
 	$('.agent-tag-click').click(function (){
+		//reset strict agent filter
+		agentFilter.strictAgentNames = [];
+		$('.agent-click').each(function (){
+			$(this).removeClass("agent-tag-selected").addClass("agent-tag");
+		});
+		
 		var tag = $(this).attr('agent-tag');
 		if(agentFilter.isTagSelected(tag)){
 			agentFilter.removeSelectedTag(tag);
@@ -186,11 +212,30 @@ $(document).ready(function () {
     	return false;
     });
 	
+	$('.agent-click').click(function (){
+		var agentName = $(this).attr('agent-name');
+		var id = agentFilter.findStrictAgent(agentName);
+		if(id>=0) {
+			agentFilter.strictAgentNames.splice(id, 1);
+			$(this).removeClass("agent-tag-selected").addClass("agent-tag");
+		}
+		else {
+			agentFilter.strictAgentNames.push(agentName);
+			$(this).removeClass("agent-tag").addClass("agent-tag-selected");
+		}
+		
+		agentFilter.selectedTags = [];
+		
+		agentFilter.updateAgentsLayout();
+		agentFilter.updateTagsLayout();
+    	return false;
+    });
+	
 	agentFilter.updateAgentsLayout();
 	agentFilter.updateTagsLayout();
 });
 
-function submitRunTask(){
+function submitRunTask() {
 	if(agentFilter.agentNames.length>0) {
 		var str = "";
 		for(var i=0; i<agentFilter.agentNames.length; i++) {

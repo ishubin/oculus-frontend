@@ -240,8 +240,8 @@ public class RunTaskController extends SecureSimpleViewController {
 			throw new UnexistentResource("The task doesn't exist");
 
 		Collection<TrmTask> tasks = new LinkedList<TrmTask>();
-		tasks.add(task);
 		tasks.addAll(trmDAO.getDependentTasks(taskId));
+		tasks.add(task);
 		
 		Map<Long, Collection<TrmProperty>> cashedProjectProperties = new HashMap<Long, Collection<TrmProperty>>();
 		

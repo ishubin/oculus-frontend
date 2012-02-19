@@ -17,7 +17,12 @@
                    <span style="color:blue;">Busy</span>
                 </c:if>
 	        </td>
-	        <td class="title"><tag:escape text="${agent.agentInformation.name}"></tag:escape></td>
+	        <td class="title">
+	        	<a href="#" class="agent-tag agent-click" agent-name="<tag:escape text="${agent.agentInformation.name}"/>">
+	        		<img src="../images/workflow-icon-monitor.png"/>
+	        		<span><tag:escape text="${agent.agentInformation.name}"/></span>
+	        	</a>
+	        </td>
 	    </tr>
 	    <tr>
 	       <td class="description">
