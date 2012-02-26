@@ -25,22 +25,22 @@ function onSubmitTest() {
 	</ul>
 	<div id="test-details-tab">
 		<p>
-			Name: <br/>
+			Name <br/>
 			<tag:edit-field name="name" value="${test.name}" width="100%"></tag:edit-field>
 			<c:if test="${testCommand=='Create'}">
             	<input type="hidden" name="projectId" value="${project.id}"/>
             </c:if>
 		</p>
 		<p>
-			Description: <br/>
+			Description <br/>
 			<textarea name="description" style="width:100%;" rows="10" class="custom-edit-text"><tag:escape text="${test.description}"/></textarea>
 		</p>
 		<p>
-			Mapping: <br/>
+			Mapping <br/>
 			<tag:edit-field name="mapping" width="100%" value="${test.mapping}"></tag:edit-field>
 		</p>
 		<p>
-			Test Group: <br/>
+			Test Group <br/>
 			<select name="groupId">
 	            <option value="0" style="color:gray;">No group...</option>
 	            <c:forEach items="${groups}" var="g">

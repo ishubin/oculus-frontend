@@ -355,49 +355,21 @@ table.panel-gradient:hover .panel-gradient-body{
 	box-shadow: inset 3px 3px 3px #c0c0c0;
 }
 
-td.panel-border-corner-1{
-    background:url('images/panel-border-corner-1.png') no-repeat;
-    width:7px;
-    height:20px;
-}
-td.panel-border-corner-2{
-    background:url('images/panel-border-corner-2.png') no-repeat;
-    width:7px;
-    height:20px;
-}
-td.panel-border-corner-3{
-    background:url('images/panel-border-corner-3.png') no-repeat;
-    width:7px;
-    height:20px;
-}
-td.panel-border-corner-4{
-    background:url('images/panel-border-corner-4.png') no-repeat;
-    width:7px;
-    height:20px;
-}
-td.panel-border-left-fill{
-    background:url('images/panel-border-left-fill.png') repeat-y;
-    width:7px;
-    white-space: nowrap;
-}
-td.panel-border-right-fill{
-    background:url('images/panel-border-right-fill.png') repeat-y;
-    width:7px;
-}
-td.panel-border-top-fill{
-    background:url('images/panel-border-top-fill.png') repeat-x;
-    height:20px;
-}
-td.panel-border-bottom-fill{
-    background:url('images/panel-border-bottom-fill.png') repeat-x;
-    height:7px;
-}
-td.panel-border-body{
-    vertical-align: top;
-    text-align: left;
-}
 
-
+.panel-border {
+	background: none repeat scroll 0 0 #F0F0FF;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow:inset 2px 2px 5px #BBBBBB;
+    -moz-box-shadow:inset 2px 2px 5px #BBBBBB;
+    -webkit-box-shadow:inset 2px 2px 5px #BBBBBB;
+    padding:4px;
+    margin:4px;
+}
+.panel-border span.panel-border-title {
+	color: #aaa;
+	font-weight:bold;
+} 
 
 
 table.table-custom{

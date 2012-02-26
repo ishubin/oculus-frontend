@@ -64,7 +64,7 @@
 		                </td>
 		            </tr>
 		            <tr>
-		                <td style="background:#6D7BA1;padding:0px;margin:0px;">
+		                <td style="background:#2779AA;padding:0px;margin:0px;">
 		                    <%@ include file="/WEB-INF/jsp/menu.jsp" %>
 		                </td>
 		            </tr>

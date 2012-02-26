@@ -23,7 +23,6 @@ else out.println("_taskProjectId = 0;");
                         <tag:workflow-element icon="task" link="../grid/create-task">New Task</tag:workflow-element>
                         <tag:workflow-element icon="monitor" link="../grid/my-active-tasks">My Active Tasks</tag:workflow-element>
                         <tag:workflow-element icon="save" link="../grid/my-tasks">My Saved Tasks</tag:workflow-element>
-                        <tag:workflow-element icon="schedule" link="../grid/scheduler">Scheduler</tag:workflow-element>
                     </tag:workflow-panel>
                 </td>
             </tr>
