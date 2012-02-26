@@ -10,12 +10,6 @@
         <property name="file" value="WEB-INF/conf/document-columns.xml"/>
     </bean>
     
-    <bean id ="testCaseReportGenerator" class="net.mindengine.oculus.frontend.service.report.ExcelTestSearchReportGenerator">
-        <property name="unit" value="test-case"/>
-        <property name="userDAO" ref="userDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
-    </bean>
-    
     <bean name="/project-*" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentProjectController">
         <property name="title" value="Project Documentation Library"/>
         <property name="view" value="document-project"/>
@@ -56,29 +50,6 @@
         </property>
     </bean>
     
-    <bean name="/testcase-create" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentTestcaseCreateController">
-        <property name="documentDAO" ref="documentDAO"/>
-        <property name="folderDAO" ref="folderDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="permissions">
-            <list>
-                <ref bean="_P_DOCUMENT_MANAGMENT"/>
-            </list>
-        </property>
-    </bean>
-    
-    <bean name="/testcase-edit" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentTestcaseEditController">
-        <property name="documentDAO" ref="documentDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
-        <property name="permissions">
-            <list>
-                <ref bean="_P_DOCUMENT_MANAGMENT"/>
-            </list>
-        </property>
-    </bean>
-    
     <bean name="/document-delete" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentDeleteController">
         <property name="documentDAO" ref="documentDAO"/>
         <property name="permissions">
@@ -86,13 +57,6 @@
                 <ref bean="_P_DOCUMENT_MANAGMENT"/>
             </list>
         </property>
-    </bean>
-    
-    <bean name="/testcase-display" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentTestcaseDisplayController">
-        <property name="documentDAO" ref="documentDAO"/>
-        <property name="userDAO" ref="userDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
     </bean>
     
     <bean name="/file-create" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentFileUploadController">
@@ -169,33 +133,6 @@
                 <ref bean="_P_DOCUMENT_MANAGMENT"/>
             </list>
         </property>
-    </bean>
-    
-    <bean name="/testcase-search" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentTestcaseSearchController">
-        <property name="title" value="Search Test-Cases"/>
-        <property name="sessionForm" value="true"/>
-        <property name="commandName" value="searchFilter"/>
-        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.document.DocumentSearchFilter"/>
-        <property name="formView" value="search-test-cases"/>
-        <property name="documentDAO" ref="documentDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="userDAO" ref="userDAO"/>
-        <property name="successView" value="search-test-cases"/>
-        <property name="columnFactory" ref="documentColumnFactory"/>
-        <property name="config" ref="oculusConfig"/>
-    </bean>
-    
-    <bean name="/testcase-search-export.xls" class="net.mindengine.oculus.frontend.web.controllers.document.TestCaseSearchExportXLSController">
-        <property name="commandName" value="searchFilter"/>
-        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.document.DocumentSearchFilter"/>
-        <property name="documentDAO" ref="documentDAO"/>
-        <property name="customizationDAO" ref="customizationDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="userDAO" ref="userDAO"/>
-        <property name="columnFactory" ref="documentColumnFactory"/>
-        <property name="config" ref="oculusConfig"/>
-        <property name="reportGenerator" ref="testCaseReportGenerator"/>
     </bean>
     
     <bean name="/documents-move" class="net.mindengine.oculus.frontend.web.controllers.document.DocumentsMoveController">

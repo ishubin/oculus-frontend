@@ -13,8 +13,6 @@
     Create Test
 </div>
 
-<br/>
-<br/>
 <form action="../test/create" 
     method="post">
     <%@ include file="/WEB-INF/jsp/test/test-create-content.jsp" %>

@@ -18,54 +18,6 @@
     <span style="white-space: nowrap;"><img src="../images/iconTest.png"/> ${test.name}</span>
 </div>
 
-<script language="javascript">
-var tree = null;
-var currentProjectId = 0;
-function loadFolderTree(projectId)
-{
-    currentProjectId = projectId;
-    tree = new dhtmlXTreeObject("treeboxbox_tree", "100%", "100%", 0);
-    tree.setSkin('dhx_skyblue');
-    tree.setImagePath("../dhtmlxTree/imgs/csh_dhx_skyblue/");
-    tree.enableDragAndDrop(0);
-    tree.enableTreeLines(true);
-    tree.setXMLAutoLoading("../document/display-folders");
-    
-    var d = new Date();
-    var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
-    tree.loadXML("../document/display-folders?projectId="+projectId+"&tmstp="+str);
-
-    tree.attachEvent("onSelect", onTreeElementSelect);
-}
-function onTreeElementSelect()
-{
-    var selectId = tree.getSelectedItemId();
-    if(selectId.substring(1,3)=="tc")
-    {
-        var testCaseId = selectId.substring(3);
-        document.forms.linkWithTestCase.testCaseId.value = testCaseId;
-        document.forms.linkWithTestCase.submit();
-    }
-}
-function onLinkTestWithTestCaseClick()
-{
-	if(tree==null){
-		loadFolderTree(<%out.print(((net.mindengine.oculus.frontend.domain.project.Project)pageContext.findAttribute("project")).getId());%>);
-	}
-    showPopup("divLinkTestWithTestCaseDialog",400,500);
-}
-</script>
-
-<form name="linkWithTestCase" action="../test/link-with-test-case" method="post">
-    <input type="hidden" name="testId" value="${test.id}"/>
-    <input type="hidden" name="testCaseId" value=""/>
-</form>
-<div id="divLinkTestWithTestCaseDialog" style="display:none;">
-    <tag:panel align="center" title="Select test-case..." width="100%" height="100%" closeDivName="divLinkTestWithTestCaseDialog">
-        <div id="treeboxbox_tree" style="border:1px solid #cccccc;width:350; height:450; overflow:auto;"></div>
-    </tag:panel>
-</div>
-
 <table class="issue-table" width="100%" border="0" cellpadding="0" cellspacing="0">
     <thead>
         <tr>
@@ -77,7 +29,7 @@ function onLinkTestWithTestCaseClick()
     <tbody>
         <tr class="odd">
             <td class="issue-table-left">
-                Name:
+                Name
             </td>
             <td class="issue-table">
                <tag:escape text="${test.name}"/>
@@ -85,7 +37,7 @@ function onLinkTestWithTestCaseClick()
         </tr>
         <tr class="even">
             <td class="issue-table-left">
-                Description:
+                Description
             </td>
             <td class="issue-table">
                 <tag:bbcode-render>${test.description}</tag:bbcode-render>
@@ -93,7 +45,7 @@ function onLinkTestWithTestCaseClick()
         </tr>
         <tr class="odd">
             <td class="issue-table-left">
-                Mapping:
+                Mapping
             </td>
             <td class="issue-table">
                 <tag:escape text="${test.mapping}"/>
@@ -101,7 +53,7 @@ function onLinkTestWithTestCaseClick()
         </tr>
         <tr class="even">
             <td class="issue-table-left">
-                Project:
+                Project
             </td>
             <td class="issue-table">
                 <a href="../project/display-${project.path}"><img src="../images/workflow-icon-project.png"/> <tag:escape text="${project.name}"/></a>
@@ -109,7 +61,7 @@ function onLinkTestWithTestCaseClick()
         </tr>
         <tr class="odd">
             <td class="issue-table-left">
-                Author:
+                Author
             </td>
             <td class="issue-table">
                 <a href="../user/profile-${testAuthor.login}">
@@ -120,7 +72,7 @@ function onLinkTestWithTestCaseClick()
         </tr>
         <tr class="even">
             <td class="issue-table-left">
-                Group:
+                Group
             </td>
             <td class="issue-table">
                 <c:if test="${test.groupId>0}">
@@ -192,72 +144,27 @@ function onLinkTestWithTestCaseClick()
     </tbody>
 </table>
 
-
-<c:if test="${linkedTCDocument!=null}">
-    <br/>
-    <br/>
-    <table class="issue-table" width="100%" border="0" cellpadding="0" cellspacing="0">
-       <thead>
-           <tr>
-               <td class="issue-table" colspan="2">
-               		<img src="../images/workflow-icon-link-to-file.png"/>Test-Case: 
-               		<a href="../document/project-${parentProject.path}?testCaseId=${linkedTCDocument.id}">
-               			<tag:escape text="${linkedTCDocument.name}"/>
-               		</a>
-               </td>
-           </tr>
-       </thead>
-       <tbody>
-           <tr class="odd">
-               <td class="issue-table-left">Description:</td>
-               <td class="issue-table">
-                    <tag:bbcode-render>${linkedTCDocument.description}</tag:bbcode-render>
-               </td>
-           </tr>
-           <tr class="even" >
-               <td class="issue-table-left">Steps:</td>
-               <td class="issue-table" style="padding:0px;">
-                   <c:choose>
-                       <c:when test="${linkedTCTestcase.stepsAmount > 0}">
-                          <table class="test-case" width="100%" border="0" cellpadding="0" cellspacing="0">
-                              <thead>
-                                  <tr>
-                                      <td width="50px" class="test-case" style="border-left:none;">#</td>
-                                      <td width="50%" class="test-case" style="border-left:none;">Action</td>
-                                      <td width="50%" class="test-case" style="border-right:none;">Expected Result</td>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <c:forEach items="${linkedTCTestcase.steps}" var="testCaseStep" varStatus="testCaseStepStatus">
-                                      <tr>
-                                          <td class="test-case" style="border-left:none;">${testCaseStepStatus.index+1}</td>
-                                          <td class="test-case" style="border-left:none;height:50px;"><tag:bbcode-render>${testCaseStep.action}</tag:bbcode-render>
-                                          <td class="test-case" style="border-right:none;"><tag:bbcode-render>${testCaseStep.expected}</tag:bbcode-render>
-                                      </tr>
-                                  </c:forEach>
-                              </tbody>
-                          </table>    
-                       </c:when>
-                       <c:otherwise>
-                           There are no steps        
-                       </c:otherwise>
-                   </c:choose>
-               </td>
-           </tr>
-           <tr class="odd">
-            <td class="issue-table-left">
-                Author:
-            </td>
-            <td class="issue-table">
-                <a href="../user/profile-${linkedTCAuthor.login}"><tag:escape text="${linkedTCAuthor.name}"/></a>
-            </td>
-        </tr>
-       </tbody>
-    </table>
-</c:if>
-
-<c:if test="${linkedTCError!=null}">
-    <div style="color:red;">${linkedTCError}</div>
+<c:if test="${testContent!=null && testContent.steps!=null}">
+	<p>
+		<table class="document-test-case-table-preview" cellspacing="0">
+			<thead>
+				<tr>
+					<td>Step</td>
+					<td width="50%">Action</td>
+					<td width="50%">Expected</td>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${testContent.steps}" var="step" varStatus="stepStatus">
+					<tr>
+						<td class="dtctp-number">${stepStatus.index+1}</td>
+						<td class="dtctp-content">${step.action}</td>
+						<td class="dtctp-content">${step.expected}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</p>
 </c:if>
 
 <!-- Comments layout -->

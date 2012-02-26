@@ -260,17 +260,17 @@ CREATE TABLE `documents` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(256) NOT NULL DEFAULT '',
   `content` text,
-  `type` enum('testcase','file') NOT NULL DEFAULT 'testcase',
+  `type` enum('file') DEFAULT NULL,
   `folder_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `description` text,
-  `branch` text,
+  `description` mediumtext,
+  `branch` mediumtext,
   `type_extended` varchar(16) DEFAULT NULL,
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -623,12 +623,12 @@ CREATE TABLE `tests` (
   `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `author_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `supporters` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `mapping` varchar(256) DEFAULT NULL,
-  `test_case_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `group_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `content` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -771,7 +771,7 @@ CREATE TABLE `unit_customization_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1519,4 +1519,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-02-26  9:52:46
+-- Dump completed on 2012-02-26 20:08:47

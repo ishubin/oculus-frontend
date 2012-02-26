@@ -63,9 +63,9 @@
         <property name="description" column="description"/>
         <property name="mapping" column="mapping"/>
         <property name="date" column="date"/>
-        <property name="testCaseId" column="test_case_id"/>
         <property name="groupId" column="group_id"/>
         <property name="groupName" column="groupName"/>
+        <property name="content" column="content"/>
     </bean>
     
     

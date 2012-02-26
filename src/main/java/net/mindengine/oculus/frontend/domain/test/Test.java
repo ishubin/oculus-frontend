@@ -18,10 +18,10 @@ public class Test {
 	private String authorLogin;
 	private List<TestParameter> inputParameters;
 	private List<TestParameter> outputParameters;
-	private Long testCaseId;
 	private Long groupId;
 	private String groupName;
-
+	private String content;
+	
 	/**
 	 * This field is used for automation test mapping in TestRunManager For now
 	 * it is used to define class-path
@@ -116,14 +116,6 @@ public class Test {
 		this.outputParameters = outputParameters;
 	}
 
-	public void setTestCaseId(Long testCaseId) {
-		this.testCaseId = testCaseId;
-	}
-
-	public Long getTestCaseId() {
-		return testCaseId;
-	}
-
 	public void setProjectPath(String projectPath) {
 		this.projectPath = projectPath;
 	}
@@ -171,5 +163,13 @@ public class Test {
 	public String getGroupName() {
 		return groupName;
 	}
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }

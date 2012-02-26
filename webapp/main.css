@@ -443,7 +443,7 @@ a.small-button-minimize:hover {
 
 
 table.issue-table{
-	border:1px solid #93b0c8;
+	border:1px solid #AED0EA;
 	-moz-border-radius: 5px;
     border-radius: 5px;
     -moz-box-shadow: 3px 3px 3px #aaa;
@@ -456,8 +456,10 @@ table.issue-table td.issue-table, table.issue-table td.issue-table-left{
 	text-align: left;
 }
 table.issue-table thead td.issue-table{
-	background:#bbc4ca;
-	font-size:12pt;
+	font-weight:bold;
+    font-size:12pt;
+    color: #2779AA;
+    background:#D7EBF9;
 }
 table.issue-table thead td.issue-table a{
     font-size:12pt;
@@ -469,13 +471,14 @@ table.issue-table tbody td.issue-table-left{
     white-space: nowrap;
     width:100px;
     font-weight: bold;
+    color: #2779AA;
     font-size:10pt;
 }
 table.issue-table tbody tr.even td.issue-table-left{
-	background:#C5D5E0;
+	background:#D3E7F9;
 }
 table.issue-table tbody tr.odd td.issue-table-left{
-    background:#d7e1e8;
+    background:#D7EBF9;
 }
 table.issue-table tbody tr.even td.issue-table{
     background:#f5f5f5;
@@ -491,10 +494,11 @@ table.issue-table tfoot td.issue-table{
     font-size:10pt;
 }
 table.issue-table tbody td.issue-table-separator{
-    background:#bbc4ca;
-    border-top:2px solid #99a4aa;  
+	background:#D7EBF9;
+    color: #2779AA;
+    border-top:2px solid #AED0EA;  
     font-weight:bold;
-    font-size:10pt;
+    font-size:12pt;
     padding:4px;
 }
 
@@ -559,23 +563,6 @@ a.report-row-collapse{
 }
 
 
-table.test-case{
-    border-collapse: collapse;
-    border:none;
-}
-table.test-case thead td.test-case{
-    border:1px solid #aaaaaa;
-    padding:4px;
-    background:#E8F3FA;
-    font-weight: bold;
-    font-size: 10pt;
-}
-table.test-case tbody td.test-case{
-    border:1px solid #aaaaaa;
-    padding:4px;
-    vertical-align:top;
-    horizontal-align:left;
-}
 
 table.customization-possible-values thead td{
 	background:#a0a0a0;
@@ -1228,6 +1215,9 @@ div.document-test-case-table-step:hover ul, table.document-test-case-editor-tabl
 
 table.document-test-case-table-preview {
 	width:100%;
+	-moz-box-shadow: 3px 3px 3px #aaa;
+    -webkit-box-shadow: 3px 3px 3px #aaa;
+    box-shadow: 3px 3px 3px #aaa;
 }
 table.document-test-case-table-preview thead td{
 	font-weight:bold;

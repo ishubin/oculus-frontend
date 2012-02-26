@@ -25,7 +25,6 @@ function onUnitChange(el)
 		        <option style="color:gray;" disabled="disabled" selected="selected">Select unit...</option>
 		        <option value="project">Sub-Project</option>
 		        <option value="test">Test</option>
-		        <option value="test-case">Test-Case</option>
 		        <option value="issue">Issue</option>
 		        <option value="build">Build</option>
 		    </select>

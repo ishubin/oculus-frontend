@@ -24,12 +24,6 @@
                  </a>
             </li>
             <li>
-                 <a class="sf-with-ul" href="../document/testcase-search">
-                      <img src="../images/workflow-icon-search.png"/>
-                      Test-Cases
-                 </a>
-            </li>
-            <li>
                  <a class="sf-with-ul" href="../project/build-search">
                       <img src="../images/workflow-icon-search.png"/>
                       Builds

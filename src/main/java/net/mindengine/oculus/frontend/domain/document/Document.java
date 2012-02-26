@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 
 public class Document {
-	public static final String _TYPE_TEST_CASE = "testcase";
 	public static final String _TYPE_FILE = "file";
 
 	private Long id;

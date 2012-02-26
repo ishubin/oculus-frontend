@@ -48,7 +48,6 @@ public class JdbcDocumentDAO extends MySimpleJdbcDaoSupport implements DocumentD
 
 	@Override
 	public Long createDocument(Document document) throws Exception {
-		// TODO Auto-generated method stub
 		PreparedStatement ps = getConnection().prepareStatement("insert into documents " + "(name," + "description," + "content," + "date," + "project_id," + "folder_id," + "user_id," + "branch," + "type," + "size," + "type_extended) " + "values (?,?,?,?,?,?,?,?,?,?,?)");
 
 		ps.setString(1, document.getName());

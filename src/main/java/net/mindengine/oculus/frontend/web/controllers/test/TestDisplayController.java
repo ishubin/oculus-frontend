@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.mindengine.oculus.frontend.domain.comment.Comment;
 import net.mindengine.oculus.frontend.domain.customization.Customization;
-import net.mindengine.oculus.frontend.domain.document.Document;
 import net.mindengine.oculus.frontend.domain.document.testcase.Testcase;
 import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.test.Test;
@@ -59,25 +58,11 @@ public class TestDisplayController extends SecureSimpleViewController {
 		map.put("testOutputParameters", testOutputParameters);
 		map.put("testOutputParametersCount", testOutputParameters.size());
 
-		if (test.getTestCaseId() != null && test.getTestCaseId() > 0) {
-			// Fetching the linked test-case to this test
-			Document document = documentDAO.getDocument(test.getTestCaseId());
-
-			try {
-				Testcase testCase = Testcase.parse(document.getContent());
-				map.put("linkedTCDocument", document);
-				map.put("linkedTCAuthor", userDAO.getUserById(document.getUserId()));
-				map.put("linkedTCTestcase", testCase);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				map.put("linkedTCError", "The linked test-case is corrupted");
-			}
-		}
-
 		map.put("test", test);
 		map.put("project", project);
 		map.put("parentProject", parentProject);
+		
+		map.put("testContent", Testcase.parse(test.getContent()));
 
 		/*
 		 * Loading comments

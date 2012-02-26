@@ -34,6 +34,7 @@ public class TestCreateController extends SecureSimpleFormController {
 		if (request.getParameter("groupId") != null) {
 			test.setGroupId(Long.parseLong(request.getParameter("groupId")));
 		}
+		test.setContent("");
 		return test;
 	}
 

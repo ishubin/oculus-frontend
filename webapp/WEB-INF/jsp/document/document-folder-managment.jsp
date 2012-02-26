@@ -18,7 +18,7 @@ function loadFolderTree(projectId)
     tree.enableCheckBoxes(true, true);
     tree.enableTreeLines(true);
     tree.setXMLAutoLoading("../document/display-folders");
-    //tree.setXMLAutoLoadingBehaviour("function");
+	//tree.setXMLAutoLoadingBehaviour("function");
     
     var d = new Date();
     var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();

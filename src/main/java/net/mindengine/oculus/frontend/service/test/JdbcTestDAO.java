@@ -27,7 +27,7 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 
 	@Override
 	public long create(Test test) throws Exception {
-		PreparedStatement ps = getConnection().prepareStatement("insert into tests (name, description, project_id, author_id, date, mapping, group_id) values (?, ?, ?, ?, ?, ?, ?)");
+		PreparedStatement ps = getConnection().prepareStatement("insert into tests (name, description, project_id, author_id, date, mapping, group_id, content) values (?, ?, ?, ?, ?, ?, ?, ?)");
 
 		ps.setString(1, test.getName());
 		ps.setString(2, test.getDescription());
@@ -36,6 +36,7 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 		ps.setTimestamp(5, new Timestamp(test.getDate().getTime()));
 		ps.setString(6, test.getMapping());
 		ps.setLong(7, test.getGroupId());
+		ps.setString(8, test.getContent());
 
 		logger.info(ps);
 		ps.executeUpdate();
@@ -66,8 +67,9 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 
 	@Override
 	public void updateTest(Long id, Test test) throws Exception {
-		update("update tests set name = :name, description = :description, project_id =:projectId, mapping =:mappingId, group_id =:groupId where id = :id", "id", id, "name", test.getName(), "description", test.getDescription(), "projectId", test.getProjectId(), "mappingId", test.getMapping(),
-				"groupId", test.getGroupId());
+		update("update tests set name = :name, description = :description, project_id =:projectId, mapping =:mappingId, group_id =:groupId, content = :content where id = :id", "id", id, "name", test.getName(), "description", test.getDescription(), "projectId", test.getProjectId(), "mappingId", test.getMapping(),
+				"groupId", test.getGroupId(),
+				"content", test.getContent());
 	}
 
 	@SuppressWarnings("unchecked")

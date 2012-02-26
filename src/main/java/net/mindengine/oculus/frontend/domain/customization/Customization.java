@@ -5,7 +5,6 @@ import java.util.Collection;
 public class Customization {
 	public static final String UNIT_PROJECT = "project".intern();
 	public static final String UNIT_TEST = "test".intern();
-	public static final String UNIT_TEST_CASE = "test-case".intern();
 	public static final String UNIT_ISSUE = "issue".intern();
 	public static final String UNIT_BUILD = "build".intern();
 

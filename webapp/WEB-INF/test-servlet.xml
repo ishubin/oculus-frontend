@@ -75,12 +75,6 @@
         <property name="authorizationCheck" value="true"/>
     </bean>
     
-    <bean name="/link-with-test-case" class="net.mindengine.oculus.frontend.web.controllers.test.TestLinkWithTestCaseController">
-        <property name="testDAO" ref="testDAO"/>
-        <property name="documentDAO" ref="documentDAO"/>
-    </bean>
-        
-    
     <bean name="/ajax-fetch" class="net.mindengine.oculus.frontend.web.controllers.test.TestAjaxFetchController">
         <property name="testDAO" ref="testDAO"/>
     </bean>

@@ -20,14 +20,14 @@ if(project!=null)
             <tr>
                 <td>
                     <tag:workflow-panel title="Project Links" width="100%" id="workflow_PL">
+                    	<c:if test="${user!=null }">
                         <tag:workflow-element icon="library" link="../document/project-${project.path}">Documentation Library</tag:workflow-element>
+                        </c:if>
                         <c:if test="${project.parentId>0}">
                             <tag:workflow-element icon="search" link="../test/search?project=${project.parentId}&subProject=${project.id}">Tests</tag:workflow-element>
-                            <tag:workflow-element icon="search" link="../document/testcase-search?project=${project.parentId}&subProject=${project.id}">Test-Cases</tag:workflow-element>
                         </c:if>
                         <c:if test="${project.parentId==0}">
                             <tag:workflow-element icon="search" link="../test/search?project=${project.id}">Tests</tag:workflow-element>
-                            <tag:workflow-element icon="search" link="../document/testcase-search?project=${project.id}">Test-Cases</tag:workflow-element>
                             <tag:workflow-element icon="chart" link="../dashboard/project-${project.path}">Dashboard</tag:workflow-element>
                             <tag:workflow-element icon="build" link="../project/builds-${project.path}">Builds</tag:workflow-element>
                             <c:if test="${user.hasPermissions.project_managment == true}">

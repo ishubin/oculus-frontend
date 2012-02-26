@@ -1,5 +1,6 @@
 package net.mindengine.oculus.frontend.web.controllers.test;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.mindengine.oculus.frontend.domain.customization.Customization;
+import net.mindengine.oculus.frontend.domain.document.testcase.Testcase;
 import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.test.Test;
 import net.mindengine.oculus.frontend.domain.user.User;
@@ -17,6 +19,7 @@ import net.mindengine.oculus.frontend.service.test.TestDAO;
 import net.mindengine.oculus.frontend.service.user.UserDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -58,10 +61,22 @@ public class TestEditController extends SecureSimpleFormController {
 		}
 
 		map.put("groups", testDAO.getProjectTestGroups(test.getProjectId()));
+		
+		
+		map.put("testContentJson", exportTestContentToJson(test.getContent()));
 		return map;
 	}
 
-	@Override
+	private String exportTestContentToJson(String content) throws Exception {
+        Testcase testcase = Testcase.parse(content);
+        
+        ObjectMapper mapper = new ObjectMapper();
+        StringWriter sw = new StringWriter();
+        mapper.writeValue(sw, testcase);
+        return sw.toString();
+    }
+
+    @Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 		verifyPermissions(request);
 		Long id = new Long(request.getParameter("id"));

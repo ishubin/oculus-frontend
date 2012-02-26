@@ -119,12 +119,7 @@ public class DocumentFoldersDisplayController extends SecureSimpleViewController
     		for (Document document : documents) {
     			w.write("<item ");
     			String prefix = "d";
-    			if (Document._TYPE_TEST_CASE.equals(document.getType())) {
-    				w.write("text=\"" + XmlUtils.escapeXml(document.getName()) + "\"  ");
-    				prefix += "tc";
-    				w.write("im0=\"iconTestCase.png\" im1=\"iconTestCase.png\" im2=\"iconTestCase.png\" ");
-    			}
-    			else if (Document._TYPE_FILE.equals(document.getType())) {
+    			if (Document._TYPE_FILE.equals(document.getType())) {
     				String name = XmlUtils.escapeXml(document.getName());
     				if (document.getTypeExtended() != null && !document.getTypeExtended().isEmpty()) {
     					name += "." + document.getTypeExtended();
