@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (i686)
+-- MySQL dump 10.13  Distrib 5.1.58, for apple-darwin11.2.0 (i386)
 --
--- Host: localhost    Database: oculus
+-- Host: 172.16.23.131    Database: oculus
 -- ------------------------------------------------------
--- Server version	5.1.54-1ubuntu4
+-- Server version	5.1.49-3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,7 +30,7 @@ CREATE TABLE `builds` (
   `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `comments` (
   `unit_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `unit` enum('project','test','issue','document','build') NOT NULL DEFAULT 'project',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `customization_possible_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `possible_value` varchar(128) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +208,7 @@ CREATE TABLE `customizations` (
   `type` enum('text','assignee','list','checkbox','checklist') NOT NULL DEFAULT 'text',
   `group_name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `documents` (
   `type_extended` varchar(16) DEFAULT NULL,
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +288,7 @@ CREATE TABLE `filters` (
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `filter` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,7 +309,7 @@ CREATE TABLE `folders` (
   `branch` text,
   `documents` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +341,7 @@ CREATE TABLE `issue_collation_tests` (
   `test_name` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_ict` (`issue_collation_id`,`test_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +356,7 @@ CREATE TABLE `issue_collations` (
   `reason_pattern` mediumtext NOT NULL,
   `issue_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,7 +380,7 @@ CREATE TABLE `issues` (
   `subproject_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `dependent_tests` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +404,7 @@ CREATE TABLE `projects` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`parent_id`),
   KEY `unique_path` (`path`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -454,7 +454,7 @@ CREATE TABLE `suite_runs` (
   `parameters` mediumtext NOT NULL,
   `agent_name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,7 +474,7 @@ CREATE TABLE `suite_statistics` (
   `warning` int(10) unsigned NOT NULL DEFAULT '0',
   `runner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2063 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +508,7 @@ CREATE TABLE `test_groups` (
   `description` mediumtext NOT NULL,
   `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +530,7 @@ CREATE TABLE `test_parameters` (
   `sortindex` int(10) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`test_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -571,7 +571,7 @@ CREATE TABLE `test_runs` (
   `issue_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `description` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -628,7 +628,7 @@ CREATE TABLE `tests` (
   `test_case_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `group_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -648,7 +648,7 @@ CREATE TABLE `trm_properties` (
   `project_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`type`,`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -663,7 +663,23 @@ CREATE TABLE `trm_task_dependencies` (
   `task_id` bigint(20) NOT NULL,
   `ref_task_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `trm_task_properties`
+--
+
+DROP TABLE IF EXISTS `trm_task_properties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trm_task_properties` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `task_id` bigint(20) unsigned DEFAULT NULL,
+  `property_id` bigint(20) unsigned DEFAULT NULL,
+  `value` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -680,7 +696,7 @@ CREATE TABLE `trm_task_suite_groups` (
   `description` mediumtext NOT NULL,
   `enabled` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -701,7 +717,7 @@ CREATE TABLE `trm_task_suites` (
   `enabled` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `group_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -719,8 +735,10 @@ CREATE TABLE `trm_tasks` (
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `shared` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `project_id` bigint(20) NOT NULL,
+  `agents_filter` text,
+  `build` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -753,7 +771,7 @@ CREATE TABLE `unit_customization_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -774,7 +792,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `unique_name` (`name`),
   UNIQUE KEY `unique_login` (`login`),
   KEY `unique_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1501,4 +1519,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-03  9:27:53
+-- Dump completed on 2012-02-26  9:52:46
