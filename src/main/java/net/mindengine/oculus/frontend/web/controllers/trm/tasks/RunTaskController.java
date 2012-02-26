@@ -214,7 +214,7 @@ public class RunTaskController extends SecureSimpleViewController {
 
 		Collection<TrmTask> taskDependencies = trmDAO.getDependentTasks(taskId);
 		String submit = request.getParameter("Submit");
-		task.setParameters(trmDAO.getProperties(task.getProjectId(), TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER));
+		task.setParameters(trmDAO.getTaskProperties(task.getProjectId(), taskId, TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER));
 		
 		if (submit == null) {
 		    map.put("task", task);
@@ -275,6 +275,7 @@ public class RunTaskController extends SecureSimpleViewController {
 	    String folderName = "" + new Date().getTime() + new Random().nextInt(1000);
         File rootFolder = new File(config.getDataFolder() + File.separator + folderName);
         logger.info("Creating temp directory " + rootFolder.getPath());
+        
         rootFolder.mkdirs();
         
         for(TrmTask task : tasks){

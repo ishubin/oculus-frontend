@@ -31,8 +31,26 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	@Override
 	public void deleteProperty(Long id) throws Exception {
 		update("delete from trm_properties where id = :id", "id", id);
+		
+		update("delete from trm_task_properties where property_id = :id", "id", id);
 	}
 
+	@Override
+	public void saveTaskProperty(Long taskId, TrmProperty property) throws Exception {
+	    Long id = queryForLong("select id from trm_task_properties where task_id=" + taskId + " and property_id = " + property.getId());
+	    if(id!=null) {
+	        update("update trm_task_properties set value = :value where id = :id", 
+	                "value", property.getTaskValue(),
+	                "id", id);
+	    }
+	    else {
+	        update("insert into trm_task_properties (task_id, property_id, value) values (:taskId, :propertyId, :value)", 
+	                "taskId", taskId, 
+	                "propertyId", property.getId(),
+	                "value", property.getTaskValue());
+	    }
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TrmProperty> getProperties(Long projectId, String... types) throws Exception {
@@ -56,6 +74,14 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 		return (List<TrmProperty>) query(sql, TrmProperty.class, args);
 	}
 
+	
+	@Override
+	public List<TrmProperty> getTaskProperties(Long projectId, Long taskId, String type) throws Exception {
+	    String sql  = "select tt.value as taskValue, tp.* from trm_properties tp left join trm_task_properties tt on (tt.property_id = tp.id and tt.task_id = :taskId) where tp.project_id = :projectId and tp.type = :type;";
+	    return (List<TrmProperty>) query(sql, TrmProperty.class, 
+	            "projectId", projectId, "taskId", taskId, "type", type);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public TrmProperty getProperty(Long propertyId) throws Exception {
@@ -78,13 +104,15 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 		}
 
 		if (task.getId() == null) {
-			PreparedStatement ps = getConnection().prepareStatement("insert into trm_tasks (name, description, date, user_id, project_id) " + "values (?, ?, ?, ?, ?)");
+			PreparedStatement ps = getConnection().prepareStatement("insert into trm_tasks (name, description, date, user_id, project_id, agents_filter, build) " + "values (?, ?, ?, ?, ?, ?, ?)");
 			ps.setString(1, task.getName());
 			ps.setString(2, task.getDescription());
 			ps.setTimestamp(3, new Timestamp(task.getDate().getTime()));
 			ps.setLong(4, task.getUserId());
 			ps.setLong(5, task.getProjectId());
-
+			ps.setString(6, task.getAgentsFilter());
+			ps.setString(7, task.getBuild());
+			
 			ps.execute();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -92,7 +120,7 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 			}
 		}
 		else {
-			update("update trm_tasks set name =:name, description = :description, shared =:shared where id = :id", "id", task.getId(), "name", task.getName(), "description", task.getDescription(), "shared", task.getShared());
+			update("update trm_tasks set name =:name, description = :description, shared =:shared, agents_filter=:filter, build=:build where id = :id", "id", task.getId(), "name", task.getName(), "description", task.getDescription(), "shared", task.getShared(), "filter", task.getAgentsFilter(), "build", task.getBuild());
 		}
 		return task.getId();
 	}
@@ -127,6 +155,8 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 		update("delete from trm_task_suite_groups where task_id = :taskId", "taskId", taskId);
 
 		update("delete from trm_task_suites where task_id = :taskId", "taskId", taskId);
+		
+		update("delete from trm_task_properties where task_id = :taskId", "taskId", taskId);
 	}
 
 	@Override

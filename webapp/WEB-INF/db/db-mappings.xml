@@ -200,6 +200,7 @@
         <property name="type" column="type"/>
         <property name="projectId" column="project_id"/>
         <property name="subtype" column="subtype"/>
+        <property name="taskValue" column="taskValue"/>
     </bean>
     
     <bean class="net.mindengine.oculus.frontend.domain.trm.TrmTask">
@@ -212,6 +213,8 @@
         <property name="shared" column="shared"/>
         <property name="userLogin" column="userLogin"/>
         <property name="userName" column="userName"/>
+        <property name="agentsFilter" column="agents_filter" />
+        <property name="build" column="build"/>
     </bean>
     
     <bean class="net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency">

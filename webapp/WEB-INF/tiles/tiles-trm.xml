@@ -46,7 +46,7 @@
     <definition name="trm-edit-task" extends="html-container">
         <put name="left-panel" type="page" value="/WEB-INF/jsp/trm/tasks/trm-my-tasks-left-panel.jsp"/>
         <put name="content" value="/WEB-INF/jsp/trm/tasks/trm-edit-task.jsp" type="page"/>
-        <put name="right-panel" value="" type="string"/>
+        <put name="right-panel" value="/WEB-INF/jsp/trm/tasks/trm-run-task-right-panel.jsp" type="page"/>
     </definition>
     
     

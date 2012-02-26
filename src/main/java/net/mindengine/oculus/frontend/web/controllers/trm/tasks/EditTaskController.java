@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.mindengine.oculus.frontend.config.Config;
+import net.mindengine.oculus.frontend.domain.trm.TrmProperty;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
@@ -14,8 +16,11 @@ import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.PermissionDeniedException;
 import net.mindengine.oculus.frontend.service.exceptions.RedirectException;
+import net.mindengine.oculus.frontend.service.trm.AgentTagRulesContainer;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
+import net.mindengine.oculus.grid.domain.agent.AgentStatus;
+import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
 /**
  * This controller is used only for editing basic task information and
@@ -25,11 +30,15 @@ import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController
  * 
  */
 public class EditTaskController extends SecureSimpleViewController {
-	private TrmDAO trmDAO;
+    private TrmDAO trmDAO;
+    private Config config;
+    private AgentTagRulesContainer agentTagRulesContainer;
 
-	private void saveTask(Long taskId, List<TrmSuite> suites, List<TrmSuiteGroup> groups, Long groupId, HttpServletRequest request) throws Exception {
+	private void saveTask(Long taskId, List<TrmSuite> suites, List<TrmSuiteGroup> groups, Long groupId, List<TrmProperty> taskProperties, HttpServletRequest request) throws Exception {
 		TrmTask task = new TrmTask();
 		task.setId(taskId);
+		task.setAgentsFilter(request.getParameter("agentsFilter"));
+		task.setBuild(request.getParameter("build"));
 		
 		if(groupId==null || groupId.equals(0L)) {
 		    String name = request.getParameter("taskName");
@@ -68,15 +77,39 @@ public class EditTaskController extends SecureSimpleViewController {
 				if (checkbox != null && checkbox.equals("on")) {
 					group.setEnabled(true);
 				}
-				else
+				else {
 					group.setEnabled(false);
+				}
 				trmDAO.updateSuiteGroup(group);
 			}
 		}
-
+		
+		if(taskProperties!=null && taskProperties.size()>0) {
+		    saveTaskProperties(taskId, taskProperties, request);
+		}
 	}
 
-	@Override
+	private void saveTaskProperties(Long taskId, List<TrmProperty> taskProperties, HttpServletRequest request) throws Exception {
+        for(TrmProperty property : taskProperties) {
+            
+            String value = request.getParameter("sp_" + property.getId());
+            if(property.getSubtype().equals(TrmProperty.Controls._CHECKBOX)) {
+                if(value!=null && value.equals("on")) {
+                    value = "true";
+                }
+                else {
+                    value = "false";
+                }
+            }
+            
+            if(value!=null) {
+                property.setTaskValue(value);
+                trmDAO.saveTaskProperty(taskId, property);
+            }
+        }
+    }
+
+    @Override
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long taskId = Long.parseLong(request.getParameter("id"));
@@ -100,19 +133,35 @@ public class EditTaskController extends SecureSimpleViewController {
 		 * here. Actually if you place the following code outside the condition
 		 * body there might be a problem with saving task.
 		 */
+		TrmTask task = trmDAO.getTask(taskId);
+		
+		List<TrmProperty> taskProperties = trmDAO.getTaskProperties(task.getProjectId(), taskId, TrmProperty._TYPE_SUITE_PARAMETER);
+		
 		if (groupId == 0L) {
 			groups = trmDAO.getTaskSuiteGroups(taskId);
 		}
 		if (submit != null) {
 			if (submit.equals("Save")) {
-				saveTask(taskId, suites, groups, groupId, request);
+				saveTask(taskId, suites, groups, groupId, taskProperties, request);
 			}
 		}
-
-		TrmTask task = trmDAO.getTask(taskId);
-
+		
+		task.setParameters(taskProperties);
 		map.put("groups", groups);
-
+		
+		
+		try {
+		    //In case there is no connection to Grid user should still be able to edit his tasks
+		    ClientServerRemoteInterface server = config.getGridServer();
+		    AgentStatus[] agents = server.getAgents();
+            agentTagRulesContainer.wrapAgentTags(agents);
+            map.put("agents", agents);
+            map.put("agentTags", agentTagRulesContainer.fetchAllAgentWrappedTags(agents));
+		}
+		catch (Exception e) {
+            
+        }
+		
 		User user = getUser(request);
 		if (user == null) {
 			throw new NotAuthorizedException();
@@ -138,4 +187,20 @@ public class EditTaskController extends SecureSimpleViewController {
 	public TrmDAO getTrmDAO() {
 		return trmDAO;
 	}
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
+    public AgentTagRulesContainer getAgentTagRulesContainer() {
+        return agentTagRulesContainer;
+    }
+
+    public void setAgentTagRulesContainer(AgentTagRulesContainer agentTagRulesContainer) {
+        this.agentTagRulesContainer = agentTagRulesContainer;
+    }
 }

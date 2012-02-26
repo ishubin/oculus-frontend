@@ -7,9 +7,13 @@
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
 <%@ include file="/session-handler.jsp" %>
 
+<%@ include file="/WEB-INF/jsp/trm/tasks/trm-agents-filter.jsp"%>
+
+<tag:pickbuild-setup/>
 
 <%@page import="java.util.Collection"%>
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency"%>
+
 
 <div class="breadcrump">
     <a href="../grid/my-tasks">My Tasks</a>
@@ -34,38 +38,67 @@
      
     
 </div>
-<form method="post">
+
+<script>
+function onTaskSaveFormSubmit() {
+	$("#agentsFilterField").val(agentFilter.exportFilter());
+	return true;
+}
+</script>
+<form method="post" onsubmit="return onTaskSaveFormSubmit();">
+	<input type="hidden" name="agentsFilter" id="agentsFilterField" value=""/>
     <c:if test="${group==null}">
         <tag:submit value="Save" name="Submit"></tag:submit>
     </c:if>
     <c:if test="${group==null}">
 		<tag:panel title="Task Details" id="panelTaskInfo" align="center" width="100%" disclosure="true" closed="false">
-		    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-		        <tbody> 
-		            <tr>
-		                <td class="small-description">Name:</td>
-		            </tr>
-		            <tr>  
-		                <td>
-		                    <tag:edit-field-simple name="taskName" id="editTaskName" width="100%" value="${task.name}"></tag:edit-field-simple>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td class="small-description"><br/>Description:</td>
-		            </tr>
-		            <tr>
-		                <td>
-		                   <tag:textarea-simple name="taskDescription"  style="width:100%;" rows="6"  value="${task.description}"/>
-		                </td>
-		            </tr>
-		            <tr>
-		               <td>
-		                   <input id="chkShareTask" type="checkbox" name="shared" <c:if test="${task.shared==true}">checked="checked"</c:if>/>
-		                   <label for="chkShareTask"> Share this task with other users</label>
-		               </td>
-		            </tr>
-		        </tbody>
-		    </table>
+		    <p>
+		    	Name:
+		    	<br/>
+		    	<tag:edit-field-simple name="taskName" id="editTaskName" width="100%" value="${task.name}"></tag:edit-field-simple>
+		    </p>
+		    <p>
+		    	Description:
+		    	<br/>
+		    	<tag:textarea-simple name="taskDescription"  style="width:100%;" rows="6"  value="${task.description}"/>
+		    </p>
+		    <p>
+                <input id="chkShareTask" type="checkbox" name="shared" <c:if test="${task.shared==true}">checked="checked"</c:if>/> 
+                <label for="chkShareTask"> Share this task with other users</label>
+		    </p>
+		    <p>
+        		<table border="0" cellpadding="5px" cellspacing="0px">
+                     <tr>
+                         <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
+                         <td>
+                             <tag:pickbuild-button build="${task.build}" id="build" projectId="${task.projectId}"></tag:pickbuild-button>
+                         </td>
+                     </tr>
+                     <c:forEach items="${task.parameters}" var="parameter">
+                     <tr>
+                         <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
+                         <td>
+                         <c:choose>
+                             <c:when test="${parameter.subtype == 'text'}">
+                                 <tag:edit-field-simple name="sp_${parameter.id}" id="sp_${parameter.id}" value="${parameter.taskValue}"/>
+                             </c:when>
+                             <c:when test="${parameter.subtype == 'list'}">
+                                 <select name="sp_${parameter.id}" id="sp_${parameter.id}" style="width:100%;">
+                                     <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
+                                         <option value="${possibleValue}" <c:if test="${parameter.taskValue == possibleValue }">selected="selected"</c:if> >${possibleValue}</option>
+                                     </c:forEach>
+                                 </select>
+                             </c:when>
+                             <c:when test="${parameter.subtype == 'checkbox'}">
+                                 <input type="checkbox" name="sp_${parameter.id}" id="sp_${parameter.id}" <c:if test="${parameter.taskValue=='true' }">checked="checked"</c:if> />
+                             </c:when>
+                             <c:otherwise>Undefined Control</c:otherwise>
+                         </c:choose>
+                         </td>
+                     </tr>
+                     </c:forEach>
+                 </table>
+		    </p>
 		</tag:panel>
 	</c:if>	
 	     
@@ -133,7 +166,7 @@
 	}
 	</script>
 	
-	<div id="reportBody" style="position:relative; display:block;">
+	<div id="reportBody">
 	    <c:if test="${fn:length(taskDependencies) > 0 && group == null}">
 	        <script>
 	        var _taskDependencyIds = [
@@ -306,6 +339,17 @@
     </div>
     <br/>
     <tag:submit value="Save" name="Submit"></tag:submit>
+    
+    <c:if test="${agents!=null}">
+    	<p>
+    	<h2>Agents</h2>
+    	<c:forEach items="${agents}" var="agent">
+			<div class="run-task-agent-layout" agent-name="${agent.agentInformation.name}">
+		    	<tag:agent-layout agent="${agent}"/>
+		    </div>
+		</c:forEach>
+		</p>
+    </c:if>
 </form>
 
 <form name="deleteTaskDependencies" action="../grid/delete-task-dependencies" method="post">

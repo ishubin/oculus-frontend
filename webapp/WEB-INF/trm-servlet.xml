@@ -62,6 +62,8 @@
         <property name="view" value="trm-edit-task"/>
         <property name="trmDAO" ref="trmDAO"/>
         <property name="authorizationCheck" value="true"/>
+        <property name="config" ref="oculusConfig"/>
+        <property name="agentTagRulesContainer" ref="agentTagRulesContainer"/>
     </bean>
     
     <bean name="/create-suite" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.CreateSuiteController">

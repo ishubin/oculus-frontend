@@ -243,4 +243,8 @@ public interface TrmDAO {
 	
 	public void deleteTaskDependency(Long id, Long taskId) throws Exception;
 
+    public void saveTaskProperty(Long taskId, TrmProperty property) throws Exception;
+
+    public List<TrmProperty> getTaskProperties(Long projectId, Long taskId, String type) throws Exception;
+
 }

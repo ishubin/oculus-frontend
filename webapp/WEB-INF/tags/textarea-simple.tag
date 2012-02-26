@@ -13,7 +13,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-<textarea name="${name}"
+<textarea class="custom-textarea" name="${name}"
     <c:if test="${id!=null }">id="${id}"</c:if>
     <c:if test="${cols!=null }">cols="${cols}"</c:if>
     <c:if test="${rows!=null }">rows="${rows}"</c:if>

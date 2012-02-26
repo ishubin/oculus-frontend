@@ -20,6 +20,7 @@ public class TrmProperty {
 	private String type;
 	private String subtype;
 	private Long projectId;
+	private String taskValue;
 
 	public class Controls {
 		public final static String _TEXT = "text";
@@ -104,4 +105,12 @@ public class TrmProperty {
 	public Long getProjectId() {
 		return projectId;
 	}
+
+    public String getTaskValue() {
+        return taskValue;
+    }
+
+    public void setTaskValue(String taskValue) {
+        this.taskValue = taskValue;
+    }
 }

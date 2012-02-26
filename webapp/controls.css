@@ -53,7 +53,7 @@ a.icon-button-white:hover{
     
     
 /*Edit field*/
-.custom-edit-text{
+.custom-edit-text, .custom-textarea{
 	background: white;
 	padding:4px;
 	border:1px solid #888;
@@ -63,7 +63,7 @@ a.icon-button-white:hover{
     -webkit-box-shadow: inset 2px 2px 2px #ddd;
     box-shadow: inset 2px 2px 2px #ddd;
 }
-.custom-edit-text-error{
+.custom-edit-text-error, .custom-textarea-error{
     background: #f0a0a0;
     padding:4px;
     border:1px solid #ff0000;
@@ -85,6 +85,7 @@ a.icon-button-white:hover{
     -webkit-box-shadow: inset 2px 2px 2px #ddd;
     box-shadow: inset 2px 2px 2px #ddd;
 }
+
 
 
 /*Custom Panel*/

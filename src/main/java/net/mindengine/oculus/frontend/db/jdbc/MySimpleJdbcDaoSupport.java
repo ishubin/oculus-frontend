@@ -48,6 +48,17 @@ public class MySimpleJdbcDaoSupport extends SimpleJdbcDaoSupport {
 		return (List<T>) getSimpleJdbcTemplate().query(sql, beanMappingFactory.getBeanMapper(mapperClass), map);
 	}
 	
+	public Long queryForLong(String sql) throws Exception {
+	    logQuery(sql, null);
+	    PreparedStatement ps = getConnection().prepareStatement(sql);
+	    ps.execute();
+	    ResultSet rs = ps.getResultSet();
+	    if(rs.next()) {
+	        return rs.getLong(1);
+	    }
+	    return null;
+	}
+	
 	/**
 	 * Returns a collection of string values 
 	 * @param sql
@@ -141,12 +152,10 @@ public class MySimpleJdbcDaoSupport extends SimpleJdbcDaoSupport {
 	 */
 	private void logQuery(String sql, Object[] args) {
 		if (args != null) {
-
+    		for (int i = 0; i < args.length - 1; i += 2) {
+    			sql = sql.replace(":" + args[i], "" + args[i + 1]);
+    		}
 		}
-		for (int i = 0; i < args.length - 1; i += 2) {
-			sql = sql.replace(":" + args[i], "" + args[i + 1]);
-		}
-
 		logger.info(sql);
 	}
 }

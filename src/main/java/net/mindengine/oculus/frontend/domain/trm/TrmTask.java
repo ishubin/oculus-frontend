@@ -30,6 +30,8 @@ public class TrmTask implements Serializable {
 	private Boolean shared;
 	private String userLogin;
 	private String userName;
+	private String agentsFilter;
+	private String build;
 
 	private List<TrmSuite> suites;
 	private Collection<TrmProperty> parameters;
@@ -120,6 +122,22 @@ public class TrmTask implements Serializable {
 
     public Collection<TrmProperty> getParameters() {
         return parameters;
+    }
+
+    public String getAgentsFilter() {
+        return agentsFilter;
+    }
+
+    public void setAgentsFilter(String agentsFilter) {
+        this.agentsFilter = agentsFilter;
+    }
+
+    public String getBuild() {
+        return build;
+    }
+
+    public void setBuild(String build) {
+        this.build = build;
     }
 
 }

@@ -6,7 +6,7 @@
      My Tasks
 </div>
 
-<table id="myTasksTable" border="0">
+<table id="myTasksTable" border="0" style="display:none">
     <tr>
         <th>Name</th>
         <th>Created</th>
@@ -23,6 +23,7 @@
 <script>
 
 $(document).ready(function (){
+	$("#myTasksTable").show();
 	tableToGrid("#myTasksTable",{
         height:'auto',
         width:'auto',

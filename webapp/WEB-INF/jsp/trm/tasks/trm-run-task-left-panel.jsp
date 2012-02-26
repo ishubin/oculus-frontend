@@ -13,4 +13,7 @@
 </div>
 
 <ul id="selectedAgentsList">
+	<c:forEach items="${agents}" var="agent">
+		<li agent-name="<tag:escape text="${agent.agentInformation.name}"/>"><tag:escape text="${agent.agentInformation.name}"/></li>
+	</c:forEach>
 </ul>
