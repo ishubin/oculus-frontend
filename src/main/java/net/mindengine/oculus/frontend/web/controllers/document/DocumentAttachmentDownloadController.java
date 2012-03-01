@@ -84,4 +84,4 @@ public class DocumentAttachmentDownloadController implements Controller {
     public Config getConfig() {
         return config;
     }
-
+}

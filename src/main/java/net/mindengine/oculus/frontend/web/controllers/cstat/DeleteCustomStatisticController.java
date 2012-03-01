@@ -51,3 +51,4 @@ public class DeleteCustomStatisticController extends SecureSimpleViewController{
 	public CustomStatisticDAO getCustomStatisticDAO() {
 	    return customStatisticDAO;
     }
+}
