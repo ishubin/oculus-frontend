@@ -358,12 +358,12 @@ table.panel-gradient:hover .panel-gradient-body{
 
 .panel-border {
 	background: none repeat scroll 0 0 #F0F0FF;
-    border: 1px solid #c0c0c0;
+    border: 1px solid #aaa;
     border-radius: 5px 5px 5px 5px;
     box-shadow:inset 2px 2px 5px #BBBBBB;
     -moz-box-shadow:inset 2px 2px 5px #BBBBBB;
     -webkit-box-shadow:inset 2px 2px 5px #BBBBBB;
-    padding:4px;
+    padding:8px;
     margin:4px;
 }
 .panel-border span.panel-border-title {

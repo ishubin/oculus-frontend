@@ -9,7 +9,7 @@
         <a  class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-project.png"/>  Projects</a>
         <ul>
         	<li>
-        		<a  class="sf-with-ul sf-header" href="../project/browse"><img src="../images/workflow-icon-project.png"/> All Projects</a>
+        		<a  class="sf-with-ul" href="../project/browse"><img src="../images/workflow-icon-project.png"/> All Projects</a>
         	</li>
             <li>
                  <a class="sf-with-ul" href="../project/search">
@@ -35,7 +35,7 @@
         <a class="sf-with-ul sf-header" href="#"><img src="../images/menu-icon-report.png"/> Reports</a>
         <ul>
         	<li>
-        		<a class="sf-with-ul sf-header" href="../report/browse"><img src="../images/workflow-icon-search.png"/> Search Reports</a>
+        		<a class="sf-with-ul" href="../report/browse"><img src="../images/workflow-icon-search.png"/> Search Reports</a>
         	</li>
         	<c:if test="${user!=null}">
             	<li><a class="sf-with-ul" href="<c:url value="../report/my-filters"/>"><img src="../images/workflow-icon-filter.png"/> My Filters</a></li>
