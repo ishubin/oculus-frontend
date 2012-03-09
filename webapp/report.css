@@ -97,20 +97,6 @@ div.separator{
     opacity: 0.3;
 }
 
-
-.component-name{
-	white-space:nowrap;
-	font-size:10pt;
-	font-weight:bold;
-}
-.component-description{
-	white-space:nowrap;
-    font-size:8pt;
-    font-weight:normal;
-    color:#555555;
-}
-
-
 table.description-table{
     border:none;
     border-collapse: collapse;

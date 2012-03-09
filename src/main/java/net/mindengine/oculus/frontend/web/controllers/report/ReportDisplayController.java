@@ -23,15 +23,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.mindengine.oculus.experior.reporter.nodes.BranchReportNode;
+import net.mindengine.oculus.experior.reporter.nodes.ExceptionReportNode;
+import net.mindengine.oculus.experior.reporter.nodes.ReportNode;
+import net.mindengine.oculus.experior.reporter.nodes.TextReportNode;
+import net.mindengine.oculus.experior.reporter.render.XmlReportRender;
 import net.mindengine.oculus.frontend.domain.run.TestRun;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.issue.IssueDAO;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.runs.TestRunDAO;
 import net.mindengine.oculus.frontend.service.test.TestDAO;
-import net.mindengine.oculus.experior.reporter.nodes.DescriptionReportNode;
-import net.mindengine.oculus.experior.reporter.nodes.ReportNode;
-import net.mindengine.oculus.experior.reporter.render.XmlReportRender;
 import net.mindengine.oculus.frontend.web.controllers.SimpleViewController;
 
 import com.sdicons.json.mapper.JSONMapper;
@@ -43,53 +45,67 @@ public class ReportDisplayController extends SimpleViewController {
 	private TestDAO testDAO;
 	private IssueDAO issueDAO;
 
-	public TestRunDAO getTestRunDAO() {
-		return testRunDAO;
+	private class IdGenerator {
+		private Long id = 0L;
+		public synchronized String makeUniqueId() {
+			id++;
+			return id.toString();
+		}
 	}
-
-	public void setTestRunDAO(TestRunDAO testRunDAO) {
-		this.testRunDAO = testRunDAO;
-	}
-
+	
 	/**
 	 * Updates the status of all report nodes
 	 * 
 	 * @param node
 	 */
-	public int updateReport(ReportNode node, int step) {
+	public int updateReport(ReportNode node, int step, IdGenerator idGenerator) {
+		node.setId(idGenerator.makeUniqueId());
+		
 		Map<String, Object> metaData = new HashMap<String, Object>();
 		new HashMap<String, Object>();
 		metaData.put("collapsed", true);
 
 		metaData.put("nodeClassName", node.getClass().getSimpleName());
-		if (node.hasError()) {
+		if (node.hasLevel(ReportNode.ERROR)) {
 			metaData.put("hasError", true);
 		}
-		else if (node.hasWarn()) {
+		else if (node.hasLevel(ReportNode.WARN)) {
 			metaData.put("hasWarn", true);
 		}
 
 		metaData.put("isSimple", false);
+		metaData.put("hasChildren", false);
 
-		if (node.getChildren().size() == 1) {
-			if (node.getChildren().get(0) instanceof DescriptionReportNode) {
-				step++;
+		if( node instanceof BranchReportNode ) {
+			metaData.put("type", "branch");
+			BranchReportNode branchNode = (BranchReportNode) node;
+			if( branchNode.getChildNodes() != null && branchNode.getChildNodes().size() > 0 ) {
+				metaData.put("hasChildren", true);
+				for ( ReportNode childNode : branchNode.getChildNodes() ) {
+					step = updateReport(childNode, step, idGenerator);
+				}
+			}
+			else {
 				metaData.put("isSimple", true);
-				metaData.put("step", step);
 			}
 		}
-		else if (node.getChildren().size() == 0 && !(node instanceof DescriptionReportNode)) {
+		else if ( node instanceof TextReportNode ){
 			step++;
-			metaData.put("isSimple", true);
-			metaData.put("step", step);
+			metaData.put("type", "text");
+			TextReportNode textNode = (TextReportNode) node;
+			if( textNode.getDetails() == null || textNode.getDetails().trim().isEmpty() ) {
+				metaData.put("isSimple", true);
+			}
 		}
+		else if ( node instanceof ExceptionReportNode ) {
+			metaData.put("type", "exception");
+		}
+		
+		metaData.put("step", step);
 
 		node.setMetaData(metaData);
-		if (node.getParent() != null) {
-			metaData.put("parentId", node.getParent().getId());
-		}
-		for (ReportNode childNode : node.getChildren()) {
-			step = updateReport(childNode, step);
+		if (node.getParentBranch() != null) {
+			metaData.put("parentId", node.getParentBranch().getId());
 		}
 		return step;
 	}
@@ -100,8 +116,10 @@ public class ReportDisplayController extends SimpleViewController {
 
 		Long id = Long.parseLong(request.getPathInfo().substring(8));
 		TestRun testRun = testRunDAO.getRunById(id);
-		if (testRun == null)
+		if (testRun == null) {
 			throw new UnexistentResource("Test run with id = " + id + " doesn't exist");
+		}
+		
 		Long projectId = testRun.getProjectId();
 		Long testId = testRun.getTestId();
 		Long suiteRunId = testRun.getSuiteRunId();
@@ -125,7 +143,7 @@ public class ReportDisplayController extends SimpleViewController {
 		XmlReportRender reportRender = new XmlReportRender();
 		ReportNode reportNode = reportRender.decode(testRun.getReport());
 
-		updateReport(reportNode, 0);
+		updateReport(reportNode, 0, new IdGenerator());
 
 		JSONValue jsonValue = JSONMapper.toJSON(reportNode);
 		String jsonString = jsonValue.render(false);
@@ -158,4 +176,12 @@ public class ReportDisplayController extends SimpleViewController {
     public void setIssueDAO(IssueDAO issueDAO) {
         this.issueDAO = issueDAO;
     }
+    
+	public TestRunDAO getTestRunDAO() {
+		return testRunDAO;
+	}
+
+	public void setTestRunDAO(TestRunDAO testRunDAO) {
+		this.testRunDAO = testRunDAO;
+	}
 }

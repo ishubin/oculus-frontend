@@ -45,7 +45,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class ReportBrowseController extends SecureSimpleFormController {
 
-	private TestRunDAO testRunDAO;
 	private ProjectDAO projectDAO;
 	private Config config;
 	/**
@@ -89,7 +88,6 @@ public class ReportBrowseController extends SecureSimpleFormController {
 		referenceData.put("rootProjects", projectDAO.getRootProjects());
 		referenceData.put("title", getTitle());
 		return referenceData;
-
 	}
 
 	@Override
@@ -124,14 +122,6 @@ public class ReportBrowseController extends SecureSimpleFormController {
 		mav.addObject("reportSearchFilter", command);
 		mav.addAllObjects(referenceData(request, command, errors));
 		return mav;
-	}
-
-	public TestRunDAO getTestRunDAO() {
-		return testRunDAO;
-	}
-
-	public void setTestRunDAO(TestRunDAO testRunDAO) {
-		this.testRunDAO = testRunDAO;
 	}
 
 	public ColumnFactory getColumnFactory() {

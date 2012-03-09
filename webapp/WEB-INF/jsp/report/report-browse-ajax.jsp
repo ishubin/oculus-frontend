@@ -31,8 +31,11 @@ for(TestRunSearchData row : rows){
     
     
     String testDescription = row.getTestDescription();
-    if(testDescription==null) testDescription = "";
-    else testDescription = "\""+StringEscapeUtils.escapeJavaScript(testDescription)+"\"";
+    if(testDescription==null) {
+    	testDescription = "";
+    }
+    
+    testDescription = "\""+StringEscapeUtils.escapeJavaScript(testDescription)+"\"";
     if(row.getTestId()!=null && row.getTestId() > 0 && row.getTestName()!=null && !row.getTestName().isEmpty()){
         out.print(",{\"testId\":"+row.getTestId()+", \"testName\":\"" + StringEscapeUtils.escapeJavaScript(row.getTestName()) + "\", \"testDescription\":" +testDescription + "}");
     }

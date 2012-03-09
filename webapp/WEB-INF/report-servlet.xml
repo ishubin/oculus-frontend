@@ -39,7 +39,6 @@
         <property name="commandName" value="reportSearchFilter"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.report.SearchFilter"/>
         <property name="formView" value="report-browse"/>
-        <property name="testRunDAO" ref="testRunDAO"/>
         <property name="projectDAO" ref="projectDAO"/>
         <property name="successView" value="report-browse"/>
         <property name="columnFactory" ref="reportColumnFactory"/>

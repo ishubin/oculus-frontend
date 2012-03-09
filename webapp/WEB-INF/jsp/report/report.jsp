@@ -1,5 +1,5 @@
 
-<jsp:directive.page import="net.mindengine.oculus.frontend.testrunframework.reporter.nodes.ReportNode"/>
+<jsp:directive.page import="net.mindengine.oculus.experior.reporter.nodes.ReportNode"/>
 
 <%@ include file="/include.jsp" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
@@ -224,7 +224,7 @@ pageContext.setAttribute("suiteParameters", suiteParameters);
 	    <div style="background:white;">
 	        <br/>
 	        <div class="separator"></div>
-	        <c:forEach items="${report.children}" var="node">
+	        <c:forEach items="${report.childNodes}" var="node">
 	            <tag:report-node node="${node}"></tag:report-node>
 	            <div class="separator"></div>
 	        </c:forEach>
