@@ -14,7 +14,7 @@ code{
 }
 .report-header{
 	font-weight:bold;
-	font-size:10pt;
+	font-size:12pt;
     font-family:arial,tahoma,verdana,helvetica;
 }
 a.collapse{
@@ -107,13 +107,13 @@ table.description-table td a, table.description-table td a:active, table.descrip
     text-decoration: none;
     font-weight:bold;
     color:blue;
-    font-size:8pt;
+    font-size:10pt;
 }
 table.description-table td.description-table, table.description-table td.description-table-left{
     padding: 4px;
     vertical-align: top;
     text-align: left;
-    font-size:8pt;
+    font-size:10pt;
 }
 table.description-table thead td.description-table{
     background:#bbc4ca;
@@ -124,7 +124,7 @@ table.description-table tbody td.description-table-left{
     white-space: nowrap;
     width:100px;
     font-weight: bold;
-    font-size:8pt;
+    font-size:10pt;
 }
 table.description-table tr.description-table-odd td.description-table-left{
 	background:#d7e1e8;
@@ -180,4 +180,32 @@ table.report-table th{
 	background:white;
 	border:1px solid #ddd;
 	padding:5px;
+}
+
+div.report-node {
+	-moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    padding-left:2px;
+    padding-right:0px;
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+td.table-cell-status, td.table-cell-time, td.table-cell-step {
+	font-size:10pt;
+	padding:4px;
+	white-space: nowrap;
+}
+td.table-cell-time {
+	width:150px;
+}
+td.table-cell-step {
+	width:50px;
+}
+td.table-cell-step span{
+	font-weight:bold;
+	text-shadow: 2px 2px 3px #aaa;
+}
+td.table-cell-status {
+	width:100px;
 }

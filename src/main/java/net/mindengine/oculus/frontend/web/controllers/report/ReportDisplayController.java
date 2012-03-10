@@ -91,6 +91,7 @@ public class ReportDisplayController extends SimpleViewController {
 		}
 		else if ( node instanceof TextReportNode ){
 			step++;
+			metaData.put("step", step);
 			metaData.put("type", "text");
 			TextReportNode textNode = (TextReportNode) node;
 			if( textNode.getDetails() == null || textNode.getDetails().trim().isEmpty() ) {
@@ -101,8 +102,6 @@ public class ReportDisplayController extends SimpleViewController {
 			metaData.put("type", "exception");
 		}
 		
-		metaData.put("step", step);
-
 		node.setMetaData(metaData);
 		if (node.getParentBranch() != null) {
 			metaData.put("parentId", node.getParentBranch().getId());

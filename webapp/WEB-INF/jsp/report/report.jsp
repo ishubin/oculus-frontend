@@ -1,6 +1,4 @@
-
 <jsp:directive.page import="net.mindengine.oculus.experior.reporter.nodes.ReportNode"/>
-
 <%@ include file="/include.jsp" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
@@ -224,9 +222,9 @@ pageContext.setAttribute("suiteParameters", suiteParameters);
 	    <div style="background:white;">
 	        <br/>
 	        <div class="separator"></div>
-	        <c:forEach items="${report.childNodes}" var="node">
-	            <tag:report-node node="${node}"></tag:report-node>
-	            <div class="separator"></div>
+	        <c:forEach items="${report.childNodes}" var="childNode">
+	        	<c:set var="node" value="${childNode}" scope="request"/>
+	            <jsp:include page="/WEB-INF/jsp/report/report-node.jsp"></jsp:include>
 	        </c:forEach>
 	        <br/>
 	    </div>
