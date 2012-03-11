@@ -53,6 +53,33 @@ pageContext.setAttribute("suiteParameters", suiteParameters);
     </head>
     <body onload="initializeReportNodes();initializeMenuLevels();">
         
+        <script>
+        $(function (){
+        	$("#buttonToggleIcons").click(function (){
+        		if (toggleIcons()) {
+        			$(this).addClass("menu-item-button-pressed");
+        			$(this).removeClass("menu-item-button");
+        		}
+        		else {
+        			$(this).addClass("menu-item-button");
+        			$(this).removeClass("menu-item-button-pressed");
+        		}
+        		return false;
+        	});
+        	
+        	$("#buttonToggleDebug").click(function (){
+        		if (toggleDebug()) {
+        			$(this).addClass("menu-item-button-pressed");
+        			$(this).removeClass("menu-item-button");
+        		}
+        		else {
+        			$(this).addClass("menu-item-button");
+        			$(this).removeClass("menu-item-button-pressed");
+        		}
+        		return false;
+        	});
+        });
+        </script>
         <table class="description-table" width="100%" border="0">
             <thead>
                 <tr>
@@ -206,7 +233,12 @@ pageContext.setAttribute("suiteParameters", suiteParameters);
                     <a class="menu-item" href="javascript:expandAllErrorSteps();" title="Expand all Error steps">
                         <img src="../images/report-menu-expand-all-error-steps.png"/>
                     </a>
-                    <input type="checkbox" onchange="onShowIconsChange(this);" id="showIcons" name="showIcons" checked="checked"/><label for="showIcons" style="font-weight:8pt;">Show icons</label>
+                    <a class="menu-item-button-pressed" id="buttonToggleIcons" href="#">
+                    	Icons
+                    </a>
+                    <a class="menu-item-button" id="buttonToggleDebug" href="#">
+                    	Debug data
+                    </a>
                 </th>
 	            <th width="150px">
 	                Time:
@@ -220,8 +252,6 @@ pageContext.setAttribute("suiteParameters", suiteParameters);
 	        </tr>
 	    </table>
 	    <div style="background:white;">
-	        <br/>
-	        <div class="separator"></div>
 	        <c:forEach items="${report.childNodes}" var="childNode">
 	        	<c:set var="node" value="${childNode}" scope="request"/>
 	            <jsp:include page="/WEB-INF/jsp/report/report-node.jsp"></jsp:include>

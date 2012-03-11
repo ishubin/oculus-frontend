@@ -17,6 +17,11 @@ code{
 	font-size:12pt;
     font-family:arial,tahoma,verdana,helvetica;
 }
+
+span.hint {
+	font-size:8pt;
+	color:gray;
+}
 a.collapse{
 	border:none;
     background:none;
@@ -35,8 +40,8 @@ a img{
     outline-style:none;
     outline-width:medium;
 }
-a.menu-item {
-    border:1px solid #fff;
+a.menu-item, a.menu-item-button, a.menu-item-button-pressed {
+    border:1px solid #d0d0d0;
     display:block;
     float:left;
     background:none;
@@ -53,6 +58,10 @@ a.menu-item {
     padding:2px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    
+    -moz-box-shadow: 2px 2px 2px #aaa;
+    -webkit-box-shadow: 2px 2px 2px #aaa;
+    box-shadow: 2px 2px 2px #aaa;
 }
 a.menu-item:hover {
     border:1px solid #aaa;
@@ -63,6 +72,29 @@ a.menu-item:hover {
     outline-style:none;
     outline-width:medium;
     margin:3px;
+    
+    -moz-box-shadow: 1px 1px 1px #aaa;
+    -webkit-box-shadow: 1px 1px 1px #aaa;
+    box-shadow: 1px 1px 1px #aaa;
+}
+
+a.menu-item-button, a.menu-item-button-pressed {
+	width:100px;
+	text-align: center;
+	vertical-align: middle;
+	line-height:30px;
+	color:black;
+}
+a.menu-item-button-pressed {
+	margin-top:4px;
+	margin-left:4px;
+	margin-bottom:2px;
+	margin-right:2px;
+	background:#f0f0f0;
+	color:#333;
+	-moz-box-shadow: 1px 1px 1px #aaa;
+    -webkit-box-shadow: 1px 1px 1px #aaa;
+    box-shadow: 1px 1px 1px #aaa;
 }
 
 .report-node-error{
@@ -190,6 +222,18 @@ div.report-node {
     padding-top:2px;
     padding-bottom:2px;
 }
+div.report-shadow { 
+	-moz-box-shadow: 2px 2px 4px #555;
+    -webkit-box-shadow: 2px 2px 4px #555;
+    box-shadow: 2px 2px 4px #555;
+}
+div.report-error {
+	background:#ff9999;
+}
+div.report-warn {
+	background:#FAA91E;
+}
+
 
 td.table-cell-status, td.table-cell-time, td.table-cell-step {
 	font-size:10pt;

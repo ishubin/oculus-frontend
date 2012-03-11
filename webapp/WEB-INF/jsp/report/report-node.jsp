@@ -2,10 +2,12 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions' %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<div style="${node.debug==true?'display:none':''}"  class="report-node-layout" x-debug="${node.debug}">
 <div class="separator"></div>
-<div id="reportNode${node.id}" class="report-node"
-    <c:if test="${node.metaData.hasError==true || node.level == 'error'}">style="background:#ff9999;"</c:if>
+<div id="reportNode${node.id}" class="report-node ${(node.level=='error')?'report-error report-shadow':''} ${(node.level=='warn')?'report-warn report-shadow':''}"
+    
     >
+    
 	<table class="report-node-table" border="0" cellpadding="0px" cellspacing="0px" width="100%">
 	    <tr>
 	        <td width="20px" rowspan="2">
@@ -38,6 +40,7 @@
                    </c:when>
                    <c:otherwise>
                        <tag:report-node-format text="${node.title}"/>
+                       <c:if test="${node.hint!=null}"><span class="hint"><tag:escape text="${node.hint}"/></span></c:if>
                    </c:otherwise>
 	           </c:choose>
 	        </td>
@@ -53,10 +56,10 @@
                 <div id="reportNodeStatus${node.id}">
                     <c:choose>
 	                    <c:when test="${node.level == 'error' || node.metaData.hasError==true}">
-	                        <div style="color:#ff0000;">Failed<img src="../images/filter-failed.png"/></div>
+	                        <div style="color:#ff0000;">Failed <img src="../images/filter-failed.png"/></div>
 	                    </c:when>
 	                    <c:when test="${node.level == 'warn' || node.metaData.hasWarn==true}">
-	                        <div style="color:#FCB100;">Warn<img src="../images/filter-warning.png"/></div>
+	                        <div style="color:#ff0000;">Warn <img src="../images/filter-warning.png"/></div>
 	                    </c:when>
                     </c:choose>
                 </div>
@@ -86,4 +89,5 @@
 	        </tr>
 	    </c:if>
 	</table>
+</div>
 </div>

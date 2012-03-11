@@ -1,3 +1,9 @@
+var Report = {
+	showIcons: true,
+	showDebug: false
+};
+
+
 function findReportNodeById(id, rootNode) {
 	if (rootNode == null) {
 		rootNode = report;
@@ -23,8 +29,11 @@ function expandNode(node) {
 	node.metaData.collapsed = false;
 
 	if (node.metaData.hasError == true && node.level == 'info' && div != null) {
-		div.style.backgroundColor = "#ff9999";
 		$("#reportNode"+id).animate({backgroundColor:"#ffdddd"},100);
+	}
+	
+	if (node.metaData.hasWarn && node.level == 'info' && div != null) {
+		$("#reportNode"+id).animate({backgroundColor:"#ffff99"},100);
 	}
 	
 	if ((node.metaData.hasError == true || node.metaData.hasWarn == true) && node.level == 'info' && div != null) {
@@ -37,13 +46,6 @@ function expandNode(node) {
 		if (img != null)
 			img.src = "../images/report-collapse-button.png";
 
-		/*if (node.metaData.hasError == true && node.level == 'info' && div != null) {
-			divStatus.style.display = "none";
-		} else if (node.metaData.hasWarn == true && node.level == 'info' && div != null) {
-			div.style.background = "#ffffdd";
-			divStatus.style.display = "none";
-		}*/
-		
 	});
 }
 function collapseNode(node) {
@@ -55,8 +57,11 @@ function collapseNode(node) {
 	node.metaData.collapsed = true;
 
 	if (node.metaData.hasError && node.level == 'info' && div != null) {
-		div.style.backgroundColor = "#ffdddd";
 		$("#reportNode"+id).animate({backgroundColor:"#ff9999"},100);
+	}
+	
+	if (node.metaData.hasWarn && node.level == 'info' && div != null) {
+		$("#reportNode"+id).animate({backgroundColor:"#FAA91E"},100);
 	}
 	
 	if ((node.metaData.hasError == true || node.metaData.hasWarn == true) && node.level == 'info' && div != null) {
@@ -68,14 +73,6 @@ function collapseNode(node) {
 			divChildren.style.display = "none";
 		if (img != null)
 			img.src = "../images/report-expand-button.png";
-	
-		/*if (node.metaData.hasError && node.level == 'info') {
-			div.style.background = "#ff9999";
-			divStatus.style.display = "block";
-		} else if (node.metaData.hasWarn && node.level == 'info') {
-			div.style.background = "#ffff99";
-			divStatus.style.display = "block";
-		}*/
 	});
 }
 function onReportNodeClick(id) {
@@ -180,12 +177,45 @@ function expandAllErrorSteps(node) {
 	}
 }
 
-function onShowIconsChange(checkbox) {
-	if (checkbox.checked) {
-		showIcons(report, true);
-	} else
-		showIcons(report, false);
+function toggleDebug() {
+	Report.showDebug = !Report.showDebug;
+	
+	if (Report.showDebug) {
+		showDebugNodes(true);
+	} else {
+		showDebugNodes(false);
+	}
+	
+	return Report.showDebug;
 }
+
+function showDebugNodes(show){
+	$(".report-node-layout").each(function(){
+		var debug = $(this).attr("x-debug");
+		if( debug!=null && debug=='true') {
+			if( show ) {
+				$(this).show('slow');
+			}
+			else {
+				$(this).hide('fast');
+			}
+			
+		}
+	});
+}
+
+function toggleIcons() {
+	Report.showIcons = !Report.showIcons;
+	
+	if (Report.showIcons) {
+		showIcons(report, true);
+	} else {
+		showIcons(report, false);
+	}
+	
+	return Report.showIcons;
+}
+
 function showIcons(node, bShow) {
 	if (node.id != report.id) {
 		var divIcon = document.getElementById("reportNodeIcon" + node.id);
