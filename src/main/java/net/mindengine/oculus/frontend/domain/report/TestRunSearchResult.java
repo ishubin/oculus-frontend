@@ -28,7 +28,8 @@ public class TestRunSearchResult {
 	private List<TestRunSearchData> results;
 	private Collection<SearchColumn> columns;
 
-	private Long page;
+	private Integer displayRows;
+	private Integer page;
 
 	public TestRunSearchResult() {
 	}
@@ -65,11 +66,11 @@ public class TestRunSearchResult {
 		this.results = results;
 	}
 
-	public Long getPage() {
+	public Integer getPage() {
 		return page;
 	}
 
-	public void setPage(Long page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
@@ -85,5 +86,13 @@ public class TestRunSearchResult {
 		if (columns != null)
 			return columns.size();
 		return 0;
+	}
+
+	public Integer getDisplayRows() {
+		return displayRows;
+	}
+
+	public void setDisplayRows(Integer displayRows) {
+		this.displayRows = displayRows;
 	}
 }

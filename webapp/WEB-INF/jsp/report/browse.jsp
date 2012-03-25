@@ -29,7 +29,7 @@
     
     <tag:pickissue-setup></tag:pickissue-setup>
     
-    <script language="javascript">
+    <script>
     <%
     /*
      * Setting all saved runs to js variable
@@ -294,7 +294,7 @@
 }
 %>
  
-<script language="javascript">
+<script>
 function onPageLimitChange(select)
 {
     document.forms.browseFilter.pageLimit.value = select.options[select.selectedIndex].value;
@@ -422,15 +422,16 @@ function onReportRowClick(rowId)
 </script>
 
 
-Search Results: <b>${searchResult.numberOfResults}</b><br/>
-<tag:pagination pageLimitArray="${reportSearchFilter.pageLimitArray}" 
-    numberOfResults="${searchResult.numberOfResults}" 
-    onPageScript="onPageClick" 
-    onPageLimitScript="onPageLimitChange" 
-    currentPage="${reportSearchFilter.pageOffset}" 
-    pageLimit="${reportSearchFilter.pageLimit}"/>
+Number of results: <span id="numberOfResults" style="font-weight:bold;"></span><br/>
+Display restuls: 
+<select id="paginationPageLimit" onchange="onPageLimitChange(this);">
+    <c:forEach items="${pageLimitOptions}" var="option">
+        <option value="${option.id}" <c:if test="${option.selected == true}">selected="true"</c:if>>${option.label}</option>
+    </c:forEach>
+</select>
 
-<br/>
+<div id="pagination" class="pagination">
+</div>
 <br/>
 <c:if test="${user!=null}">
     <tag:submit value="Remember Selected runs" onclick="javascript:onRememberSelectedRuns();"/>
@@ -445,15 +446,6 @@ Search Results: <b>${searchResult.numberOfResults}</b><br/>
     <tag:submit value="Remember Selected runs" onclick="javascript:onRememberSelectedRuns();"/>
 </c:if>
 <script>
-
-
-function debugObject(obj){
-    var str="Object: "+obj+"\n\n";
-    for( e in obj){
-        str+=e+": " +obj[e]+"\n";
-    }
-    return str;
-}
 
 
 //Used for specifying the color to the entire row
@@ -617,8 +609,42 @@ $(document).ready(function(){
         rowNum:-1,
         viewrecords: true,
         caption: 'Reports',
+        loadComplete: function (data) {
+        	$("#numberOfResults").html(data.numberOfResults);
+        	
+        	var pages = Math.floor(data.numberOfResults / data.displayRows) + 1;
+        	if (pages>1 ) {
+	        	var html = "<ul>";
+	        	var startPages = Math.max(data.currentPage - 4, 1);
+	        	var endPages = Math.min(data.currentPage + 4, pages);
+	        	
+	        	if ( data.currentPage>1) {
+	        		html += "<li><a href='#' onclick='onPageClick(1);return false;'>&lt;&lt;</a></li>";
+	        	}
+	        	
+	        	for ( var i=startPages; i<=endPages; i++) {
+	        		html += "<li>";
+	        		var className = "";
+	        		if (i!=data.currentPage) {
+	        			html += "<a href='#' onclick='onPageClick(" + i +");return false;'>"+i+"</a>";	
+	        		}
+	        		else {
+	        			html += "<span>" + i + "</span>";
+	        		}
+	        		
+	        		html += "</li>"
+	         	}
+	        	
+	        	if ( data.currentPage<pages) {
+	        		html += "<li><a href='#' onclick='onPageClick(" + pages + ");return false;'>&gt;&gt;</a></li>";
+	        	}
+	        	
+	        	html += "</ul>";
+	        	$("#pagination").html(html);
+        	}
+        },
         gridComplete: function () {
-           for (var i = 0; i < rowsToColor.length; i++) {
+        	for (var i = 0; i < rowsToColor.length; i++) {
                var status = $("#" + rowsToColor[i].id).find("td").eq(7).html();
                $("#"+rowsToColor[i].id+" td").css("background-color", rowsToColor[i].color);
            }

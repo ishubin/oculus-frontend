@@ -14,7 +14,11 @@ List<TestRunSearchData> rows = result.getResults();
 %>
 {
   "total": 1, 
-  "page": 1, 
+  "page": 1,
+  "numberOfResults":<%=result.getNumberOfResults() %>,
+  "numberOfDisplayedResults":<%=result.getNumberOfDisplayedResults() %>,
+  "currentPage":<%=result.getPage() %>,
+  "displayRows":<%=result.getDisplayRows() %>,
   "records": <%=rows.size() %>,
   "rows" : [
 <%

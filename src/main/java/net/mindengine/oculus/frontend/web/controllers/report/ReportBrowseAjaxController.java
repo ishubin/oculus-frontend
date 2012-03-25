@@ -60,7 +60,13 @@ public class ReportBrowseAjaxController extends SecureSimpleFormController {
         TestRunSearchResult searchResult = testRunDAO.browseRuns(filter);
         searchResult.handleTheList();
         searchResult.setColumns(columnFactory.getColumnList());
-
+        searchResult.setPage(filter.getPageOffset());
+        
+        if ( filter.getPageLimit()>=0 && filter.getPageLimit()< filter.getPageLimitArray().length) {
+	        searchResult.setDisplayRows(filter.getPageLimitArray()[filter.getPageLimit()]);
+        }
+        else searchResult.setDisplayRows(filter.getPageLimitArray()[0]);
+        
         Map referenceData = new HashMap();
         referenceData.put("searchResult", searchResult);
         return referenceData;
