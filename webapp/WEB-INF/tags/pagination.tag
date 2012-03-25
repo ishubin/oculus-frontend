@@ -1,3 +1,7 @@
+<%@tag import="java.util.HashMap"%>
+<%@tag import="java.util.LinkedList"%>
+<%@tag import="java.util.Map"%>
+<%@tag import="java.util.List"%>
 <%@ tag body-content="scriptless" %>
 <%@ attribute name="currentPage" required="true" type="java.lang.Integer" %>
 <%@ attribute name="numberOfResults" required="true" type="java.lang.Integer"%>
@@ -11,69 +15,54 @@
 
 
 <%
-int c = currentPage;
 if(pageLimit>=pageLimitArray.length) pageLimit = pageLimitArray.length-1;
 if(pageLimit<0)pageLimit = 0;
-
 int spp = pageLimitArray[pageLimit]; //show per page;
 
-int tp = numberOfResults/spp; //total pages according to number of results and show per page information;
-if(numberOfResults % spp >0)tp++;
+int pages = numberOfResults/spp + 1; //total pages according to number of results and show per page information;
+//if(numberOfResults % spp >0)pages++;
 
 
-if(c>tp)c = tp;
+if (pages>1) {
+	int startPage = Math.max(currentPage - 4, 1);
+	int endPage = Math.min(currentPage + 4, pages);
 
 
-int maxPL = c;//maximum number of pages to left side;
-int maxPR = tp-c;//maximum number of pages to right side;
-
-//Range of the pagination
-int p1 = c - Math.min(4, maxPL);
-int p2 = c + Math.min(4, maxPR);
-if(p1==0)p1 = 1;
-
-java.util.List<Object>  pageList = new java.util.ArrayList<Object>();
-java.util.Map<Object,Object>  m;
-if(c>1){
-	m = new java.util.HashMap<Object,Object>();
-	m.put("name","&lt;&lt;");
-	m.put("id",1);
-	m.put("current",false);
-	pageList.add(m);
-}
-
-for(int i = p1; i<=p2; i++)
-{
-    m = new java.util.HashMap<Object,Object>();
-    m.put("name",i);
-    m.put("id",i);
-    if(i==c)
-    {
-       m.put("current",true);
-    }
-    else m.put("current",false);
-    
-    pageList.add(m);
-}
-
-if(c<tp){
-	m = new java.util.HashMap<Object,Object>();
-	m.put("name","&gt;&gt;");
-	m.put("id",tp);
-	m.put("current",false);
-	pageList.add(m);
-}
-
-jspContext.setAttribute("pageList", pageList);
-
-if(pageLimit<pageLimitArray.length)
-{
-	if(numberOfResults > pageLimitArray[pageLimit])
-	{
-		jspContext.setAttribute("displayPagination", true);
+	List<Map<String, Object>> list = new LinkedList<Map<String, Object>> ();
+	
+	if ( currentPage > 1) {
+		Map<String, Object > page = new HashMap<String, Object>();
+		page.put("name", "&lt;&lt;");
+		page.put("id", 1);
+		page.put("current", false);
+		list.add(page);
 	}
+	
+	for( int i=startPage; i<= endPage; i++) {
+		Map<String, Object > page = new HashMap<String, Object>();
+		page.put("name", i);
+		page.put("id", i);
+		if ( i==currentPage) {
+			page.put("current", true);
+		}
+		else {
+			page.put("current", false);
+		}
+		list.add(page);
+	}
+	
+	if ( currentPage < pages) {
+		Map<String, Object > page = new HashMap<String, Object>();
+		page.put("name", "&gt;&gt;");
+		page.put("id", pages);
+		page.put("current", false);
+		list.add(page);
+	}
+	
+	jspContext.setAttribute("pageList", list);
+	
+	jspContext.setAttribute("displayPagination", true);
 }
-
 
 //Preparing the pageLimit model
 java.util.List<Object> list = new java.util.ArrayList<Object>();
@@ -95,22 +84,22 @@ jspContext.setAttribute("pageLimitOptions",list);
 
 %>
 <c:if test="${displayPagination == true}">
-    <table class="pagination">
-        <tr>
+    <div class="pagination">
+        <ul>
             <c:forEach items="${pageList}" var="p">
-                <td>
+                <li>
                     <c:choose>
                         <c:when test="${p.current==true}">
-                            <b>${p.name}</b>
+                            <span>${p.name}</span>
                         </c:when>
                         <c:otherwise>
                            <a href="javascript:${onPageScript}(${p.id});">${p.name}</a>
                         </c:otherwise>
                     </c:choose>
-                </td>
+                </li>
             </c:forEach>
-        </tr>
-    </table>
+        </ul>
+    </div>
 </c:if>
 <br/>Page limit 
 <select id="paginationPageLimit" onchange="${onPageLimitScript}(this);">

@@ -10,7 +10,7 @@
         <tag:workflow-element icon="settings" link="../test/customize?id=${test.id}">Test Parameters</tag:workflow-element>
         <tag:workflow-element icon="subcreate" link="" onclick="openCopyParametersDialog();return false;" title="Copy parameters from other tests">Copy Parameters</tag:workflow-element>
         <tag:workflow-element icon="delete" onclick="return confirm('Are you sure you want to delete this test');" link="../test/delete?id=${test.id}">Delete Test</tag:workflow-element>
-        <tag:workflow-element icon="link-to-file" link="javascript:onLinkTestWithTestCaseClick();">Link with Test-Case</tag:workflow-element>
+        
     </c:if>
 </tag:workflow-panel>
 
