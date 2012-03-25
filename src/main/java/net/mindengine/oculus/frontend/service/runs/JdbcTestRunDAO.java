@@ -28,9 +28,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.db.jdbc.MySimpleJdbcDaoSupport;
 import net.mindengine.oculus.frontend.db.search.SearchColumn;
 import net.mindengine.oculus.frontend.db.search.SqlSearchCondition;
@@ -42,7 +43,6 @@ import net.mindengine.oculus.frontend.domain.run.CronIctTestRun;
 import net.mindengine.oculus.frontend.domain.run.SuiteRun;
 import net.mindengine.oculus.frontend.domain.run.TestRun;
 import net.mindengine.oculus.frontend.domain.run.TestRunParameter;
-import net.mindengine.oculus.experior.utils.FileUtils;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -87,7 +87,7 @@ public class JdbcTestRunDAO extends MySimpleJdbcDaoSupport implements TestRunDAO
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public TestRunSearchResult browseRuns(SearchFilter filter) throws Exception {
 		TestRunSearchResult result = new TestRunSearchResult();

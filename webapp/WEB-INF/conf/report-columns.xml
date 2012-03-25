@@ -9,7 +9,7 @@
     <column id="TEST_NAME">
         <name>Test Name</name>
         <field>fetchTestName</field>
-        <sql-column>t.name</sql-column>
+        <sql-column>tr.name</sql-column>
     </column>
     
     <column id="PROJECT">
