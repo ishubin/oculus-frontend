@@ -31,6 +31,7 @@ if(text!=null)
     text = Pattern.compile("\\[stack-trace\\](.*?)\\[/stack-trace\\]", Pattern.DOTALL).matcher(text).replaceAll("<code class=\"exception-stack-trace\">$1</code>");
     
     text = Pattern.compile("\\[string\\](.*?)\\[/string\\]", Pattern.DOTALL).matcher(text).replaceAll("<span class=\"string\">$1</span>");
+    text = Pattern.compile("\\[number\\](.*?)\\[/number\\]", Pattern.DOTALL).matcher(text).replaceAll("<span class=\"number\">$1</span>");
     text = Pattern.compile("\\[tip\\](.*?)\\[/tip\\]", Pattern.DOTALL).matcher(text).replaceAll("<span class=\"tip\">$1</span>");
 
     text = text.replaceAll("\\[chart\\](.*?)\\[/chart\\]", "<a href=\"../chart/display?chartId=$1&width=1024&height=768\" target=\"_blank\"><img src=\"../chart/display?chartId=$1&width=600&height=400\"/></img>");

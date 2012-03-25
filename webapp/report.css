@@ -107,6 +107,10 @@ code.xpath{
 span.string{
 	color:#0000aa;
 }
+span.number{
+	color:#aa00aa;
+	font-weight:bold;
+}
 span.tip{
     color:#777777;
     font-style: italic;
