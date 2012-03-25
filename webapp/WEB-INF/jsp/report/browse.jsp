@@ -419,6 +419,8 @@ function onReportRowClick(rowId)
         divLink.className = "report-row-collapse";
     }
 }
+
+
 </script>
 
 

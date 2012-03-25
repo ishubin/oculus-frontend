@@ -1,4 +1,7 @@
 
+<%@page import="net.mindengine.oculus.experior.reporter.ReportDesign"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="net.mindengine.oculus.experior.reporter.ReportReason"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="net.mindengine.oculus.frontend.domain.report.ReportSearchColumn"%>
@@ -75,12 +78,16 @@ for(TestRunSearchData row : rows){
     }
     else out.print(",null");
     
-    String[] reasons = row.getTestRunReasonsList();
-    if(reasons!=null && reasons.length>0){
+    List<ReportReason> reasons = row.getTestRunReasonsList();
+    if(reasons!=null && reasons.size()>0){
         out.print(",[");
-        for(int j=0;j<reasons.length;j++){
-            if(j>0)out.print(",");
-            out.print("\""+StringEscapeUtils.escapeJavaScript(reasons[j])+"\"");
+        boolean rcomma = false;
+        Iterator<ReportReason> it = reasons.iterator();
+        while(it.hasNext()){
+        	ReportReason reason = it.next();
+        	if(rcomma)out.print(",");
+            rcomma=true;
+            out.print("\""+StringEscapeUtils.escapeJavaScript(ReportDesign.removeDecorationTags(reason.getReason())).replace("\\'", "'")+"\"");
         }
         out.print("]");
     }

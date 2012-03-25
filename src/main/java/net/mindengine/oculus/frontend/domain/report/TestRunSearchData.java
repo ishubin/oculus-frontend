@@ -25,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 
 import net.mindengine.oculus.experior.Parameter;
+import net.mindengine.oculus.experior.reporter.ReportReason;
+import net.mindengine.oculus.experior.reporter.render.ReportRender;
+import net.mindengine.oculus.experior.reporter.render.XmlReportRender;
 
 
 public class TestRunSearchData implements Serializable {
@@ -307,15 +310,18 @@ public class TestRunSearchData implements Serializable {
 	}
 
 	public String getFirstReason() {
-		String[] reasons = getTestRunReasonsList();
-		if (reasons != null && reasons.length > 0)
-			return reasons[0];
+		List<ReportReason> reasons = getTestRunReasonsList();
+		if (reasons != null && reasons.size() > 0)
+			return reasons.get(0).getReason();
 		return null;
 	}
 
-	public String[] getTestRunReasonsList() {
-		if (testRunReasons != null && !testRunReasons.isEmpty()) {
-			return testRunReasons.split("<r>");
+	public List<ReportReason> getTestRunReasonsList() {
+		ReportRender render = new XmlReportRender();
+		try {
+			List<ReportReason> reasons = render.decodeReasons(testRunReasons);
+			return reasons;
+		} catch (Exception e) {
 		}
 		return null;
 	}
