@@ -76,30 +76,6 @@ public class FileUtils {
 		return name;
 	}
 
-	public static void mkdirs(String path) {
-
-		String dirs[] = null;
-
-		if (File.separator.equals("\\")) {
-			dirs = path.split("\\\\");
-		}
-		else
-			dirs = path.split("/");
-
-		String cpath = "";
-		for (int i = 0; i < dirs.length; i++) {
-			cpath += File.separator + dirs[i];
-
-			File file = new File(cpath);
-			System.out.println(file.getAbsolutePath());
-			if (file.exists()) {
-
-			}
-			else
-				file.mkdir();
-		}
-	}
-
 	public static String getFileType(String fileName) {
 		for (int i = fileName.length() - 1; i >= 0; i--) {
 			if (fileName.charAt(i) == '.') {
@@ -117,26 +93,6 @@ public class FileUtils {
 		}
 		return fileName;
 	}
-
-	/*
-	 * public static void zipDirectory(String dir, String zipfile) throws
-	 * IOException, IllegalArgumentException { // Check that the directory is a
-	 * directory, and get its contents File d = new File(dir); if
-	 * (!d.isDirectory()) throw new
-	 * IllegalArgumentException("Not a directory:  " + dir); String[] entries =
-	 * d.list(); byte[] buffer = new byte[4096]; // Create a buffer for copying
-	 * int bytesRead;
-	 * 
-	 * ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
-	 * 
-	 * for (int i = 0; i < entries.length; i++) { File f = new File(d,
-	 * entries[i]); if (f.isDirectory()) continue;// Ignore directory
-	 * FileInputStream in = new FileInputStream(f); // Stream to read file
-	 * ZipEntry entry = new ZipEntry(f.getPath()); // Make a ZipEntry
-	 * out.putNextEntry(entry); // Store entry while ((bytesRead =
-	 * in.read(buffer)) != -1) out.write(buffer, 0, bytesRead); in.close(); }
-	 * out.close(); }
-	 */
 
 	public static void zipDirectory(String zipFileName, String dir) throws Exception {
 		File dirObj = new File(dir);

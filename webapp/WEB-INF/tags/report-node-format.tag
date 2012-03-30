@@ -43,8 +43,8 @@ if(text!=null)
     text = text.replace("[textarea]", "<textarea rowspan=\"10\" style=\"width:100%;\">");
     text = text.replace("[/textarea]", "</textarea>");
     
-    //As screenshot contains full url we need to make it relative
-    text = text.replaceAll("\\[screenshot\\].*/report/screenshot(.*?)\\[/screenshot\\]", "<a class=\"custom-link\" href=\"../report/screenshot$1\" target=\"_blank\">(Screenshot)</a>");
+    
+    text = text.replaceAll("\\[screenshot\\](.*?)\\[/screenshot\\]", "<a class=\"screenshot-link\" href=\"../report/screenshot$1\" target=\"_blank\"><img class=\"screenshot\" src=\"../display/file$1\"/></a>");
     
     out.println(text);
 }

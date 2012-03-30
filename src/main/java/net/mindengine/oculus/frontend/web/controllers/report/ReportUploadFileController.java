@@ -61,7 +61,10 @@ public class ReportUploadFileController extends SimpleViewController {
 					fileId++;
 					Date date = new Date();
 					String path = FileUtils.generatePath(date);
-					FileUtils.mkdirs(config.getDataFolder() + File.separator + path);
+					String fullDirPath = config.getDataFolder() + File.separator + path;
+					File dir = new File(fullDirPath);
+					dir.mkdirs();
+					//FileUtils.mkdirs(config.getDataFolder() + File.separator + path);
 
 					String fileType = FileUtils.getFileType(multipartFile.getOriginalFilename()).toLowerCase();
 					path += File.separator + date.getTime() + "_" + fileId + "." + fileType;

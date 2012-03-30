@@ -257,3 +257,11 @@ td.table-cell-step span{
 td.table-cell-status {
 	width:100px;
 }
+
+img.screenshot {
+	margin:4px;
+	border:4px solid #aaa;
+	-moz-box-shadow: 2px 2px 4px #555;
+    -webkit-box-shadow: 2px 2px 4px #555;
+    box-shadow: 2px 2px 4px #555;
+}
