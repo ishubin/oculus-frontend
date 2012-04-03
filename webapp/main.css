@@ -34,7 +34,7 @@ body a, a {
 }
 a, a:ACTIVE, a:VISITED {
     font-size:10pt;
-    color: #1919c1;
+    color:#0070a3;
     font-weight: bold;
     text-decoration:none;
     font-family:arial;
@@ -44,7 +44,9 @@ a, a:ACTIVE, a:VISITED {
 }
 a:hover{
     text-decoration: none;
-    color:#0070a3;
+    color:#045C85;
+    cursor: pointer;
+    cursor: hand;
 }
 a img{
 	border:none;
@@ -58,18 +60,6 @@ a.red:hover{
 	color:#8C0200;
 }
 
-
-a.nice-link, a.nice-link:ACTIVE, a.nice-link:VISITED {
-    font-size:10pt;
-    color: #1919c1;
-    font-weight: bold;
-    text-decoration:none;
-    font-family:arial;
-}
-a.nice-link:hover{
-    text-decoration: none;
-    color:#0070a3;
-}
 
 a.big-link, a.big-link:ACTIVE, a.big-link:VISITED {
     font-size:14pt;
@@ -153,14 +143,15 @@ a.small-link:hover{
 }
 .breadcrump a, .breadcrump a:ACTIVE, .breadcrump a:VISITED {
     font-size:12pt;
-    color:#1919c1;
+    color:#0070a3;
     font-weight: bold;
     text-decoration:none;
     font-family:arial;
 }
 .breadcrump a:hover{
-    color:#0070a3;
+    color:#045C85;
 }
+
 /*
 h1{
 	text-align: left;
@@ -570,14 +561,10 @@ table.customization-possible-values thead td{
 
 
 
-#reportBody td.table-body-cell a{
-	font-size:10pt;
-	color:black;
-}
-#reportBody td.table-body-cell a:hover{
-    color:#8C0200;
-}
 
+#reportBody .reason-cell {
+	white-space: nowrap;
+}
 
 
 
@@ -1109,7 +1096,7 @@ table.grid td.grid select.grid-select{
 .ui-jqgrid-btable td a{
     font-size:10pt;
     font-weight:bold;
-    color:black;
+    color:#0070a3;
 }
 .ui-jqgrid-btable td span{
     white-space: nowrap;
@@ -1444,3 +1431,24 @@ div.grid-agent-layout {
     box-shadow: 0px 0px 2px #ddd;
 }
 
+
+table.possible-values-list {
+	width:100%;
+	border-collapse: collapse;
+}
+table.possible-values-list th.border {
+	font-size:10pt;
+	font-weight:bold;
+	background:#ccc;
+	padding:2px;
+}
+
+table.possible-values-list td.border, table.possible-values-list th.border { 
+	border:1px solid #aaa;
+	padding:0px;
+}
+
+table.possible-values-list td input[type=text] {
+	width:100%;
+	height:30px;
+}

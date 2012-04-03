@@ -440,9 +440,9 @@ Display restuls:
     <br/>
     <br/>
 </c:if>
-
-<table id="list"><tr><td/></tr></table> 
-
+<div id="reportBody">
+	<table id="list"><tr><td/></tr></table> 
+</div>
 <br/>
 <c:if test="${user!=null}">
     <tag:submit value="Remember Selected runs" onclick="javascript:onRememberSelectedRuns();"/>
@@ -475,7 +475,7 @@ function issueFormatter(cellValue, options, rowObject){
 }
 function reasonFormatter(cellValue, options, rowObject){
 	if(cellValue!=null && cellValue.length>0){
-		return escapeHTML(cellValue[0]);
+		return "<span class='reason-cell'>"+escapeHTML(cellValue[0]) + "</span>";
 	}
 	return "";
 }

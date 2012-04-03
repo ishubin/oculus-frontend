@@ -12,7 +12,7 @@
     Edit Test
 </div>
 
-<form 
+<form  onsubmit="return onSubmitTest();"
     method="post">
     <%@ include file="/WEB-INF/jsp/test/test-create-content.jsp" %>
 </form>

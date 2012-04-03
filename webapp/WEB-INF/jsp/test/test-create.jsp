@@ -13,7 +13,7 @@
     Create Test
 </div>
 
-<form action="../test/create" 
+<form action="../test/create" onsubmit="return onSubmitTest();" 
     method="post">
     <%@ include file="/WEB-INF/jsp/test/test-create-content.jsp" %>
 </form>

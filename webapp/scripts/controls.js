@@ -566,3 +566,50 @@ var Tab = {
 	}
 };
 
+
+//Used in test-parameteres-editor
+var TestParametersListEditor = {
+	id: "test-parameters-list-editor",
+	valuesList:[],
+	defaultValue: null,
+	_uniqueId:0,
+	uniqueId: function () {
+		this._uniqueId++;
+		return this._uniqueId;
+	},
+	_tableBodyLocator: null,
+	addValue: function(value) {
+		var id = this.uniqueId();
+		var h = "";
+		h += "<tr x-id='" + id + "'>";
+		h += "<td class='border'><input type='radio' name='" + this.id + "-pv-default' value='" + id + "'/></td>";
+		h += "<td class='border'><input type='text' name='" + this.id + "-pv-name' value='" + escapeHTML(value) + "' x-value-id='" + id + "'/></td>";
+		h += "<td><a class='" + this.id + "-remove-link' x-value-id='" + id + "'>Remove</a></td>";
+		h += "</tr>";
+		$(this._tableBodyLocator).append(h);
+		$("a." + this.id+"-remove-link[x-value-id=" + id + "]").click(function () {
+			var id = $(this).attr("x-value-id");
+			$(TestParametersListEditor._tableBodyLocator+" tr[x-id=" + id + "]").remove();
+		});
+		return id;
+	},
+	
+	init: function(tableBodyLocator) {
+		$("#possible-value-list-add-text").val("");
+		$("#possible-value-list-add-submit").button();
+	    $("#possible-value-list-add-submit").click(function () {
+	        var value = $("#possible-value-list-add-text").val();
+	        TestParametersListEditor.addValue(value);
+	        $("#possible-value-list-add-text").val("");
+	        return false;
+	    });
+	    
+		this._uniqueId = 0;
+		this._tableBodyLocator = tableBodyLocator;
+		$(tableBodyLocator).html("");
+		for ( var i=0; i < this.valuesList.length; i++ ) {
+			this.addValue(this.valuesList[i]);
+		}
+	}
+};
+

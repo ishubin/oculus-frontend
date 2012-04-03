@@ -121,6 +121,7 @@ div.custom-panel-title table td{
     vertical-align: middle;
     padding:5px;
     color:#2779AA;
+    text-shadow: 1px 1px 0px white;
 }
 div.custom-panel-wrap div.custom-panel-body{
 	padding:5px;

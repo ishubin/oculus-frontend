@@ -52,10 +52,12 @@ public class TestEditController extends SecureSimpleFormController {
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		Long id = new Long(request.getParameter("id"));
 		Test test = testDAO.getTest(id);
+		test.setInputParameters(testDAO.getTestInputParameters(id));
+		test.setOutputParameters(testDAO.getTestOutputParameters(id));
 		return test;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected Map referenceData(HttpServletRequest request) throws Exception {
 		Long id = new Long(request.getParameter("id"));
