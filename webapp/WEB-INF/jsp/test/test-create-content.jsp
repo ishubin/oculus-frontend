@@ -25,6 +25,30 @@ ObjectMapper mapper = new ObjectMapper();
 
 <tag:pickuser-setup></tag:pickuser-setup>
 <script>
+
+function onSubmitTest() {
+    $("#testContentField").val(testCaseEditor.exportContent());
+    
+    
+    for ( var i=0;i<TestParameters.input.length; i++ ) {
+    	var p = TestParameters.input[i];
+    	if ( p.possibleValuesList != null ) {
+    		var possibleValues = "";
+    		for( var j=0; j<p.possibleValuesList.length; j++ ) {
+    			possibleValues += "<value>" + escapeHTML(p.possibleValuesList[j]);
+    		}
+    		
+    		p.possibleValues = possibleValues;
+    		p.possibleValuesList = null;
+    	}
+    }
+    $("#testInputParametersField").val(JSON.stringify(TestParameters.input));
+    $("#testOutputParametersField").val(JSON.stringify(TestParameters.output));
+    
+    return true;
+}
+
+
 var TestParameters = {
 	input: <%=mapper.writeValueAsString(inputParameters)%>,
 	output: <%=mapper.writeValueAsString(outputParameters)%>,
@@ -250,12 +274,11 @@ $(function() {
 	
 });
 	
-function onSubmitTest() {
-	$("#testContentField").val(testCaseEditor.exportContent());
-}
 </script>
 	
 <input id="testContentField" type="hidden" name="content" value="${test.content}"/>
+<input id="testInputParametersField" type="hidden" name="__inputParameters" value=""/>
+<input id="testOutputParametersField" type="hidden" name="__outputParameters" value=""/>
 <div id="testTabs">
 	<ul>
 		<li><a href="#test-details-tab">Details</a></li>
