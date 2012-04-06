@@ -38,104 +38,178 @@ var Formatters = {
 	    return "";
 	},
 	
+	controlTypeFormatter: function (cellValue, options, rowObject) {
+        if(cellValue!=null){
+        	return "<b>" + cellValue + "</b>";
+        }
+        return "";
+	},
+	
+	defaultValueFormatter: function (cellValue, options, rowObject) {
+		if ( rowObject.controlType == "list" ) {
+            var h =  "<ul>";
+            for ( var i=0; i<rowObject.values.length; i++) {
+                h += "<li>" + escapeHTML(rowObject.values[i]) + "</li>";
+            }
+            h += "</ul>";
+            return h;
+        }
+        else {
+            return cellValue;
+        }
+    }, 
+	
 	editFormatter: function (cellValue, options, rowObject) {
-		var str = "<a href='#' class='edit-parameter-link' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-edit.png'/> Edit</a> <span style='width:50px;display:inline-block;'> </span>";
-		str += "<a href='#' class='delete-parameter-link' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-delete.png'/> Delete</a>";
+		var str = "<a href='#' onclick=\"ParametersTable.editParameter(" + cellValue + ", '" + rowObject.type + "'); return false;\" class='edit-parameter-link button' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-edit.png'/> Edit</a> ";
+		str += "<a href='#' onclick=\"ParametersTable.removeParameter(" + cellValue + ", '" + rowObject.type + "'); return false;\" class='delete-parameter-link button' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-delete.png'/> Delete</a>";
 		return str;
 	}
 }
 
 var ParametersTable = {
 	INPUT: {
-		columnNames: ['Name','Type', ' '],
+		columnNames: ['Name','Type', 'Default Value', ' '],
 		columnModel: [
-		      	    {name:'name', index:'name', sortable:true, sortCustomId:1, formatter:Formatters.nameFormatter}, 
-		      	    {name:'controlType', index:'controlType',sortCustomId:2, sortable:true, width:90},
-		      	    {name:'edit', index:'edit', sortable:false,sortCustomId:4, width:200, formatter:Formatters.editFormatter}
+		      	    {name:'name', index:'name', sortable:false, formatter:Formatters.nameFormatter}, 
+		      	    {name:'controlType', index:'controlType', sortable:false, width:90, formatter:Formatters.controlTypeFormatter},
+		      	    {name:'defaultValue', index:'defaultValue', sortable:false, formatter:Formatters.defaultValueFormatter},
+		      	    {name:'edit', index:'edit', sortable:false, width:200, formatter:Formatters.editFormatter}
 		      	],
 	},
 	OUTPUT: {
 		columnNames: ['Name',' '],
 		columnModel: [
-		      	    {name:'name', index:'name', sortable:true, sortCustomId:1, formatter:Formatters.nameFormatter}, 
+		      	    {name:'name', index:'name', sortable:false, sortCustomId:1, formatter:Formatters.nameFormatter}, 
 		      	    {name:'edit', index:'edit', sortable:false,sortCustomId:4, width:200, formatter:Formatters.editFormatter}
 		      	],
 	},
 	
+	editParameter: function(index, type) {
+		TestParameters[type][index].index = index;
+		ParameterDialog.open(TestParameters[type][index], type);
+	},
+	
+	removeParameter: function (index, type) {
+		if ( index >= 0  && index < TestParameters[type].length) {
+            TestParameters[type].splice(index, 1);
+            this.initTable("#test-" + type + "-parameters-list", TestParameters[type]);
+        } 
+	},
+	
 	initTable: function (gridLocator, parameters) {
 		var grid = $(gridLocator);
+		grid.jqGrid("clearGridData", false);
 		for ( var i=0; i < parameters.length; i++ ) {
-			grid.jqGrid("addRowData", i, {id: parameters[i].id, name: parameters[i].name, controlType:'text', defaultValue:parameters[i].defaultValue, values:parameters[i].valuesAsList, edit: parameters[i].id, type: parameters[i].type});
+			grid.jqGrid("addRowData", i, {index:i, id: parameters[i].id, name: parameters[i].name, controlType:parameters[i].controlType, defaultValue:parameters[i].defaultValue, values:parameters[i].possibleValuesList, edit: i, type: parameters[i].type});
 		}	
 	}
 };	
 
-
-var InputParameterDialog = {
+var ParameterDialog = {
 	parameter:null,
+	type: "input",
 	save: function () {
+		this.parameter.name = $("#parameter-name").val();
+		if ( this.type == "input" ) {
+			this.parameter.controlType = $("#inputParameter-controlType").val();
+	        this.parameter.possibleValuesList = null;
+	        if ( this.parameter.controlType == "text") {
+	            this.parameter.defaultValue = $("#inputParameter-default-text-value").val(); 
+	        }
+	        else if ( this.parameter.controlType == "boolean") {
+	            this.parameter.defaultValue = $("#inputParameter-default-boolean-value").val(); 
+	        }
+	        else if ( this.parameter.controlType == "list") {
+	            this.parameter.possibleValuesList = TestParametersListEditor.getValuesList();
+	            this.parameter.defaultValue = TestParametersListEditor.getDefaultValue(); 
+	        }	
+		}
+		
+		if ( this.parameter.index == null ) {
+			var index = TestParameters[this.type].length;
+			TestParameters[this.type][index] = this.parameter;
+			ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
+		}
+		else {
+			TestParameters[this.type][this.parameter.index] = this.parameter;
+            ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
+		}
 		this.parameter = null;
 		return true;
 	},
-	open: function (parameter) {
+	open: function (parameter, type) {
+		this.type = type;
 		var valuesList = [];
-		if ( parameter == null ) {
-			$("#inputParameterDialogSubmit").val("Add");
-			this.parameter = {name:"", controlType:"text", defaultValue:"", id: null, type:"input"};
+        if ( parameter == null ) {
+            $("#parameterDialogSubmit").val("Add");
+            this.parameter = {name:"", controlType:"text", defaultValue:"", id: null, index:null, type:type};
+        }
+        else {
+            $("#parameterDialogSubmit").val("Save");
+            this.parameter = parameter;
+            if ( parameter.possibleValuesList != null ) {
+                valuesList = parameter.possibleValuesList;
+            }
+        }
+        
+		if ( type == "input" ) {
+			$(".input-parameter-configs").show();
+			$("#inputParameter-default-text-value").val("");
+	        $("#inputParameter-default-boolean-value").val("true");
+	        
+	        TestParametersListEditor.init("#possible-values-list-table tbody", valuesList, this.parameter.defaultValue);
+	        $("#possible-value-list-add-text").val("");
+	        
+	        this.initControls();
 		}
 		else {
-			$("#inputParameterDialogSubmit").val("Save");
-			this.parameter = parameter;
-			if ( parameter.valuesAsList != null ) {
-				valuesList = parameter.valuesAsList;
-			}
+			$(".input-parameter-configs").hide();
 		}
-		TestParametersListEditor.valuesList = valuesList;
-		TestParametersListEditor.init("#possible-valies-list-table tbody");
-		$("#possible-value-list-add-text").val("");
-		
-		this.initControls();
-		showPopup("inputParameterDialog", 400, 500);
+		$("#parameter-name").val(this.parameter.name);
+		showPopup("parameterDialog", 400, 500);
 	},
 	initControls: function () {
 		$("#inputParameter-controlType").val(this.parameter.controlType);
-		$("#inputParameter-name").val(this.parameter.name);
-		
+		if ( this.parameter.controlType == "text" ) {
+			$("#inputParameter-default-text-value").val(this.parameter.defaultValue);
+		}
+		else if ( this.parameter.controlType == "boolean" ) {
+            $("#inputParameter-default-boolean-value").val(this.parameter.defaultValue);
+        } 
 		this.setControlType(this.parameter.controlType);
 	},
 	setControlType: function (controlType) {
 		this.parameter.controlType = controlType;
 		$(".default-values .default-value-layout").hide();
 		$(".default-values #inputParameter-" + controlType + "-values").show();
+		
+		
 	},
 	init: function () {
-		$("#inputParameterDialogSubmit").click(function (){
-			if ( InputParameterDialog.save() ) {
-				closePopup("inputParameterDialog");	
+		$("#parameterDialogSubmit").click(function (){
+			if ( ParameterDialog.save() ) {
+				closePopup("parameterDialog");	
 			}
 			return false;
 		});
 		
 		$("#inputParameter-controlType").change(function (){
 			var controlType = $("#inputParameter-controlType option:selected").val();
-			InputParameterDialog.setControlType(controlType);
+			ParameterDialog.setControlType(controlType);
 		});		
 	}
 };
 
 
 $(function() {
-	InputParameterDialog.init();
+	ParameterDialog.init();
 	
 	$("#testTabs").tabs();
 	
 	$("#test-parameters-tab .add-parameter-to-table").button();
-	
 	$("#test-parameters-tab .add-parameter-to-table").click(function (){
 		var parameterType = $(this).attr("x-parameter-type");
-		if ( parameterType == "input") {
-			InputParameterDialog.open();	
-		}
+		ParameterDialog.open(null, parameterType);
 		return false;
 	});
 	
@@ -232,7 +306,7 @@ function onSubmitTest() {
         </c:forEach>
 	</div>
 	<div id="test-parameters-tab">
-		<div>
+		<div style="margin-bottom:20px;">
 			<table id="test-input-parameters-list"></table>
 			<input type='submit' class="add-parameter-to-table" x-parameter-type="input" value="Add parameter"/>
 		</div>
@@ -247,53 +321,55 @@ function onSubmitTest() {
 <br/>
 <tag:submit value="${testCommand }"></tag:submit>
 
-<div id="inputParameterDialog"  style="display:none;">
-	<tag:panel title="Input Parameter" align="center" width="400px" height="500px" closeDivName="inputParameterDialog">
+<div id="parameterDialog"  style="display:none;">
+	<tag:panel title="Parameter" align="center" width="400px" height="500px" closeDivName="parameterDialog">
 		<p>
 			Name: <br/>
-			<tag:edit-field-simple name="inputParameter-name" id="inputParameter-name" width="100%" value=""/>
+			<tag:edit-field-simple name="parameter-name" id="parameter-name" width="100%" value=""/>
 		</p>
-		<p>
-			Type: <br/>
-			<select id="inputParameter-controlType">
-				<option value="text">Text</option>
-				<option value="list">List</option>
-				<option value="boolean">Boolean</option>
-			</select>
-		</p>
-		<div class="default-values" style="height:250px;">
-			<div class="default-value-layout" id="inputParameter-text-values" style="display:none;">
-				Default value:<br/>
-				<tag:edit-field-simple name="inputParameter-default-text-value" id="inputParameter-default-text-value" width="100%" value=""/>
-			</div>
-			<div class="default-value-layout" id="inputParameter-list-values" style="display:none;">
-			    <div class="panel-border" style="height:180px;overflow:auto;">
-                    <table id="possible-valies-list-table" class="possible-values-list">
-                        <thead>
-                            <tr>
-                                <th width="70px" class="border">Default</th>
-                                <th class="border">Name</th>
-                                <th width="70px"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <input type="text" name="possible-value-list-add-text" id="possible-value-list-add-text" class="custom-edit-text"/> 
-                <input id="possible-value-list-add-submit" class="custom-button-text" type="submit" name="possible-value-list-add-submit" value="Add Value"/>
-			</div>
-			<div class="default-value-layout" id="inputParameter-boolean-values" style="display:none;">
-				Default value:<br/>
-				<select name="inputParameter-default-boolean-value">
-					<option value="true">True</option>
-					<option value="false">False</option>
-				</select>
-			</div>
+		<div class="input-parameter-configs">
+			<p>
+	            Type: <br/>
+	            <select id="inputParameter-controlType">
+	                <option value="text">Text</option>
+	                <option value="list">List</option>
+	                <option value="boolean">Boolean</option>
+	            </select>
+	        </p>
+	        <div class="default-values" style="height:250px;">
+	            <div class="default-value-layout" id="inputParameter-text-values" style="display:none;">
+	                Default value:<br/>
+	                <tag:edit-field-simple name="inputParameter-default-text-value" id="inputParameter-default-text-value" width="100%" value=""/>
+	            </div>
+	            <div class="default-value-layout" id="inputParameter-list-values" style="display:none;">
+	                <div class="panel-border" style="height:180px;overflow:auto;">
+	                    <table id="possible-values-list-table" class="possible-values-list">
+	                        <thead>
+	                            <tr>
+	                                <th width="70px" class="border">Default</th>
+	                                <th class="border">Name</th>
+	                                <th width="70px"> </th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                        </tbody>
+	                    </table>
+	                </div>
+	                <input type="text" name="possible-value-list-add-text" id="possible-value-list-add-text" class="custom-edit-text"/> 
+	                <input id="possible-value-list-add-submit" class="custom-button-text" type="submit" name="possible-value-list-add-submit" value="Add Value"/>
+	            </div>
+	            <div class="default-value-layout" id="inputParameter-boolean-values" style="display:none;">
+	                Default value:<br/>
+	                <select id="inputParameter-default-boolean-value">
+	                    <option value="true">True</option>
+	                    <option value="false">False</option>
+	                </select>
+	            </div>
+	        </div>
 		</div>
 		
-		<tag:submit id="inputParameterDialogSubmit" value="" onclick="return false;" ></tag:submit>
-		<tag:submit value="Cancel" onclick="closePopup('inputParameterDialog');return false;"></tag:submit>
+		<tag:submit id="parameterDialogSubmit" value="" onclick="return false;" ></tag:submit>
+		<tag:submit value="Cancel" onclick="closePopup('parameterDialog');return false;"></tag:submit>
 	</tag:panel>
 </div>
 

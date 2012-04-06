@@ -570,20 +570,33 @@ var Tab = {
 //Used in test-parameteres-editor
 var TestParametersListEditor = {
 	id: "test-parameters-list-editor",
-	valuesList:[],
-	defaultValue: null,
 	_uniqueId:0,
 	uniqueId: function () {
 		this._uniqueId++;
 		return this._uniqueId;
+	},
+	getDefaultValue: function () {
+		var id = $("." + this.id + "-pv-default:checked").val();
+		
+		if ( id != null && id != "") {
+			return $("." + this.id + "-pv-name[x-value-id=" + id + "]").val();
+		}
+		return "";
+	},
+	getValuesList: function () {
+		var valuesList = [];
+		$("." + this.id + "-pv-name").each(function () {
+			valuesList.push($(this).val());
+		});
+		return valuesList;
 	},
 	_tableBodyLocator: null,
 	addValue: function(value) {
 		var id = this.uniqueId();
 		var h = "";
 		h += "<tr x-id='" + id + "'>";
-		h += "<td class='border'><input type='radio' name='" + this.id + "-pv-default' value='" + id + "'/></td>";
-		h += "<td class='border'><input type='text' name='" + this.id + "-pv-name' value='" + escapeHTML(value) + "' x-value-id='" + id + "'/></td>";
+		h += "<td class='border'><input type='radio' class='" + this.id + "-pv-default' name='" + this.id + "-pv-default' value='" + id + "'/></td>";
+		h += "<td class='border'><input type='text' class='" + this.id + "-pv-name' value='" + escapeHTML(value) + "' x-value-id='" + id + "'/></td>";
 		h += "<td><a class='" + this.id + "-remove-link' x-value-id='" + id + "'>Remove</a></td>";
 		h += "</tr>";
 		$(this._tableBodyLocator).append(h);
@@ -593,22 +606,33 @@ var TestParametersListEditor = {
 		});
 		return id;
 	},
-	
-	init: function(tableBodyLocator) {
-		$("#possible-value-list-add-text").val("");
-		$("#possible-value-list-add-submit").button();
-	    $("#possible-value-list-add-submit").click(function () {
-	        var value = $("#possible-value-list-add-text").val();
-	        TestParametersListEditor.addValue(value);
-	        $("#possible-value-list-add-text").val("");
-	        return false;
-	    });
+	_controlsInit: false,
+	init: function(tableBodyLocator, valuesList, defaultValue) {
+		if ( !this._controlsInit ) {
+			$("#possible-value-list-add-text").val("");
+			$("#possible-value-list-add-submit").button();
+		    $("#possible-value-list-add-submit").click(function () {
+		        var value = $("#possible-value-list-add-text").val();
+		        TestParametersListEditor.addValue(value);
+		        $("#possible-value-list-add-text").val("");
+		        return false;
+		    });
+		    this._controlsInit = true;
+		}
 	    
 		this._uniqueId = 0;
 		this._tableBodyLocator = tableBodyLocator;
 		$(tableBodyLocator).html("");
-		for ( var i=0; i < this.valuesList.length; i++ ) {
-			this.addValue(this.valuesList[i]);
+		
+		var selectedId = null;
+		for ( var i=0; i < valuesList.length; i++ ) {
+			var id = this.addValue(valuesList[i]);
+			if ( valuesList[i] == defaultValue ) {
+				selectedId = id;
+			}
+		}
+		if ( selectedId != null ) {
+			$("." + this.id + "-pv-default[value=" + selectedId + "]").click();
 		}
 	}
 };
