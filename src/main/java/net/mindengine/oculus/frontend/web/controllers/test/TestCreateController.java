@@ -18,7 +18,10 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.web.controllers.test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.mindengine.oculus.frontend.domain.customization.Customization;
 import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.test.Test;
+import net.mindengine.oculus.frontend.domain.test.TestParameter;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.customization.CustomizationDAO;
 import net.mindengine.oculus.frontend.service.customization.CustomizationUtils;
@@ -35,12 +39,15 @@ import net.mindengine.oculus.frontend.service.test.TestDAO;
 import net.mindengine.oculus.frontend.service.user.UserDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 public class TestCreateController extends SecureSimpleFormController {
-	private ProjectDAO projectDAO;
+	private static final int List = 0;
+    private ProjectDAO projectDAO;
 	private TestDAO testDAO;
 	private CustomizationDAO customizationDAO;
 	private UserDAO userDAO;
@@ -92,16 +99,44 @@ public class TestCreateController extends SecureSimpleFormController {
 		Test test = (Test) command;
 		test.setAuthorId(user.getId());
 		Long id = testDAO.create(test);
-
 		test.setId(id);
-
+		
 		updateTestCustomizationValues(request, test);
+		
+		saveTestParameters(request, test);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.setView(new RedirectView("../test/display?id=" + id));
 		return mav;
 	}
 
-	public void updateTestCustomizationValues(HttpServletRequest request, Test test) throws Exception {
+	private void saveTestParameters(HttpServletRequest request, Test test) throws Exception {
+	    /*
+         * Saving input and output parameters
+         */
+        String jsonInputParameters = request.getParameter("__inputParametersJson");
+        String jsonOutputParameters = request.getParameter("__outputParametersJson");
+        
+        TestParameter[] inputParameters = null;
+        TestParameter[] outputParameters = null;
+        
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        if (jsonInputParameters != null ) {
+            inputParameters = mapper.readValue(jsonInputParameters, TestParameter[].class);
+        }
+        if (jsonOutputParameters != null ) {
+            outputParameters = mapper.readValue(jsonOutputParameters, TestParameter[].class);
+        }
+        
+        List<TestParameter> parameters = new ArrayList<TestParameter>();
+        Collections.addAll(parameters, inputParameters);
+        Collections.addAll(parameters, outputParameters);
+        
+        testDAO.saveTestParameters(test.getId(), parameters);
+    }
+
+    public void updateTestCustomizationValues(HttpServletRequest request, Test test) throws Exception {
 		Long rootId = projectDAO.getProjectRootId(test.getProjectId(), 10);
 		CustomizationUtils.updateUnitCustomizationValues(rootId, test.getId(), Customization.UNIT_TEST, customizationDAO, request);
 	}

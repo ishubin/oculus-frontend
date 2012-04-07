@@ -5,6 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:choose>
     <c:when test="${customization.type == 'text'}">
@@ -15,7 +16,7 @@
         <c:if test="${assignedUser!=null && assignedUser.login!=null && assignedUser.login!=''}">
 	        <a href="../user/profile-${assignedUser.login}">
 	            <img src="../images/workflow-icon-user.png"/>
-	            ${assignedUser.name}
+	            ${fn:escapeXml(assignedUser.name)}
 	        </a>
 	    </c:if>
     </c:when>
@@ -23,7 +24,7 @@
     <c:when test="${customization.type == 'list'}">
         <c:forEach items="${possibleValues}" var="pv">
             <c:if test="${pv.id == customization.value}">
-                <tag:escape text="${pv.possibleValue}"/>
+                ${fn:escapeXml(pv.possibleValue)}"
             </c:if>
         </c:forEach>
     </c:when>
@@ -42,7 +43,7 @@
             <c:forEach items="${possibleValues}" var="pv">
                 <c:if test="${pv.isSet==true}">
                     <li>
-                        <tag:escape text="${pv.possibleValue}"/>
+                        ${fn:escapeXml(pv.possibleValue)}
                     </li>
                 </c:if>
             </c:forEach>

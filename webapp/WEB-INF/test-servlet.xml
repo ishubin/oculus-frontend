@@ -67,14 +67,6 @@
         <property name="view" value="test-display"/>
     </bean>
     
-    <bean name="/customize" class="net.mindengine.oculus.frontend.web.controllers.test.TestCustomizeController">
-        <property name="title" value="Customize Test"/>
-        <property name="view" value="test-customize"/>
-        <property name="projectDAO" ref="projectDAO"/>
-        <property name="testDAO" ref="testDAO"/>
-        <property name="authorizationCheck" value="true"/>
-    </bean>
-    
     <bean name="/ajax-fetch" class="net.mindengine.oculus.frontend.web.controllers.test.TestAjaxFetchController">
         <property name="testDAO" ref="testDAO"/>
     </bean>
@@ -118,12 +110,6 @@
         <property name="projectDAO" ref="projectDAO"/>
         <property name="authorizationCheck" value="true"/>
     </bean>
-    
-    <bean name="/copy-parameters" class="net.mindengine.oculus.frontend.web.controllers.test.CopyParametersController">
-        <property name="testDAO" ref="testDAO"/>
-        <property name="authorizationCheck" value="true"/>
-    </bean>
-    
     
     <bean name="/create-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupCreateController">
         <property name="title" value="Create Test Group"/>

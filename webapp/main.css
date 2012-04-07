@@ -449,7 +449,7 @@ table.issue-table td.issue-table, table.issue-table td.issue-table-left{
 table.issue-table thead td.issue-table{
 	font-weight:bold;
     font-size:12pt;
-    color: #2779AA;
+    color: #000;
     background:#D7EBF9;
 }
 table.issue-table thead td.issue-table a{
@@ -462,7 +462,7 @@ table.issue-table tbody td.issue-table-left{
     white-space: nowrap;
     width:100px;
     font-weight: bold;
-    color: #2779AA;
+    color: #000;
     font-size:10pt;
 }
 table.issue-table tbody tr.even td.issue-table-left{
@@ -1099,6 +1099,10 @@ table.grid td.grid select.grid-select{
     color:#0070a3;
 }
 
+.ui-jqgrid tr.jqgrow td {
+	vertical-align:top
+}
+
 .ui-jqgrid-btable td a.button{
     font-size:10pt;
     font-weight:bold;
@@ -1137,7 +1141,7 @@ table.grid td.grid select.grid-select{
 }
 .ui-jqgrid-btable td a.big-link{
 	font-size:12pt;
-	color:black;
+	color:#0070a3;
 }
 
 .jquery-tooltip{

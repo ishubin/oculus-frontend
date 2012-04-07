@@ -57,7 +57,11 @@ var TestParameters = {
 var Formatters = {
 	nameFormatter: function (cellValue, options, rowObject) {
 		if(cellValue!=null){
-	        return "<img src='../images/workflow-icon-settings.png'/> <b>" + escapeHTML( cellValue ) + "</b></a>";
+			var str = "<img src='../images/workflow-icon-settings.png'/> <b>" + escapeHTML( cellValue ) + "</b>";
+			if ( rowObject.description != null && rowObject.description != "" ) {
+				str += "<br/>" + escapeHTML(rowObject.description);
+			}
+			return str;
 	    }
 	    return "";
 	},
@@ -124,7 +128,7 @@ var ParametersTable = {
 		var grid = $(gridLocator);
 		grid.jqGrid("clearGridData", false);
 		for ( var i=0; i < parameters.length; i++ ) {
-			grid.jqGrid("addRowData", i, {index:i, id: parameters[i].id, name: parameters[i].name, controlType:parameters[i].controlType, defaultValue:parameters[i].defaultValue, values:parameters[i].possibleValuesList, edit: i, type: parameters[i].type});
+			grid.jqGrid("addRowData", i, {index:i, id: parameters[i].id, name: parameters[i].name, description:parameters[i].description, controlType:parameters[i].controlType, defaultValue:parameters[i].defaultValue, values:parameters[i].possibleValuesList, edit: i, type: parameters[i].type});
 		}	
 	}
 };	
@@ -134,6 +138,7 @@ var ParameterDialog = {
 	type: "input",
 	save: function () {
 		this.parameter.name = $("#parameter-name").val();
+		this.parameter.description = $("#parameter-description").val();
 		if ( this.type == "input" ) {
 			this.parameter.controlType = $("#inputParameter-controlType").val();
 	        this.parameter.possibleValuesList = null;
@@ -190,6 +195,7 @@ var ParameterDialog = {
 			$(".input-parameter-configs").hide();
 		}
 		$("#parameter-name").val(this.parameter.name);
+		$("#parameter-description").val(this.parameter.description);
 		showPopup("parameterDialog", 400, 500);
 	},
 	initControls: function () {
@@ -277,8 +283,8 @@ $(function() {
 </script>
 	
 <input id="testContentField" type="hidden" name="content" value="${test.content}"/>
-<input id="testInputParametersField" type="hidden" name="__inputParameters" value=""/>
-<input id="testOutputParametersField" type="hidden" name="__outputParameters" value=""/>
+<input id="testInputParametersField" type="hidden" name="__inputParametersJson" value=""/>
+<input id="testOutputParametersField" type="hidden" name="__outputParametersJson" value=""/>
 <div id="testTabs">
 	<ul>
 		<li><a href="#test-details-tab">Details</a></li>
@@ -349,6 +355,10 @@ $(function() {
 		<p>
 			Name: <br/>
 			<tag:edit-field-simple name="parameter-name" id="parameter-name" width="100%" value=""/>
+		</p>
+		<p>
+		    Description: <br/>
+		    <textarea class="custom-edit-text" name="parameter-description" id="parameter-description" rows="5" style="width:100%"></textarea>
 		</p>
 		<div class="input-parameter-configs">
 			<p>

@@ -134,23 +134,70 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 	}
 
 	@Override
-	public void createTestParameter(TestParameter testParameter) throws Exception {
-		update("insert into test_parameters (name,description, type, control_type, default_value, possible_values, test_id) " + "values (:name,:description,:type,:controlType,:defaultValue,:possibleValues,:testId)", "name", testParameter.getName(), "description", testParameter.getDescription(),
-				"type", testParameter.getType(), "controlType", testParameter.getControlType(), "defaultValue", testParameter.getDefaultValue(), "possibleValues", testParameter.getPossibleValues(), "testId", testParameter.getTestId());
+	public void saveTestParameters(Long testId, List<TestParameter> parameters) throws Exception {
+	    List<TestParameter> currentParameters = this.getTestParameters(testId);
+	    
+	    List<Long> oldParameterIds = new LinkedList<Long>();
+	    for ( TestParameter currentParameter : currentParameters ) {
+	        oldParameterIds.add(currentParameter.getId());
+	    }
+	    
+	    List<Long> newParameterIds = new LinkedList<Long>();
+	    
+	    for ( TestParameter parameter: parameters ) {
+	        if ( parameter.getId() != null && oldParameterIds.contains(parameter.getId())) {
+	            //updating current parameter
+	            updateTestParameter(parameter.getId(), parameter);
+	            newParameterIds.add(parameter.getId());
+	        }
+	        else {
+	            //adding new parameter
+	            parameter.setTestId(testId);
+	            Long parameterId = createTestParameter(parameter);
+	            newParameterIds.add(parameterId);
+	        }
+	    }
+	    
+	    //Removing unused parameters
+	    for ( Long parameterId : oldParameterIds ) {
+	        if ( !newParameterIds.contains(parameterId) ) {
+	            deleteTestParameter(parameterId, testId);
+	        }
+	    }
+	}
+	
+	private Long createTestParameter(TestParameter parameter) throws Exception {
+	    PreparedStatement ps = getConnection().prepareStatement("insert into test_parameters (name,description, type, control_type, default_value, possible_values, test_id) "
+	            + "values (?,?,?,?,?,?,?)");
+	    ps.setString(1, parameter.getName());
+	    ps.setString(2, parameter.getDescription());
+	    ps.setString(3, parameter.getType());
+	    ps.setString(4, parameter.getControlType());
+	    ps.setString(5, parameter.getDefaultValue());
+	    ps.setString(6, parameter.getPossibleValues());
+	    ps.setLong(7, parameter.getTestId());
+
+	    logger.info(ps);
+        ps.executeUpdate();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        Long parameterId = null;
+        if (rs.next()) {
+            parameterId = rs.getLong(1);
+        }
+        return parameterId;
 	}
 
-	@Override
-	public void updateTestParameter(Long parameterId, TestParameter testParameter) throws Exception {
+	private void updateTestParameter(Long parameterId, TestParameter testParameter) throws Exception {
 
 		update("update test_parameters set name=:name, description=:description, type=:type, control_type=:controlType, default_value=:defaultValue, possible_values=:possibleValues " + "where id = :id", "id", parameterId, "name", testParameter.getName(), "description", testParameter
 				.getDescription(), "type", testParameter.getType(), "controlType", testParameter.getControlType(), "defaultValue", testParameter.getDefaultValue(), "possibleValues", testParameter.getPossibleValues());
 	}
 
-	@Override
-	public void deleteTestParameter(Long testParameterId, Long testId) throws Exception {
+	private void deleteTestParameter(Long testParameterId, Long testId) throws Exception {
 		update("delete from test_parameters where test_id = :testId and id = :id", "testId", testId, "id", testParameterId);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public BrowseResult<Test> getTestsByProjectId(Long projectId, int page, int limit) throws Exception {

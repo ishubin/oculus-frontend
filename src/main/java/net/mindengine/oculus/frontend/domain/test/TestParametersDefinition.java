@@ -20,8 +20,6 @@ package net.mindengine.oculus.frontend.domain.test;
 
 import java.util.List;
 
-import net.mindengine.oculus.frontend.web.controllers.test.TestCustomizeController;
-
 /**
  * Used only as a model in {@link TestCustomizeController}. Contains the input
  * parameters list and output parameters list

@@ -49,11 +49,14 @@ public interface TestDAO {
 
 	public List<TestParameter> getTestOutputParameters(Long testId) throws Exception;
 
-	public void createTestParameter(TestParameter testParameter) throws Exception;
-
-	public void updateTestParameter(Long parameterId, TestParameter testParameter) throws Exception;
-
-	public void deleteTestParameter(Long testParameterId, Long testId) throws Exception;
+	/**
+	 * Updates all parameters of specified test.
+	 * @param testId
+	 * @param parameters
+	 * @throws Exception
+	 */
+	public void saveTestParameters(Long testId, List<TestParameter> parameters) throws Exception;
+	
 
 	/**
 	 * Fetches tests from the project and all its sub-projects

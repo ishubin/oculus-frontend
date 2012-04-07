@@ -1,6 +1,6 @@
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.*"/>
 <%@ include file="/session-handler.jsp" %>
 
@@ -43,9 +43,8 @@
                 <thead>
                     <tr>
                         <td class="issue-table" colspan="2">
-                            Project -
-                            <c:if test="${parentProject!=null}"><a href="../project/display-${parentProject.path}">${parentProject.name}</a> - </c:if> 
-                            <b>${project.name}</b>
+                            <c:if test="${parentProject!=null}"><a href="../project/display-${parentProject.path}">${fn:escapeXml(parentProject.name)}</a> - </c:if> 
+                            <b>${fn:escapeXml(project.name)}</b>
                         </td>
                     </tr>
                 </thead>
@@ -71,7 +70,7 @@
                             Name:
                         </td>
                         <td class="issue-table">
-                            <tag:escape text="${project.name}"/>
+                            ${fn:escapeXml(project.name)}
                         </td>
                     </tr>
                     <tr class="even">
@@ -103,9 +102,9 @@
                             Author:
                         </td>
                         <td class="issue-table">
-                            <a href="../user/profile-${projectAuthor.login}">
+                            <a href="../user/profile-${fn:escapeXml(projectAuthor.login)}">
                                 <img src="../images/workflow-icon-user.png"/>
-                                ${projectAuthor.name}
+                                ${fn:escapeXml(projectAuthor.name)}
                             </a> 
                         </td>
                     </tr>
@@ -123,7 +122,7 @@
                                 Parent project:
                             </td>
                             <td class="issue-table">
-                                <a href="../project/display-${parentProject.path}">${parentProject.name}</a> 
+                                <a href="../project/display-${fn:escapeXml(parentProject.path)}">${fn:escapeXml(parentProject.name)}</a> 
                             </td>
                         </tr>
                     </c:if>
@@ -135,7 +134,7 @@
                                          Main
                                     </c:when>
                                     <c:otherwise>
-                                         ${cg.name}
+                                         ${fn:escapeXml(cg.name)}
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -143,7 +142,7 @@
                         <c:forEach items="${cg.customizations}" var="c" varStatus="cVarStatus">
                              <tr class="${cVarStatus.index % 2 == 0 ? 'even' : 'odd'}">
                                  <td class="issue-table-left">
-                                     ${c.customization.name}
+                                     ${fn:escapeXml(c.customization.name)}
                                  </td>
                                  <td class="issue-table">
                                      <tag:customization-display customization="${c.customization}" possibleValues="${c.possibleValues}" assignedUser="${c.assignedUser}"/>
@@ -205,7 +204,7 @@
         <tbody>
 	        <c:forEach items="${groups}" var="group">
 	            <tr>
-	                <td><a class="big-link" href="../project/display-${project.path}?groupId=${group.id}"><img src="../images/iconTestGroup.png"/><tag:escape text="${group.name}"/></a></td>
+	                <td><a class="big-link" href="../project/display-${project.path}?groupId=${group.id}"><tag:escape text="${group.name}"/></a></td>
 	            </tr>
 	        </c:forEach>
         </tbody>
@@ -234,8 +233,8 @@
         <tbody>
             <c:forEach items="${tests}" var="t">
 	            <tr>
-	                <td><a href="../test/display?id=${t.id}"><img src="../images/iconTest.png"/> <tag:escape text="${t.name}"/></a></td>
-	                <td><a href="../user/profile-${t.authorLogin}"><img src="../images/workflow-icon-user.png"/> <tag:escape text="${t.authorName}"/></a></td>
+	                <td><a href="../test/display?id=${t.id}"><img src="../images/iconTest.png"/> ${fn:escapeXml(t.name)} </a></td>
+	                <td><a href="../user/profile-${t.authorLogin}"><img src="../images/workflow-icon-user.png"/> ${fn:escapeXml(t.authorName)} </a></td>
 	                <td><tag:date date="${t.date}"/></td>
 	            </tr>
 	        </c:forEach>

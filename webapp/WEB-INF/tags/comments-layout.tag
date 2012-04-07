@@ -25,7 +25,7 @@
     <tag:pagination-simple numberOfResults="${comments.numberOfResults}" url="${redirect}" currentPage="${comments.page}" pageLimit="${comments.limit}" pageUrlParameter="commentsPage"></tag:pagination-simple>
     <br/>
     <br/>
-    <script language="javascript">
+    <script>
     function removeComment(id)
     {
         if(confirm("Are you sure you want to remove this comment?"))
