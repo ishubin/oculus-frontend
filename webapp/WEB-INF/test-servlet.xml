@@ -114,7 +114,12 @@
     <bean name="/ajax-parameters-search" class="net.mindengine.oculus.frontend.web.controllers.test.AjaxParameterSearchController">
         <property name="testDAO" ref="testDAO"/>
         <property name="projectDAO" ref="projectDAO"/>
-        <property name="authorizationCheck" value="true"/>
+        <property name="authorizationCheck" value="false"/>
+    </bean>
+    
+    <bean name="/ajax-parameters-fetch" class="net.mindengine.oculus.frontend.web.controllers.test.AjaxParameterFetchController">
+        <property name="testDAO" ref="testDAO"/>
+        <property name="authorizationCheck" value="false"/>
     </bean>
     
     <bean name="/create-group" class="net.mindengine.oculus.frontend.web.controllers.test.TestGroupCreateController">

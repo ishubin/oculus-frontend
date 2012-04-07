@@ -49,6 +49,49 @@ function onSubmitTest() {
 }
 
 
+var treeParameters = null;
+function loadParametersTree() {
+    treeParameters = new dhtmlXTreeObject("treeboxbox_treeParameters", "100%", "100%", 0);
+    treeParameters.setSkin('dhx_skyblue');
+    treeParameters.setImagePath("../dhtmlxTree/imgs/csh_dhx_skyblue/");
+    treeParameters.enableDragAndDrop(0);
+    treeParameters.enableTreeLines(true);
+    treeParameters.enableCheckBoxes(1);
+    treeParameters.setXMLAutoLoading("../test/ajax-parameters-search");
+    
+    var d = new Date();
+    var str = ""+d.getDate()+""+d.getMonth()+""+d.getSeconds()+""+d.getMilliseconds();
+    treeParameters.loadXML("../test/ajax-parameters-search?id=0&tmstp="+str);
+
+}
+function openCopyParametersDialog() {
+    loadParametersTree();
+    showPopup("divCopyParameters",400,500);
+}
+function copySelectedParameters() {
+    var str = treeParameters.getAllChecked();
+    var id = str.replace(/tp/g,"");
+    $.getJSON("../test/ajax-parameters-fetch?parameterIds="+id, function (data){
+    	if ( data.object != null ) {
+    		for ( var i=0; i<data.object.length; i++ ) {
+    			var parameter = data.object[i];
+    			parameter.id = null;
+    			if ( parameter.type == "input" ) {
+    				TestParameters.input[TestParameters.input.length] = parameter;
+    			}
+    			else if ( parameter.type == "output" ) {
+    				TestParameters.output[TestParameters.output.length] = parameter;
+    			}
+    		}
+    		
+    		ParametersTable.initTable("#test-input-parameters-list", TestParameters.input);
+    		ParametersTable.initTable("#test-output-parameters-list", TestParameters.output);
+    	}
+    	closePopup("divCopyParameters");
+    });
+}
+
+
 var TestParameters = {
 	input: <%=mapper.writeValueAsString(inputParameters)%>,
 	output: <%=mapper.writeValueAsString(outputParameters)%>,
@@ -232,6 +275,12 @@ var ParameterDialog = {
 
 
 $(function() {
+	$("#copy-parameters-button").button();
+	$("#copy-parameters-button").click(function (){
+		openCopyParametersDialog();
+		return false;
+	});
+	
 	ParameterDialog.init();
 	
 	$("#testTabs").tabs();
@@ -335,7 +384,9 @@ $(function() {
         </c:forEach>
 	</div>
 	<div id="test-parameters-tab">
-		<div style="margin-bottom:20px;">
+	    <input type="submit" id="copy-parameters-button" value="Copy parameters form other tests"/>
+	
+		<div style="margin-top:20px;margin-bottom:20px;">
 			<table id="test-input-parameters-list"></table>
 			<input type='submit' class="add-parameter-to-table" x-parameter-type="input" value="Add parameter"/>
 		</div>
@@ -404,6 +455,13 @@ $(function() {
 		<tag:submit id="parameterDialogSubmit" value="" onclick="return false;" ></tag:submit>
 		<tag:submit value="Cancel" onclick="closePopup('parameterDialog');return false;"></tag:submit>
 	</tag:panel>
+</div>
+
+<div id="divCopyParameters" style="display:none;">
+    <tag:panel align="center" title="Copy Parameters" width="400px" height="500px" closeDivName="divCopyParameters">
+        <div id="treeboxbox_treeParameters" style="border:1px solid #cccccc;width:350; height:400; overflow:auto;"></div>
+        <tag:submit value="Copy" onclick="copySelectedParameters();return false;"></tag:submit>
+    </tag:panel>
 </div>
 
 <div class="error">

@@ -480,15 +480,34 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 	@Override
 	public void deleteTestGroup(Long groupId) throws Exception {
 		update("delete from test_groups where id =:groupId", "groupId", groupId);
-
 		update("update tests set group_id = 0 where group_id=:groupId", "groupId", groupId);
-
 	}
 
 	@Override
 	public void saveTestGroup(TestGroup group) throws Exception {
 		update("update test_groups set name = :name, description = :description where id = :id", "name", group.getName(), "description", group.getDescription(), "id", group.getId());
-
+	}
+	
+	@Override
+	public List<TestParameter> getParametersByIds(List<Long> ids) throws Exception {
+	    if ( ids.size() > 0 ) {
+    	    StringBuilder pIds = new StringBuilder();
+    	    
+    	    boolean comma = false;
+    	    for ( Long id : ids ) {
+    	        if ( comma ) {
+    	            pIds.append(",");
+    	        }
+    	        comma = true;
+    	        pIds.append(id);
+    	    }
+    	    
+    	    List<TestParameter> list = (List<TestParameter>) query("select * from test_parameters where id in (" + pIds.toString() + ")", TestParameter.class);
+    	    return list;
+	    }
+	    else {
+	        return new LinkedList<TestParameter>();
+	    }
 	}
 
 }

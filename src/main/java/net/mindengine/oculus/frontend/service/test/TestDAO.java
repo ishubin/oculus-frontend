@@ -86,4 +86,6 @@ public interface TestDAO {
 	public void deleteTestGroup(Long groupId) throws Exception;
 
 	public void saveTestGroup(TestGroup group) throws Exception;
+
+    public List<TestParameter> getParametersByIds(List<Long> ids) throws Exception;
 }
