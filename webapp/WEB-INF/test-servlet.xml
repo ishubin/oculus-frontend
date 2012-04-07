@@ -4,6 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
+    <bean id="testParametersDAO" class="net.mindengine.oculus.frontend.web.controllers.test.TestParametersDAO">
+        <property name="testDAO" ref="testDAO"/>
+    </bean>
+
     <bean id="testColumnFactory" class="net.mindengine.oculus.frontend.db.search.ColumnFactory">
         <property name="columnClass" value="net.mindengine.oculus.frontend.domain.test.TestSearchColumn"/>
         <property name="file" value="WEB-INF/conf/test-columns.xml"/>
@@ -27,6 +31,7 @@
         <property name="projectDAO" ref="projectDAO"/>
         <property name="testDAO" ref="testDAO"/>
         <property name="userDAO" ref="userDAO"/>
+        <property name="testParametersDAO" ref="testParametersDAO"/>
         <property name="customizationDAO" ref="customizationDAO"/>
         <property name="authorizationCheck" value="true"/>
     </bean>
@@ -45,6 +50,7 @@
         <property name="projectDAO" ref="projectDAO"/>
         <property name="testDAO" ref="testDAO"/>
         <property name="userDAO" ref="userDAO"/>
+        <property name="testParametersDAO" ref="testParametersDAO"/>
         <property name="customizationDAO" ref="customizationDAO"/>
         <property name="authorizationCheck" value="true"/>
     </bean>

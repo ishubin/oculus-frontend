@@ -47,7 +47,7 @@ public class TestEditController extends SecureSimpleFormController {
 	private ProjectDAO projectDAO;
 	private UserDAO userDAO;
 	private CustomizationDAO customizationDAO;
-
+	private TestParametersDAO testParametersDAO;
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		Long id = new Long(request.getParameter("id"));
@@ -104,9 +104,11 @@ public class TestEditController extends SecureSimpleFormController {
 		user.verifyPermission("test_managment");
 
 		Test test = (Test) command;
+		test.setId(id);
 		testDAO.updateTest(id, test);
 		updateTestCustomizationValues(request, test);
-
+		testParametersDAO.saveTestParameters(request, test);
+		
 		return new ModelAndView(new RedirectView("../test/edit?id=" + id));
 	}
 
@@ -146,5 +148,13 @@ public class TestEditController extends SecureSimpleFormController {
 	public UserDAO getUserDAO() {
 		return userDAO;
 	}
+
+    public TestParametersDAO getTestParametersDAO() {
+        return testParametersDAO;
+    }
+
+    public void setTestParametersDAO(TestParametersDAO testParametersDAO) {
+        this.testParametersDAO = testParametersDAO;
+    }
 
 }
