@@ -47,7 +47,11 @@
         <script  src="../dhtmlxTree/dhtmlxcommon.js"></script>
         <script  src="../dhtmlxTree/dhtmlxtree.js"></script>
         
-            
+        <script>
+        $(function (){
+        	$(".custom-button-text").button().css("font-size","9pt");
+        })
+        </script>  
     </head>
     
     <body  <c:if test="${bodyOnLoad!=null}">onload="${bodyOnLoad}"</c:if>>

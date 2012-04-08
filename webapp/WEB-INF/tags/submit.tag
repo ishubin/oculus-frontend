@@ -17,6 +17,3 @@
                         <c:if test="${id!=null}">id="${id}"</c:if>
                          
                         />
-<script>
-$(".custom-button-text").button();
-</script>

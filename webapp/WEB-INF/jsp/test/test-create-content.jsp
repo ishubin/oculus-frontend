@@ -239,6 +239,7 @@ var ParameterDialog = {
 		}
 		$("#parameter-name").val(this.parameter.name);
 		$("#parameter-description").val(this.parameter.description);
+		$(".default-values .default-value-layout").hide();
 		showPopup("parameterDialog", 400, 500);
 	},
 	initControls: function () {
@@ -251,12 +252,20 @@ var ParameterDialog = {
         } 
 		this.setControlType(this.parameter.controlType);
 	},
+	
+	_previousControlType: null,
 	setControlType: function (controlType) {
 		this.parameter.controlType = controlType;
-		$(".default-values .default-value-layout").hide();
-		$(".default-values #inputParameter-" + controlType + "-values").show();
+		if ( this._previousControlType != null ) {
+			$(".default-values #inputParameter-" + this._previousControlType + "-values").slideUp("fast", function (){
+	            $(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");  
+	        });	
+		}
+		else {
+			$(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");
+		}
 		
-		
+		this._previousControlType = controlType;
 	},
 	init: function () {
 		$("#parameterDialogSubmit").click(function (){
@@ -275,7 +284,6 @@ var ParameterDialog = {
 
 
 $(function() {
-	$("#copy-parameters-button").button();
 	$("#copy-parameters-button").click(function (){
 		openCopyParametersDialog();
 		return false;
@@ -285,7 +293,6 @@ $(function() {
 	
 	$("#testTabs").tabs();
 	
-	$("#test-parameters-tab .add-parameter-to-table").button();
 	$("#test-parameters-tab .add-parameter-to-table").click(function (){
 		var parameterType = $(this).attr("x-parameter-type");
 		ParameterDialog.open(null, parameterType);
@@ -384,16 +391,16 @@ $(function() {
         </c:forEach>
 	</div>
 	<div id="test-parameters-tab">
-	    <input type="submit" id="copy-parameters-button" value="Copy parameters form other tests"/>
+	    <input type="submit" id="copy-parameters-button" class="custom-button-text" value="Copy parameters form other tests"/>
 	
 		<div style="margin-top:20px;margin-bottom:20px;">
 			<table id="test-input-parameters-list"></table>
-			<input type='submit' class="add-parameter-to-table" x-parameter-type="input" value="Add parameter"/>
+			<input type='submit' class="add-parameter-to-table custom-button-text" x-parameter-type="input" value="Add parameter"/>
 		</div>
 		
 		<div>
 			<table id="test-output-parameters-list"></table>
-			<input type='submit' class="add-parameter-to-table" x-parameter-type="output" value="Add parameter"/>
+			<input type='submit' class="add-parameter-to-table custom-button-text" x-parameter-type="output" value="Add parameter"/>
 		</div>
 		
 	</div>
@@ -420,7 +427,7 @@ $(function() {
 	                <option value="boolean">Boolean</option>
 	            </select>
 	        </p>
-	        <div class="default-values" style="height:250px;">
+	        <div class="default-values">
 	            <div class="default-value-layout" id="inputParameter-text-values" style="display:none;">
 	                Default value:<br/>
 	                <tag:edit-field-simple name="inputParameter-default-text-value" id="inputParameter-default-text-value" width="100%" value=""/>

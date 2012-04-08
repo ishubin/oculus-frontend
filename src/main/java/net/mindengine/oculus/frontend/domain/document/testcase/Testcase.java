@@ -105,7 +105,6 @@ public class Testcase {
     		}
 		}
 		catch (Exception e) {
-            e.printStackTrace();
         }
 
 		return testcase;

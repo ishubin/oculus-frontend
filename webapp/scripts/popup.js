@@ -129,7 +129,8 @@ function showPopup(divName, width,height, zIndex)
 		
 		div.style.left = x;
 		div.style.top = y;
-		$(div).fadeIn('fast');
+		//$(div).fadeIn('fast');
+		$(div).slideDown('fast');
 	}
 	
 	var divShadow = document.getElementById("divShadow");
@@ -138,50 +139,13 @@ function showPopup(divName, width,height, zIndex)
 		$(divShadow).fadeIn('fast');
 	}
 }
-function showPopupImport(divName, divSourceName,width,height,divBodyName)
-{
-	var divSource = document.getElementById(divSourceName);
-	var html = divSource.innerHTML;
-	
-	var div = document.getElementById(divName);
-	if(div)
-	{
-		_currentPopupDiv = div;
-		
-		var divBody = document.getElementById(divBodyName);
-		if(divBody)
-		{
-			divBody.innerHTML = html;
-		}
-		else 
-		{
-			div.innerHTML = html;
-		}
-		
-		
-		div.style.position = "absolute";
-		div.style.width = width+"px";
-		div.style.height = height+"px";
-		div.style.zIndex = 999;
-		
-		var center = window.center();
-		
-		var x = center.x - width/2;
-		var y = center.y - height/2;
-		
-		div.style.left = x;
-		div.style.top = y;
-		$(div).fadeOut('fast');
-	}
-}
 function closePopup(divName)
 {
 	var div = document.getElementById(divName);
-	$(div).fadeOut('fast');
+	$(div).slideUp('fast');
 
 	var divShadow = document.getElementById("divShadow");
-	if(divShadow != null)
-	{
+	if(divShadow != null){
 		$(divShadow).fadeOut('fast');
 	}
 }
