@@ -60,6 +60,37 @@ a.red:hover{
 	color:#8C0200;
 }
 
+a.button{
+    font-size:10pt;
+    font-weight:bold;
+    color:#0070a3;
+    display:inline-block;
+    border:1px solid #AED0EA;
+    background:#D7EBF9;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    padding:4px;
+    text-shadow: 1px 1px 0px #fff;
+    margin:2px;
+    -moz-box-shadow: 1px 1px 0px #aaa;
+    -webkit-box-shadow: 1px 1px 0px #aaa;
+    box-shadow: 1px 1px 0px #aaa;
+}
+a.button img{
+    float:left;
+}
+
+a.button:hover{
+    border:1px solid #74B2E2;
+    background:#fff;
+}
+
+a.button:active{
+    border:1px solid #2694e8;
+    background:#3BAAE3;
+    color:#fff;
+    text-shadow: -1px -1px 0px #2694e8;
+}
 
 a.big-link, a.big-link:ACTIVE, a.big-link:VISITED {
     font-size:14pt;
@@ -176,8 +207,9 @@ label {
 
 /*HEADER*/
 .header{
-    height:70px;
+    height:76px;
     width:100%;
+    background:#D7EBF9;
 }
 .header .header-left{
 	width:292px;
@@ -194,10 +226,6 @@ label {
     padding:0;
     margin:0;
     background:none;
-}
-.header .header-fill{
-    height:70px;
-    background:url('images/header-fill.png') repeat-x;
 }
 
 
@@ -1103,38 +1131,6 @@ table.grid td.grid select.grid-select{
 	vertical-align:top
 }
 
-.ui-jqgrid-btable td a.button{
-    font-size:10pt;
-    font-weight:bold;
-    color:#0070a3;
-    display:inline-block;
-    border:1px solid #AED0EA;
-    background:#D7EBF9;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
-    padding:4px;
-    text-shadow: 1px 1px 0px #fff;
-    margin:2px;
-    -moz-box-shadow: 1px 1px 0px #aaa;
-    -webkit-box-shadow: 1px 1px 0px #aaa;
-    box-shadow: 1px 1px 0px #aaa;
-}
-
-.ui-jqgrid-btable td a.button img{
-	float:left;
-}
-
-.ui-jqgrid-btable td a.button:hover{
-    border:1px solid #74B2E2;
-    background:#fff;
-}
-
-.ui-jqgrid-btable td a.button:active{
-    border:1px solid #2694e8;
-    background:#3BAAE3;
-    color:#fff;
-    text-shadow: -1px -1px 0px #2694e8;
-}
 
 .ui-jqgrid-btable td span{
     white-space: nowrap;

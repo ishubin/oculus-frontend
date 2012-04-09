@@ -69,14 +69,14 @@ function onTaskSaveFormSubmit() {
 		    <p>
         		<table border="0" cellpadding="5px" cellspacing="0px">
                      <tr>
-                         <td class="small-description"><img src="../images/workflow-icon-settings.png"/> Build:</td>
+                         <td><img src="../images/workflow-icon-settings.png"/> Build:</td>
                          <td>
                              <tag:pickbuild-button build="${task.build}" id="build" projectId="${task.projectId}"></tag:pickbuild-button>
                          </td>
                      </tr>
                      <c:forEach items="${task.parameters}" var="parameter">
                      <tr>
-                         <td class="small-description"><img src="../images/workflow-icon-settings.png"/> ${parameter.name}:</td>
+                         <td><img src="../images/workflow-icon-settings.png"/> ${fn:escapeXml(parameter.name)}:</td>
                          <td>
                          <c:choose>
                              <c:when test="${parameter.subtype == 'text'}">
@@ -84,12 +84,12 @@ function onTaskSaveFormSubmit() {
                              </c:when>
                              <c:when test="${parameter.subtype == 'list'}">
                                  <select name="sp_${parameter.id}" id="sp_${parameter.id}" style="width:100%;">
-                                     <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
+                                     <c:forEach items="${parameter.possibleValuesList}" var="possibleValue">
                                          <option value="${possibleValue}" <c:if test="${parameter.taskValue == possibleValue }">selected="selected"</c:if> >${possibleValue}</option>
                                      </c:forEach>
                                  </select>
                              </c:when>
-                             <c:when test="${parameter.subtype == 'checkbox'}">
+                             <c:when test="${parameter.subtype == 'boolean'}">
                                  <input type="checkbox" name="sp_${parameter.id}" id="sp_${parameter.id}" <c:if test="${parameter.taskValue=='true' }">checked="checked"</c:if> />
                              </c:when>
                              <c:otherwise>Undefined Control</c:otherwise>
@@ -215,7 +215,7 @@ function onTaskSaveFormSubmit() {
 		        <tr>
 		            <th> </th>
 		            <th>Task</th>
-		            <th>Remove</th>
+		            <th>-</th>
 		        </tr>
 	            <tbody>
 	            <c:forEach items="${taskDependencies}" var="td">
@@ -229,7 +229,7 @@ function onTaskSaveFormSubmit() {
 	                    </a>
 	                </tag:remove-white-space></td>
 	                <td width="100px"><tag:remove-white-space>
-	                    <a href="../grid/delete-task-dependencies?taskId=${td.taskId}&dependencies=${td.id}" class="table-body-cell"><img src="../images/workflow-icon-delete.png"/> Remove</a>
+	                    <a class="button" href="../grid/delete-task-dependencies?taskId=${td.taskId}&dependencies=${td.id}" class="table-body-cell"><img src="../images/workflow-icon-delete.png"/> Remove</a>
 	                </tag:remove-white-space></td>
 	            </tr>
 	            </c:forEach>
@@ -245,7 +245,7 @@ function onTaskSaveFormSubmit() {
 		        });
 		    });
 		    </script>
-		    <a href="javascript:deleteSelectedTaskDependecies();"><img src="../images/workflow-icon-delete.png"/> Delete selected tasks</a>
+		    <a class="button" href="javascript:deleteSelectedTaskDependecies();"><img src="../images/workflow-icon-delete.png"/> Delete selected tasks</a>
 	        
 	    </c:if>
 	    
@@ -301,7 +301,7 @@ function onTaskSaveFormSubmit() {
 		        <tr>
 		            <th>Name</th>
 		            <th>Enabled</th>
-                    <th>Remove</th>
+                    <th>-</th>
 		        </tr>
 			    <c:forEach items="${suites}" var="s">
 				   <tr>
@@ -319,7 +319,7 @@ function onTaskSaveFormSubmit() {
                            <input type="checkbox" id="enableSuite${s.id}" name="enableSuite${s.id}" <c:if test="${s.enabled==true}">checked="checked"</c:if>/>
                        </tag:remove-white-space></td>
                        <td width="100px"><tag:remove-white-space>
-				          <a href="../grid/delete-suite?id=${s.id}"
+				          <a class="button" href="../grid/delete-suite?id=${s.id}"
 			                                         onclick="return confirm('Are you sure you want to delete the suite?');"><img src="../images/workflow-icon-delete.png"/> Remove</a>
 			           </tag:remove-white-space></td>
 				   </tr>

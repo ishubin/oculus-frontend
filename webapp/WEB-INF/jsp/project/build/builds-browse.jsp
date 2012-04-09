@@ -25,10 +25,10 @@
                     <tag:escape text="${build.description}"/>
                 </c:if>
             </tag:remove-white-space></td>
-            <td width="100px"><tag:date date="${build.date}"/></td>
-            <td width="80px"><tag:remove-white-space>
+            <td width="150px"><tag:date date="${build.date}"/></td>
+            <td width="100px"><tag:remove-white-space>
                 <c:if test="${manageBuildAllowed==true}">
-                    <a href="javascript:onRemoveBuild('${build.name}', ${build.id});">Remove</a>
+                    <a class="button" href="javascript:onRemoveBuild('${build.name}', ${build.id});"><img src="../images/workflow-icon-delete.png"> Remove</a>
                 </c:if>
             </tag:remove-white-space></td>
         </tr>

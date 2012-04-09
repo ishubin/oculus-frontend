@@ -159,10 +159,10 @@ function statusFormatter(cellValue, options, rowObject){
 }
 function renderOperations(id, status){
 	if(status==3 || status==0){
-		return  "<a href='javascript:stopTask("+id+");'>Stop</a>";
+		return  "<a class='button' href='javascript:stopTask("+id+");'>Stop</a>";
 	}
 	else if(status == 2 || status == 1){
-		return  "<a href='javascript:removeTask("+id+");'>Remove</a>";
+		return  "<a class='button' href='javascript:removeTask("+id+");'>Remove</a>";
 	}
 	return "";
 }
