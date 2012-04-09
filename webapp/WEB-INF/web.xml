@@ -80,13 +80,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>13</load-on-startup>
 	</servlet>
-	<servlet>
-		<servlet-name>cstat</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>14</load-on-startup>
-	</servlet>
-
-
+	
 	<servlet-mapping>
 		<servlet-name>oculus</servlet-name>
 		<url-pattern>/display/*</url-pattern>
@@ -152,14 +146,6 @@
 		<servlet-name>comment</servlet-name>
 		<url-pattern>/comment/*</url-pattern>
 	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>cstat</servlet-name>
-		<url-pattern>/cstat/*</url-pattern>
-	</servlet-mapping>
-
-
-
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

@@ -207,18 +207,18 @@ label {
 
 /*HEADER*/
 .header{
-    height:76px;
+    height:40px;
     width:100%;
     background:#D7EBF9;
 }
 .header .header-left{
-	width:292px;
-	height:70px;
+	width:150px;
+	height:40px;
 	background:url('images/header-left.png') no-repeat;
 } 
 .header .header-left a{
-    width:321px;
-    height:70px;
+    width:150px;
+    height:40px;
     display:block;
     text-indent: -900%;
     position:abolute;

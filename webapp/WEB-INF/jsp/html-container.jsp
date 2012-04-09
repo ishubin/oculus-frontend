@@ -60,10 +60,10 @@
         
     	<table width="100%" height="100%" border="0" cellpadding="0"  cellspacing="0">
     	   <tr>
-    	       <td height="70px">
+    	       <td>
     	           <table width="100%" align="center" height="100%" border="0" cellpadding="0" cellspacing="0">
 		            <tr>
-		                <td height="70px" width="100%">
+		                <td height="40px" width="100%">
 		                    <%@ include file="/WEB-INF/jsp/header.jsp" %>
 		                </td>
 		            </tr>

@@ -75,12 +75,6 @@
         <property name="description" value="Document Management (Documentation Library: test-cases, files)"/>
     </bean>
     
-    <bean id="_P_CSTAT_MANAGMENT" class="net.mindengine.oculus.frontend.domain.user.Permission">
-        <property name="code" value="12"/>
-        <property name="name" value="cstat_managment"/>
-        <property name="description" value="Custom Statistics Management"/>
-    </bean>
-    
     <bean id="permissionList" class="net.mindengine.oculus.frontend.domain.user.PermissionList">
         <property name="permissions">
             <list>
@@ -95,7 +89,6 @@
                 <ref bean="_P_ISSUE_MANAGMENT"/>
                 <ref bean="_P_COMMENT_MANAGMENT"/>
                 <ref bean="_P_DOCUMENT_MANAGMENT"/>
-                <ref bean="_P_CSTAT_MANAGMENT"/>
             </list>
         </property>
     </bean>

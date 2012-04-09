@@ -421,32 +421,5 @@
         <property name="userLogin" column="user_login"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatistic">
-        <property name="id" column="id"/>
-        <property name="name" column="name"/>
-        <property name="shortName" column="short_name"/>
-        <property name="description" column="description"/>
-        <property name="projectId" column="project_id"/>
-        <property name="userId" column="user_id"/>
-        <property name="createdDate" column="created_date"/>
-        <property name="valueType" column="value_type"/>
-    </bean>
-    
-    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatisticParameter">
-        <property name="id" column="id"/>
-        <property name="customStatisticId" column="custom_statistic_id"/>
-        <property name="name" column="name"/>
-        <property name="shortName" column="short_name"/>
-        <property name="description" column="description"/>
-    </bean>
-    
-    <bean class="net.mindengine.oculus.frontend.domain.customstatistics.CustomStatisticChart">
-        <property name="id" column="id"/>
-        <property name="customStatisticId" column="custom_statistic_id"/>
-        <property name="name" column="name"/>
-        <property name="type" column="type"/>
-        <property name="parameters" column="parameters"/>
-        <property name="date" column="date"/>
-    </bean>
     
 </beans>

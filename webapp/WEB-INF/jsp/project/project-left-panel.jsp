@@ -92,17 +92,6 @@ if(project!=null)
 	    </c:if>
 	    
 	    
-	    <c:if test="${user.hasPermissions.cstat_managment == true && project.id>0 && project.parentId == 0}">
-	        <tr>
-	           <td>
-	               <tag:workflow-panel title="Custom Statistic" width="100%" id="workflow_CStatM" icon="custom-statistic">
-                        <tag:workflow-element icon="create" link="../cstat/create?projectId=${project.id}">Create Custom Statistic</tag:workflow-element>
-                    </tag:workflow-panel>
-	           </td>
-	        </tr>
-	    </c:if>
-	     
-	     
 	    <c:if test="${user.hasPermissions.test_managment == true && project.id>0 && project.parentId > 0}">
 	        <tr>
 	           <td>
