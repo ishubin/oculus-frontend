@@ -38,7 +38,6 @@ import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.test.Test;
 import net.mindengine.oculus.frontend.domain.trm.TrmProperty;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
-import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
@@ -87,16 +86,11 @@ public class RunTaskController extends SecureSimpleViewController {
 	 */
 	public void runTask(TrmTask trmTask, HttpServletRequest request) throws Exception {
 	    /*
-         * Fetching suite groups and suites from specified task
+         * Fetching suites from specified task
          */
-        List<TrmSuiteGroup> groups = trmDAO.getTaskEnabledSuiteGroups(trmTask.getId());
-        List<TrmSuite> rootSuites = trmDAO.getTaskEnabledSuites(trmTask.getId(), 0L);
+        List<TrmSuite> rootSuites = trmDAO.getTaskEnabledSuites(trmTask.getId());
         
         List<TrmSuite> suites = new LinkedList<TrmSuite>();
-
-        for (TrmSuiteGroup group : groups) {
-            suites.addAll(trmDAO.getTaskEnabledSuites(trmTask.getId(), group.getId()));
-        }
 
         suites.addAll(rootSuites);
 
@@ -315,18 +309,9 @@ public class RunTaskController extends SecureSimpleViewController {
 	public void exportTask(TrmTask task, File rootFolder, HttpServletRequest request) throws Exception{
 	    File taskFolder = new File(rootFolder.getAbsolutePath()+File.separator+FileUtils.convertName(task.getName()));
 	    taskFolder.mkdir();
-        // Creating the enabled suite groups folders
-        List<TrmSuiteGroup> groups = trmDAO.getTaskEnabledSuiteGroups(task.getId());
-
-        for (TrmSuiteGroup group : groups) {
-            File groupFolder = new File(taskFolder.getPath() + File.separator + FileUtils.convertName(group.getName()));
-            groupFolder.mkdir();
-
-            exportSuites(task, groupFolder, trmDAO.getTaskEnabledSuites(task.getId(), group.getId()), request);
-        }
-
+        
         // Exporting root suites of the task
-        exportSuites(task, taskFolder, trmDAO.getTaskEnabledSuites(task.getId(), 0L), request);
+        exportSuites(task, taskFolder, trmDAO.getTaskEnabledSuites(task.getId()), request);
 	}
 
 	public void exportSuites(TrmTask trmTask, File rootFolder, List<TrmSuite> suites, HttpServletRequest request) throws Exception {

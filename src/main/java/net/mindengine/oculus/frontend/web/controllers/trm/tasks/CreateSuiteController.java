@@ -19,20 +19,17 @@
 package net.mindengine.oculus.frontend.web.controllers.trm.tasks;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
-import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
-import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
@@ -54,22 +51,12 @@ public class CreateSuiteController extends SecureSimpleFormController {
 			throw new UnexistentResource("The task does'nt exist");
 		map.put("task", task);
 
-		if (request.getParameter("groupId") != null) {
-			Long groupId = Long.parseLong(request.getParameter("groupId"));
-			map.put("group", trmDAO.getSuiteGroup(groupId));
-		}
-
-		List<TrmSuiteGroup> groups = trmDAO.getTaskSuiteGroups(taskId);
-		map.put("groups", groups);
 		return map;
 	}
 
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		TrmSuite suite = new TrmSuite();
-		if (request.getParameter("groupId") != null) {
-			suite.setGroupId(Long.parseLong(request.getParameter("groupId")));
-		}
 		return suite;
 	}
 

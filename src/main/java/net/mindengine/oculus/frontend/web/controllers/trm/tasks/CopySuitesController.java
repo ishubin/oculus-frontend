@@ -46,7 +46,6 @@ public class CopySuitesController extends SecureSimpleViewController {
 		}
 
 		String suiteIds = request.getParameter("suiteIds");
-		Long groupId = Long.parseLong(request.getParameter("groupId"));
 		if (suiteIds != null && !suiteIds.isEmpty()) {
 			String[] ids = suiteIds.split(",");
 
@@ -57,12 +56,11 @@ public class CopySuitesController extends SecureSimpleViewController {
 					suite.setTaskId(taskId);
 					suite.setId(null);
 
-					suite.setGroupId(groupId);
 					trmDAO.saveSuite(suite);
 				}
 			}
 		}
-		return new ModelAndView("redirect:../grid/edit-task?id=" + taskId + "&groupId=" + groupId);
+		return new ModelAndView("redirect:../grid/edit-task?id=" + taskId);
 	}
 
 	public TrmDAO getTrmDAO() {

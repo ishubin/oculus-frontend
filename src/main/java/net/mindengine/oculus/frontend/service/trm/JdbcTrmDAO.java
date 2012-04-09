@@ -34,7 +34,6 @@ import net.mindengine.oculus.frontend.domain.test.TestSearchFilter;
 import net.mindengine.oculus.frontend.domain.trm.TaskSearchFilter;
 import net.mindengine.oculus.frontend.domain.trm.TrmProperty;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
-import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency;
 import net.mindengine.oculus.frontend.domain.user.User;
@@ -184,8 +183,6 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	public void deleteTask(Long taskId, Long userId) throws Exception {
 		update("delete from trm_tasks where id = :taskId and user_id = :userId", "taskId", taskId, "userId", userId);
 
-		update("delete from trm_task_suite_groups where task_id = :taskId", "taskId", taskId);
-
 		update("delete from trm_task_suites where task_id = :taskId", "taskId", taskId);
 		
 		update("delete from trm_task_properties where task_id = :taskId", "taskId", taskId);
@@ -199,12 +196,11 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	@Override
 	public long saveSuite(TrmSuite suite) throws Exception {
 		if (suite.getId() == null) {
-			PreparedStatement ps = getConnection().prepareStatement("insert into trm_task_suites (name, description, task_id, suiteData, group_id) values(?,?,?,?,?)");
+			PreparedStatement ps = getConnection().prepareStatement("insert into trm_task_suites (name, description, task_id, suiteData) values(?,?,?,?)");
 			ps.setString(1, suite.getName());
 			ps.setString(2, suite.getDescription());
 			ps.setLong(3, suite.getTaskId());
 			ps.setString(4, suite.getSuiteData());
-			ps.setLong(5, suite.getGroupId());
 			ps.execute();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
@@ -212,8 +208,8 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 			}
 		}
 		else {
-			update("update trm_task_suites set name = :name, description = :description, suiteData = :suiteData, enabled =:enabled, group_id =:groupId where id = :id", "id", suite.getId(), "name", suite.getName(), "description", suite.getDescription(), "suiteData", suite
-					.getSuiteData(), "enabled", suite.getEnabled(), "groupId", suite.getGroupId());
+			update("update trm_task_suites set name = :name, description = :description, suiteData = :suiteData, enabled =:enabled where id = :id", "id", suite.getId(), "name", suite.getName(), "description", suite.getDescription(), "suiteData", suite
+					.getSuiteData(), "enabled", suite.getEnabled());
 		}
 		return suite.getId();
 	}
@@ -221,7 +217,7 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public TrmSuite getSuite(Long suiteId) throws Exception {
-		List<TrmSuite> list = (List<TrmSuite>) query("select sg.name as groupName, s.* from trm_task_suites s left join trm_task_suite_groups sg on sg.id = s.group_id where s.id = :id", TrmSuite.class, "id", suiteId);
+		List<TrmSuite> list = (List<TrmSuite>) query("select s.* from trm_task_suites s where s.id = :id", TrmSuite.class, "id", suiteId);
 		if (list.size() > 0) {
 			return list.get(0);
 		}
@@ -241,14 +237,6 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	public List<TrmSuite> getTaskEnabledSuites(Long taskId) throws Exception {
 
 		List<TrmSuite> list = (List<TrmSuite>) query("select tts.* from trm_task_suites tts where task_id = :taskId and enabled=1", TrmSuite.class, "taskId", taskId);
-
-		return list;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TrmSuite> getTaskEnabledSuites(Long taskId, Long groupId) throws Exception {
-		List<TrmSuite> list = (List<TrmSuite>) query("select tts.* from trm_task_suites tts where task_id = :taskId and group_id = :groupId and enabled=1", TrmSuite.class, "taskId", taskId, "groupId", groupId);
 
 		return list;
 	}
@@ -336,72 +324,6 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 	}
 
 	@Override
-	public Long createSuiteGroup(TrmSuiteGroup group) throws Exception {
-		PreparedStatement ps = getConnection().prepareStatement("insert into trm_task_suite_groups (name, description, task_id, enabled) values (?,?,?,?)");
-
-		ps.setString(1, group.getName());
-		ps.setString(2, group.getDescription());
-		ps.setLong(3, group.getTaskId());
-		ps.setBoolean(4, group.getEnabled());
-
-		logger.info(ps);
-		ps.execute();
-		ResultSet rs = ps.getGeneratedKeys();
-		if (rs.next()) {
-			return rs.getLong(1);
-		}
-		return null;
-	}
-
-	@Override
-	public void updateSuiteGroup(TrmSuiteGroup group) throws Exception {
-		update("update trm_task_suite_groups set name=:name, description=:description, enabled = :enabled where id=:id", "name", group.getName(), "description", group.getDescription(), "enabled", group.getEnabled(), "id", group.getId());
-
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public TrmSuiteGroup getSuiteGroup(Long groupId) throws Exception {
-
-		List<TrmSuiteGroup> list = (List<TrmSuiteGroup>) query("select * from trm_task_suite_groups where id = :id", TrmSuiteGroup.class, "id", groupId);
-		if (list.size() > 0) {
-			return list.get(0);
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TrmSuiteGroup> getTaskSuiteGroups(Long taskId) throws Exception {
-		List<TrmSuiteGroup> list = (List<TrmSuiteGroup>) query("select * from trm_task_suite_groups where task_id = :taskId", TrmSuiteGroup.class, "taskId", taskId);
-		return list;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TrmSuiteGroup> getTaskEnabledSuiteGroups(Long taskId) throws Exception {
-		List<TrmSuiteGroup> list = (List<TrmSuiteGroup>) query("select * from trm_task_suite_groups where task_id = :taskId and enabled = 1", TrmSuiteGroup.class, "taskId", taskId);
-		return list;
-	}
-
-	@Override
-	public void removeSuiteGroup(Long groupId) throws Exception {
-		update("delete from trm_task_suite_groups where id =:groupId", "groupId", groupId);
-
-		// removing all task suites which are in this group
-
-		update("delete from trm_task_suites where group_id =:groupId", "groupId", groupId);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TrmSuite> getTaskSuites(Long taskId, Long groupId) throws Exception {
-		List<TrmSuite> list = (List<TrmSuite>) query("select tts.* from trm_task_suites tts where task_id = :taskId and group_id = :groupId", TrmSuite.class, "taskId", taskId, "groupId", groupId);
-
-		return list;
-	}
-
-    @Override
     public Long createTaskDependency(Long taskId, Long refTaskId) throws Exception {
         PreparedStatement ps =  getConnection().prepareStatement("insert into trm_task_dependencies (task_id, ref_task_id) values (?,?)");
         ps.setLong(1, taskId);

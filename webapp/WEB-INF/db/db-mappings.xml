@@ -232,19 +232,9 @@
         <property name="taskId" column="task_id"/>
         <property name="suiteData" column="suiteData"/>
         <property name="enabled" column="enabled"/>
-        <property name="groupId" column="group_id"/>
-        <property name="groupName" column="groupName"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup">
-        <property name="id" column="id"/>
-        <property name="taskId" column="task_id"/>
-        <property name="name" column="name"/>
-        <property name="description" column="description"/>
-        <property name="enabled" column="enabled"/>
-    </bean>
-    
-     <bean class="net.mindengine.oculus.frontend.domain.project.build.Build">
+    <bean class="net.mindengine.oculus.frontend.domain.project.build.Build">
         <property name="id" column="id"/>
         <property name="name" column="name"/>
         <property name="description" column="description"/>

@@ -184,40 +184,6 @@
     
     
     
-    <bean name="/create-suite-group" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.CreateSuiteGroupController">
-        <property name="sessionForm" value="true"/>
-        <property name="title" value="Create Suite Group"/>
-        <property name="commandName" value="suiteGroup"/>
-        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup"/>
-        <property name="validator">
-            <bean class="net.mindengine.oculus.frontend.service.trm.task.CreateSuiteGroupValidator"></bean>
-        </property>
-        <property name="formView" value="trm-create-suite-group"/>
-        <property name="authorizationCheck" value="true"/>
-        <property name="trmDAO" ref="trmDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-    </bean>
-    
-    
-    <bean name="/edit-suite-group" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.EditSuiteGroupController">
-        <property name="sessionForm" value="true"/>
-        <property name="title" value="Edit Suite Group"/>
-        <property name="commandName" value="suiteGroup"/>
-        <property name="commandClass" value="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup"/>
-        <property name="validator">
-            <bean class="net.mindengine.oculus.frontend.service.trm.task.CreateSuiteGroupValidator"></bean>
-        </property>
-        <property name="formView" value="trm-edit-suite-group"/>
-        <property name="authorizationCheck" value="true"/>
-        <property name="trmDAO" ref="trmDAO"/>
-        <property name="projectDAO" ref="projectDAO"/>
-    </bean>
-    
-    <bean name="/delete-suite-group" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.DeleteSuiteGroupController">
-        <property name="trmDAO" ref="trmDAO"/>
-        <property name="authorizationCheck" value="true"/>
-    </bean>
-    
     <bean name="/ajax-my-active-tasks" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.AjaxMyActiveTasksController">
         <property name="authorizationCheck" value="true"/>
         <property name="config" ref="oculusConfig"/>

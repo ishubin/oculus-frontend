@@ -13,13 +13,6 @@
         <img src="../images/workflow-icon-task.png"/>
         <tag:escape text="${task.name}"/>
     </a>
-    <c:if test="${suite.groupId>0 }">
-        <img src="../images/breadcrump-arrow.png"/> 
-        <a href="../grid/edit-task?id=${task.id}&groupId=${suite.groupId}">
-            <img src="../images/workflow-icon-test-group.png"/>
-            <tag:escape text="${suite.groupName}"/>
-        </a>
-    </c:if>
     
     <img src="../images/breadcrump-arrow.png"/>
     <img src="../images/workflow-icon-suite.png"/>
@@ -51,16 +44,6 @@
 	                        </tr>
 	                        <tr>
 	                            <td  class="small-description">Group:</td>
-	                        </tr>
-	                        <tr>
-	                            <td>
-	                                <select name="groupId">
-	                                    <option value="0" style="color:gray;">No group...</option>
-	                                    <c:forEach items="${groups}" var="g">
-	                                        <option value="${g.id}" <c:if test="${suite.groupId==g.id}">selected="selected"</c:if>><tag:escape text="${g.name}"/></option>
-	                                    </c:forEach>
-	                                </select>
-	                            </td>
 	                        </tr>
 	                    </tbody>
 	                </table>

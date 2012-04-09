@@ -25,15 +25,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.ModelAndView;
-
+import net.mindengine.oculus.experior.utils.XmlUtils;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
-import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
-import net.mindengine.oculus.experior.utils.XmlUtils;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
+
+import org.springframework.web.servlet.ModelAndView;
 
 public class AjaxSuiteSearchController extends SecureSimpleViewController {
 
@@ -58,7 +57,7 @@ public class AjaxSuiteSearchController extends SecureSimpleViewController {
 		w.write("<tree id=\"" + rootId + "\" >");
 
 		User user = getUser(request);
-		List<TrmSuiteGroup> groups = null;
+		
 		List<TrmSuite> suites = null;
 		if (rId.startsWith("mytasks")) {
 		    Long projectId = null;
@@ -76,24 +75,9 @@ public class AjaxSuiteSearchController extends SecureSimpleViewController {
 		}
 		else if (rId.startsWith("t")) {
 			Long taskId = Long.parseLong(rId.substring(1));
-			groups = trmDAO.getTaskSuiteGroups(taskId);
-			suites = trmDAO.getTaskSuites(taskId, 0L);
+			suites = trmDAO.getTaskSuites(taskId);
 		}
-		else if (rId.startsWith("g")) {
-
-			int dash = rId.indexOf("_");
-			Long taskId = Long.parseLong(rId.substring(1, dash));
-			Long groupId = Long.parseLong(rId.substring(dash + 1));
-
-			suites = trmDAO.getTaskSuites(taskId, groupId);
-		}
-
-		if (groups != null) {
-			for (TrmSuiteGroup group : groups) {
-				w.write("<item text=\"" + XmlUtils.escapeXml(group.getName()) + "\" " + "id=\"g" + group.getTaskId() + "_" + group.getId() + "\" " + "im0=\"folderClosed.gif\" im1=\"folderOpen.gif\" im2=\"folderClosed.gif\" child=\"1\" " + " nocheckbox=\"1\" >");
-				w.write("</item>");
-			}
-		}
+		
 		if (suites != null) {
 			for (TrmSuite suite : suites) {
 				w.write("<item ");

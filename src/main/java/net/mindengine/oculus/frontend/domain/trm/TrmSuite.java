@@ -52,8 +52,6 @@ public class TrmSuite implements Serializable {
 	private String name;
 	private String description;
 	private Boolean enabled;
-	private Long groupId;
-	private String groupName;
 	/**
 	 * A json formatted string which contains info about tests and suite
 	 * parameters
@@ -295,21 +293,5 @@ public class TrmSuite implements Serializable {
 
 	public Boolean getEnabled() {
 		return enabled;
-	}
-
-	public void setGroupId(Long groupId) {
-		this.groupId = groupId;
-	}
-
-	public Long getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public String getGroupName() {
-		return groupName;
 	}
 }

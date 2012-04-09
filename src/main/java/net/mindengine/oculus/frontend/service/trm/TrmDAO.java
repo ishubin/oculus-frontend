@@ -25,7 +25,6 @@ import net.mindengine.oculus.frontend.domain.db.BrowseResult;
 import net.mindengine.oculus.frontend.domain.trm.TaskSearchFilter;
 import net.mindengine.oculus.frontend.domain.trm.TrmProperty;
 import net.mindengine.oculus.frontend.domain.trm.TrmSuite;
-import net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup;
 import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.trm.TrmTaskDependency;
 import net.mindengine.oculus.frontend.domain.user.User;
@@ -166,18 +165,6 @@ public interface TrmDAO {
 	public List<TrmSuite> getTaskSuites(Long taskId) throws Exception;
 
 	/**
-	 * Returns suite for specified task and group
-	 * 
-	 * @param taskId
-	 *            Id of the task
-	 * @param groupId
-	 *            Id of the suite group
-	 * @return
-	 * @throws Exception
-	 */
-	public List<TrmSuite> getTaskSuites(Long taskId, Long groupId) throws Exception;
-
-	/**
 	 * Returns a list of suites that belong to a specified task and are enabled
 	 * only
 	 * 
@@ -187,17 +174,6 @@ public interface TrmDAO {
 	 * @throws Exception
 	 */
 	public List<TrmSuite> getTaskEnabledSuites(Long taskId) throws Exception;
-
-	/**
-	 * Returns a list of suites that belong to a specified task and group and
-	 * are enabled only
-	 * 
-	 * @param taskId
-	 * @param groupId
-	 * @return
-	 * @throws Exception
-	 */
-	public List<TrmSuite> getTaskEnabledSuites(Long taskId, Long groupId) throws Exception;
 
 	/**
 	 * Returns the suite with the specified id
@@ -211,23 +187,6 @@ public interface TrmDAO {
 
 	public BrowseResult<TrmTask> searchTasks(TaskSearchFilter filter) throws Exception;
 
-	/**
-	 * Insert a suite group to DB
-	 * 
-	 * @param group
-	 * @return
-	 * @throws Exception
-	 */
-	public Long createSuiteGroup(TrmSuiteGroup group) throws Exception;
-
-	public void updateSuiteGroup(TrmSuiteGroup group) throws Exception;
-
-	public TrmSuiteGroup getSuiteGroup(Long groupId) throws Exception;
-
-	public List<TrmSuiteGroup> getTaskSuiteGroups(Long taskId) throws Exception;
-
-	public List<TrmSuiteGroup> getTaskEnabledSuiteGroups(Long taskId) throws Exception;
-	
 	/**
 	 * Fetches only those users who have shared tasks
 	 * @param exceptUserId Id of user which shouldn't appear in the list.
@@ -246,7 +205,6 @@ public interface TrmDAO {
 	 */
 	public Collection<TrmTask> getUserSharedTasks(Long userId, Long projectId) throws Exception;
 
-	public void removeSuiteGroup(Long groupId) throws Exception;
 	
 	public Long createTaskDependency(Long taskId, Long refTaskId) throws Exception;
 	

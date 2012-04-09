@@ -56,9 +56,7 @@ public class EditSuiteController extends SecureSimpleViewController {
 		suite.setName(name);
 		suite.setDescription(description);
 		suite.setSuiteData(request.getParameter("suiteData"));
-		suite.setGroupId(Long.parseLong(request.getParameter("groupId")));
 		
-
 		trmDAO.saveSuite(suite);
 	}
 
@@ -122,8 +120,6 @@ public class EditSuiteController extends SecureSimpleViewController {
 		Map<Long, Test> cashedTests = getCashedLatestTests(suite);
 		map.put("cashedTests", cashedTests);
 		map.put("task", task);
-
-		map.put("groups", trmDAO.getTaskSuiteGroups(task.getId()));
 
 		map.put("suite", suite);
 		map.put("bodyOnLoad", "loadTestList();");

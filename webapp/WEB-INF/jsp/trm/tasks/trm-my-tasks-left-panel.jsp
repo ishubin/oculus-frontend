@@ -35,16 +35,6 @@ else out.println("_taskProjectId = 0;");
                         <tag:workflow-element icon="delete" link="../grid/delete-task?taskId=${task.id}" onclick="if(confirm('Are you sure you want to delete this task'))return true; else return false;">Delete</tag:workflow-element>
                     </tag:workflow-panel>
                     
-                    <tag:workflow-panel title="Suite Groups" width="100%" id="workflow_SuiteGroupActions">
-                        <c:if test="${group==null }">
-                            <tag:workflow-element icon="create" link="../grid/create-suite-group?taskId=${task.id}" >Create Suite Group</tag:workflow-element>
-                        </c:if>
-                        <c:if test="${group!=null }">
-                            <tag:workflow-element icon="edit" link="../grid/edit-suite-group?groupId=${group.id}" >Edit Suite Group</tag:workflow-element>
-                            <tag:workflow-element icon="delete" link="../grid/delete-suite-group?groupId=${group.id}" onclick="if(confirm('Are you sure you want to delete this group'))return true; else return false;">Delete Suite Group</tag:workflow-element>
-                        </c:if>
-                    </tag:workflow-panel>
-                    
                     <tag:workflow-panel title="Suite Actions" width="100%" id="workflow_SuiteActions">
                         <c:choose>
                             <c:when test="${group!=null }">

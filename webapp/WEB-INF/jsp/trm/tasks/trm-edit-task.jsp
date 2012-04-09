@@ -1,4 +1,3 @@
-<%@page import="net.mindengine.oculus.frontend.domain.trm.TrmSuiteGroup"%>
 <%@page import="java.util.List"%>
 <%@page import="net.mindengine.oculus.frontend.domain.trm.TrmSuite"%>
 <%@ include file="/include.jsp" %>
@@ -19,24 +18,8 @@
     <a href="../grid/my-tasks">My Tasks</a>
     <img src="../images/breadcrump-arrow.png"/>
     
-    <c:choose>
-        <c:when test="${group==null}">
-            <img src="../images/workflow-icon-task.png"/> 
-            <tag:escape text="${task.name}"/>
-        </c:when>
-        <c:otherwise>
-            <a href="../grid/edit-task?id=${task.id}">
-                <img src="../images/workflow-icon-task.png"/> 
-                <tag:escape text="${task.name}"/>
-            </a>
-            <img src="../images/breadcrump-arrow.png"/>
-            <img src="../images/workflow-icon-test-group.png"/> 
-            
-            <tag:escape text="${group.name}"/>
-        </c:otherwise>
-    </c:choose>
-     
-    
+    <img src="../images/workflow-icon-task.png"/> 
+    <tag:escape text="${task.name}"/>
 </div>
 
 <script>
@@ -47,11 +30,8 @@ function onTaskSaveFormSubmit() {
 </script>
 <form method="post" onsubmit="return onTaskSaveFormSubmit();">
 	<input type="hidden" name="agentsFilter" id="agentsFilterField" value=""/>
-    <c:if test="${group==null}">
-        <tag:submit value="Save" name="Submit"></tag:submit>
-    </c:if>
-    <c:if test="${group==null}">
-		<tag:panel title="Task Details" id="panelTaskInfo" align="center" width="100%" disclosure="true" closed="false">
+    <tag:submit value="Save" name="Submit"></tag:submit>
+    <tag:panel title="Task Details" id="panelTaskInfo" align="center" width="100%" disclosure="true" closed="false">
 		    <p>
 		    	Name:
 		    	<br/>
@@ -66,7 +46,7 @@ function onTaskSaveFormSubmit() {
                 <input id="chkShareTask" type="checkbox" name="shared" <c:if test="${task.shared==true}">checked="checked"</c:if>/> 
                 <label for="chkShareTask"> Share this task with other users</label>
 		    </p>
-		    <p>
+		    
         		<table border="0" cellpadding="5px" cellspacing="0px">
                      <tr>
                          <td><img src="../images/workflow-icon-settings.png"/> Build:</td>
@@ -98,9 +78,8 @@ function onTaskSaveFormSubmit() {
                      </tr>
                      </c:forEach>
                  </table>
-		    </p>
-		</tag:panel>
-	</c:if>	
+		    
+	</tag:panel>
 	     
 	<script>
 	var _taskSuites = [
@@ -119,22 +98,6 @@ function onTaskSaveFormSubmit() {
 	%>
 	];
 	
-	var _taskSuiteGroups = [
-    <%
-    List<TrmSuiteGroup> groups = (List<TrmSuiteGroup>)pageContext.findAttribute("groups");
-    if(groups!=null)
-    {
-        boolean bSep = false;
-        for(TrmSuiteGroup group : groups)
-        {
-            if(bSep)out.print(",");
-            bSep = true;
-            out.print("{id:"+group.getId()+", enabled:"+group.getEnabled().toString()+"}");
-        }
-    }
-    %>
-    ];
-	
 	function checkAllSuites(chk)
 	{
 		for(var i=0;i<_taskSuites.length;i++)
@@ -143,14 +106,7 @@ function onTaskSaveFormSubmit() {
 			schk.checked = chk.checked;
 		}
 	}
-	function checkAllSuiteGroups(chk)
-    {
-        for(var i=0;i<_taskSuiteGroups.length;i++)
-        {
-            var schk = document.getElementById("enableSuiteGroup"+_taskSuiteGroups[i].id);
-            schk.checked = chk.checked;
-        }
-    }
+	
 	function onPrepareTaskClicked()
 	{
 		for(var i=0;i<_taskSuites.length;i++)
