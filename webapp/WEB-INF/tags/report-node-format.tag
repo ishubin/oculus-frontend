@@ -29,6 +29,7 @@ if(text!=null)
     text = text.replace("[null-value/]", "<span style=\"color:#444400;\"><i>null</i></span>");
     
     text = Pattern.compile("\\[stack-trace\\](.*?)\\[/stack-trace\\]", Pattern.DOTALL).matcher(text).replaceAll("<code class=\"exception-stack-trace\">$1</code>");
+    text = Pattern.compile("\\[locator\\](.*?)\\[/locator\\]", Pattern.DOTALL).matcher(text).replaceAll("<code class=\"locator\">$1</code>");
     
     text = Pattern.compile("\\[string\\](.*?)\\[/string\\]", Pattern.DOTALL).matcher(text).replaceAll("<span class=\"string\">$1</span>");
     text = Pattern.compile("\\[number\\](.*?)\\[/number\\]", Pattern.DOTALL).matcher(text).replaceAll("<span class=\"number\">$1</span>");

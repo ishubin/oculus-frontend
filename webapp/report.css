@@ -101,8 +101,17 @@ a.menu-item-button-pressed {
 	background:url('images/report-node-back-error.png') repeat;
 }
 
-code.xpath{
-	color:#009900;
+code.locator{
+	background:#dfd;
+	color:#000;
+	border:1px solid #393;
+	border-radius:6px;
+	padding:3px;
+	font-weight:bold;
+	
+	-moz-box-shadow: 1px 1px 1px #aaa;
+    -webkit-box-shadow: 1px 1px 1px #aaa;
+    box-shadow: 1px 1px 1px #aaa;
 }
 span.string{
 	color:#0000aa;
