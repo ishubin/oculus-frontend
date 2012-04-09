@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.mindengine.oculus.frontend.db.jdbc.MySimpleJdbcDaoSupport;
@@ -41,9 +42,22 @@ import net.mindengine.oculus.frontend.domain.user.User;
 public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
 
 	@Override
-	public void createProperty(TrmProperty property) throws Exception {
-		update("insert into trm_properties (name, description, type, subtype, project_id, value) values (:name, :description, :type, :subtype, :projectId,:value)", "name", property.getName(), "description", property.getDescription(), "type", property.getType(), "subtype", property.getSubtype(),
-				"projectId", property.getProjectId(), "value", property.getValue());
+	public Long createProperty(TrmProperty property) throws Exception {
+	    PreparedStatement ps = getConnection().prepareStatement("insert into trm_properties (name, description, type, subtype, project_id, value) values (?,?,?,?,?,?)");
+		ps.setString(1, property.getName());
+		ps.setString(2, property.getDescription());
+		ps.setString(3, property.getType());
+		ps.setString(4, property.getSubtype());
+		ps.setLong(5, property.getProjectId());
+		ps.setString(6, property.getValue());
+		
+		ps.executeUpdate();
+		ResultSet rs = ps.getGeneratedKeys();
+		if (rs.next() ) {
+		    return rs.getLong(1);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -437,5 +451,38 @@ public class JdbcTrmDAO extends MySimpleJdbcDaoSupport implements TrmDAO {
     @Override
     public Collection<TrmTask> getDependentTasks(Long taskId) throws Exception {
         return query("SELECT t.* FROM trm_task_dependencies td left join trm_tasks t on t.id = td.ref_task_id where td.task_id="+taskId, TrmTask.class);
+    }
+
+    @Override
+    public void saveTrmPropertiesForProject(Long projectId, List<TrmProperty> properties, String propertyType) throws Exception {
+        List<TrmProperty> oldProperties = this.getProperties(projectId, propertyType);
+        
+        List<Long> oldPropertyIds = new LinkedList<Long>();
+        for ( TrmProperty property : oldProperties ) {
+            oldPropertyIds.add(property.getId());
+        }
+        
+        List<Long> newPropertyIds = new LinkedList<Long>();
+        for (TrmProperty property : properties ) {
+            property.setProjectId(projectId);
+            property.setType(propertyType);
+            
+            if ( property.getId() !=null && oldPropertyIds.contains(property.getId()) ) {
+                //Updating property
+                changeProperty(property);
+                newPropertyIds.add(property.getId());
+            }
+            else {
+                //Adding new property
+                newPropertyIds.add(createProperty(property));
+            }
+        }
+        
+        //Deleting unused properties
+        for ( Long propertyId : oldPropertyIds ) {
+            if ( !newPropertyIds.contains(propertyId) ) {
+                deleteProperty(propertyId);
+            }
+        }
     }
 }

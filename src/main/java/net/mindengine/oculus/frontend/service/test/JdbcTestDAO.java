@@ -143,7 +143,6 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 	    }
 	    
 	    List<Long> newParameterIds = new LinkedList<Long>();
-	    
 	    for ( TestParameter parameter: parameters ) {
 	        if ( parameter.getId() != null && oldParameterIds.contains(parameter.getId())) {
 	            //updating current parameter

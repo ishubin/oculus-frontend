@@ -1,3 +1,8 @@
+<%@page import="org.codehaus.jackson.map.ObjectMapper"%>
+<%@page import="java.util.LinkedList"%>
+<%@page import="net.mindengine.oculus.frontend.domain.trm.TrmProperty"%>
+<%@page import="java.util.List"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="/include.jsp" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <jsp:directive.page import="net.mindengine.oculus.frontend.web.SessionViewHandler"/>
@@ -11,306 +16,196 @@
     <img src="../images/breadcrump-arrow.png"/>
     <a href="../grid/customize-suite-parameters">Customize Suite Parameters</a>
     <img src="../images/breadcrump-arrow.png"/>
-    Customize Suite Parameters
+    ${fn:escapeXml(project.name)}
 </div>
 
+<p>
+	This set of parameters will be displayed in Test Run Manager.<br/>
+	Users will be available to choose these parameters and run the test suite with the selected parameters.
+</p>
+<%
+List<TrmProperty> properties = (List<TrmProperty>) pageContext.findAttribute("suiteProperties");
+if ( properties == null ) {
+    properties = new LinkedList<TrmProperty>();
+}
+ObjectMapper mapper = new ObjectMapper();
+%>
 
-<table border="0" align="center" width="500px">
-    <tr>
-        <td class="small-description">
-            <p>
-		    This set of parameters will be displayed in Test Run Manager.<br/>
-		    Users will be available to choose these parameters and run the test suite with the selected parameters.
-		    </p>
-        </td>
-    </tr>
-</table>
-
-<div class="breadcrump" align="center">Parameters:</div>
-<form name="formDeleteSuiteParameter" method="post">
-<input type="hidden" name="deleteParameterId" value="-1"/>
-<input type="hidden" name="Submit" value="Delete Parameter"/>
-</form>
 <script>
-Array.prototype.remove = function(from, to) {
-    var rest = this.slice((to || from) + 1 || this.length);
-    this.length = from < 0 ? this.length + from : from;
-    return this.push.apply(this, rest);
-};
+var _suiteParameters = <%=mapper.writeValueAsString(properties)%>;
 
-function escapeHTML(html) { return html. replace(/&/gmi, '&amp;'). replace(/"/gmi, '&quot;'). replace(/>/gmi, '&gt;'). replace(/</gmi, '&lt;'); }
+var ParametersTable = {
+	editParameter: function(index) {
+        _suiteParameters[index].index = index;
+        ParameterDialog.open(_suiteParameters[index], "input");
+    },
+	
+	removeParameter: function (index) {
+        if ( index >= 0  && index < _suiteParameters.length) {
+            _suiteParameters.splice(index, 1);
+            this.initTable();
+        } 
+    },
+		
+	initTable: function () {
+		var grid = $("#suite-parameters-list");
+	    grid.jqGrid("clearGridData", false);
+	    for ( var i=0; i < _suiteParameters.length; i++ ) {
+	        grid.jqGrid("addRowData", i, {index:i, id: _suiteParameters[i].id, name: _suiteParameters[i].name, description: _suiteParameters[i].description, controlType: _suiteParameters[i].subtype, values: _suiteParameters[i].possibleValuesList, edit: i});
+	    }
+	}
+}
 
-function deleteSuiteParameter(name, id)
-{
-    if(confirm("Are you sure you want to delete '"+name+"' parameter?"))
-    {
-        var form = document.formDeleteSuiteParameter;
-        form.deleteParameterId.value = id;
-        form.submit();
+var Formatters = {
+	nameFormatter: function (cellValue, options, rowObject) {
+        if(cellValue != null){
+            var str = "<img src='../images/workflow-icon-settings.png'/> <b>" + escapeHTML( cellValue ) + "</b>";
+            if ( rowObject.description != null && rowObject.description != "" ) {
+                str += "<br/>" + escapeHTML(rowObject.description);
+            }
+            return str;
+        }
+        return "";
+    },
+    
+    controlTypeFormatter: function (cellValue, options, rowObject) {
+        if(cellValue != null){
+            str = "<b>" + cellValue + "</b>";
+            if ( cellValue == "list" ) {
+                str +=  "<ul>";
+                for ( var i=0; i<rowObject.values.length; i++) {
+                    str += "<li>" + escapeHTML(rowObject.values[i]) + "</li>";
+                }
+                str += "</ul>";
+            }
+            return str;
+        }
+        return "";
+    },
+    
+    editFormatter: function (cellValue, options, rowObject) {
+        var str = "<a href='#' onclick=\"ParametersTable.editParameter(" + cellValue + "); return false;\" class='edit-parameter-link button' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-edit.png'/> Edit</a> ";
+        str += "<a href='#' onclick=\"ParametersTable.removeParameter(" + cellValue + "); return false;\" class='delete-parameter-link button' parameter-id='" + cellValue + "' parameter-type='" + rowObject.type + "'><img src='../images/workflow-icon-delete.png'/> Delete</a>";
+        return str;
     }
 }
-function OnClickOnChangeParameterType(id)
-{
-    var div1 = document.getElementById("divParameterChangeTypeLink"+id);
-    var div2 = document.getElementById("divParameterChangeType"+id);
-    div1.style.display="none";
-    div2.style.display="block";
-}
-function OnChangeParameterType(parameterId, selectedIndex)
-{
-    var div = document.getElementById("divPossibleValuesParameter"+parameterId+"Layout");
-    if(selectedIndex==1)
-    {
-        div.style.display = "block";
-    }
-    else div.style.display = "none";
-}
-function deleteParameterPossibleValue(parameterId, valueId)
-{
-    var div = document.getElementById("divParameterPossibleValue"+parameterId+"_"+valueId);
-    div.innerHTML = "";
-}
-function addParameterPossibleValue(parameterId)
-{
-    
-    var div = document.getElementById("divParameterPossibleValues"+parameterId);
-    var value = document.getElementById("addPossibleValue"+parameterId).value;
-    document.getElementById("addPossibleValue"+parameterId).value="";
-    var html = div.innerHTML;
-    var maxId = document.getElementById("possibleValuesMaxId"+parameterId).value;
-    maxId++;
-    document.getElementById("possibleValuesMaxId"+parameterId).value = maxId;
 
-    html+="<div id=\"divParameterPossibleValue"+parameterId+"_"+maxId+"\" style=\"width:100%;\">";
-    html+="<table border=\"0\" width=\"100%\"><tr><td><i>"+escapeHTML(value)+"</i>";
-    html+="<input type=\"hidden\" name=\"changePossibleValue"+maxId+"\" value=\""+escapeHTML(value)+"\"/>";
-    html+="</td>";
-    html+="<td width=\"20px\"><a href=\"javascript:deleteParameterPossibleValue("+parameterId+","+maxId+");\">Delete</a></td>";
-    html+="</tr>";
-    html+="</table>";
-    html+="</div>";
+$(function () {
+	$("#add-parameter-to-table").click(function (){
+        ParameterDialog.open(null, "input");
+        return false;
+    });
+	
+	ParameterDialog.defaultValuesEnabled = false;
+	ParameterDialog.controlTypeField = "subtype";
+	ParameterDialog.init();
+	
+	$("#suite-parameters-list").jqGrid({
+        datastr:null,
+        datatype: 'jsonstring',
+        jsonReader : {
+            root: "rows"
+        },
+        autowidth:true,
+        height:"100%",
+        rowNum:-1,
+        viewrecords: true,
+        colNames: ['Name','Type', ' '],
+        colModel: [
+                   {name:'name', index:'name', sortable:false, formatter:Formatters.nameFormatter}, 
+                   {name:'controlType', index:'controlType', sortable:false, width:90, formatter:Formatters.controlTypeFormatter},
+                   {name:'edit', index:'edit', sortable:false, width:100, formatter:Formatters.editFormatter}
+               ],
+        gridview: true,
+        caption: 'Input Parameters'
+    });
+	
+	
+	ParameterDialog.onSave = function() {
+		if ( this.parameter.index == null ) {
+            var index = _suiteParameters.length;
+            _suiteParameters[index] = this.parameter;
+            ParametersTable.initTable();
+        }
+        else {
+        	_suiteParameters[this.parameter.index] = this.parameter;
+            ParametersTable.initTable();
+        }
+    };
+	ParametersTable.initTable();
+});
 
-    div.innerHTML = html;
-    
+
+function onSubmitForm() {
+	for ( var i=0; i<_suiteParameters.length;  i++ ) {
+		if ( _suiteParameters[i].subtype == "list" ) {
+			var value = "";
+			for ( var j=0; j<_suiteParameters[i].possibleValuesList.length; j++ ) {
+				value += "<value>" + escapeHTML(_suiteParameters[i].possibleValuesList[j]);
+			}
+			_suiteParameters[i].value = value;
+		}
+	}
+	$("#parameters-json").val(JSON.stringify(_suiteParameters));
 }
 </script>
 
-<c:forEach items="${suiteProperties}" var="p">
-    <form method="post">
-    <input type="hidden" name="changeParameterId" value="${p.id}"/>
-    <table width="450px" border="0" cellspacing="0px" align="center" cellpadding="0">
-        <tr>
-            <td>
-                <tag:panel title="${p.name}" logo="../images/workflow-icon-settings.png" align="left" width="400px" id="suiteProperty_${p.id}" disclosure="true" closed="true">
-                    <table width="350px" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td>
-                                <table border="0" width="350px">
-                                    <tr>
-                                        <td><b>Type:</b></td>
-                                        <td>
-                                            <table width="100%" border="0">
-                                                <tr>
-                                                    <td>${p.subtype}</td>
-                                                    <td>
-                                                        <div id="divParameterChangeTypeLink${p.id}"><a href="javascript:OnClickOnChangeParameterType(${p.id});">Change</a></div>
-                                                        <div id="divParameterChangeType${p.id}" style="display:none;">
-                                                            <select name="changeParameterType" onchange="OnChangeParameterType(${p.id},this.selectedIndex);">
-                                                                <option value="text" <c:if test="${p.subtype=='text'}">selected</c:if>>Text</option>
-                                                                <option value="list" <c:if test="${p.subtype=='list'}">selected</c:if>>List</option>
-                                                                <option value="checkbox" <c:if test="${p.subtype=='checkbox'}">selected</c:if>>CheckBox</option>
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top"><b>Description:</b></td>
-                                        <td class="small-description">${p.description}</td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top"><b>Details:</b></td>
-                                        <td>
-                                            
-                                            <div id="divPossibleValuesParameter${p.id}Layout" 
-                                                <c:choose>
-                                                    <c:when test="${p.subtype=='list'}">style="display:block;"</c:when>
-                                                    <c:otherwise>style="display:none;"</c:otherwise>
-                                                </c:choose>
-                                                >
-                                                
-                                                <input type="hidden" id="possibleValuesMaxId${p.id}" name="possibleValuesMaxId${p.id}" value="${p.valuesCount}"/>
-                                                <div id="divParameterPossibleValues${p.id}" style="width:100%;">
-                                                    <c:if test="${p.subtype=='list'}">
-                                                        <c:forEach items="${p.valuesAsList}" var="v" varStatus="vStatus">
-                                                            <div id="divParameterPossibleValue${p.id}_${vStatus.index}" style="width:100%;">
-                                                               <table border="0" width="100%">
-                                                                    <tr>
-                                                                        <td>
-                                                                            <i>${v}</i>
-                                                                            <input type="hidden" name="changePossibleValue${vStatus.index}" value="${v}"/>
-                                                                        </td>
-                                                                        <td width="20px"><a href="javascript:deleteParameterPossibleValue(${p.id},${vStatus.index});">Delete</a></td>
-                                                                    </tr>
-                                                               </table>
-                                                            </div>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </div>
-                                                <input type="text" id="addPossibleValue${p.id}" name="addPossibleValue${p.id}"/><input type="button" name="Add" onclick="addParameterPossibleValue(${p.id});" value="Add"/>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <tag:submit name="Submit" value="Save"></tag:submit>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                </tag:panel>
-            </td>
-            <td valign="top" align="left">
-                <a href="javascript:deleteSuiteParameter('${p.name}',${p.id});">Delete</a>
-    
-            </td>
-        </tr>
-    </table>
-    </form>
-</c:forEach>
 
-<br/>
-<br/>
-<tag:panel title="Add Parameter" align="center" width="400px">
-	<form method="post">
-	    <table  border="0" width="100%" cellpadding="0" cellspacing="0">
-	        <tbody>
-	            <tr>
-	                <td class="small-description">Name:</td>
-	            </tr>
-                <tr>
-	                <td>
-	                    <tag:edit-field-simple name="AP_Name" id="AP_Name" width="100%"></tag:edit-field-simple>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="small-description">Description:</td>
-	            </tr>
-                <tr>
-	                <td>
-	                    <textarea name="AP_Description" style="width:100%;" rows="8"></textarea>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="small-description">Control Type:</td>
-	            </tr>
-                <tr>
-	                <td>
-	                    <select name="AP_ControlType" onchange="onChangeAPType(this.selectedIndex);">
-	                        <option value="text" selected="selected">Text</option>
-	                        <option value="list">List</option>
-	                        <option value="checkbox">CheckBox</option>
-	                    </select>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td class="small-description">Details:</td>
-	            </tr>
-                <tr>
-	                <td>
-	                    <script language="javascript">
-	                    var ap_ListPossibleValues = Array();
-	                    var ap_ListPossibleValuesDefaultId = -1;
-	    
-	                    function onChangeAPType(selectedIndex)
-	                    {
-	                        var divListDetails = document.getElementById('divAP_ListDetails');
-	                        if(selectedIndex==1)
-	                        {
-	                            divListDetails.style.display = "block";
-	                        }
-	                        else divListDetails.style.display = "none";
-	                    }
-	                    function onDivAP_TypeListAddPossibleValue()
-	                    {
-	                        var id = ap_ListPossibleValues.length;
-	                        var input = document.getElementById("AP_ListAddPossibleValueName");
-	                        if(input.value!="")
-	                        {
-	                            ap_ListPossibleValues[id] = input.value;
-	                            input.value = "";
-	                            if(ap_ListPossibleValuesDefaultId==-1)
-	                            {
-	                                ap_ListPossibleValuesDefaultId=id;
-	                            }
-	                            onDivAP_TypeListRenderPossibleValues();
-	                        }
-	                        else alert("Input default value"); 
-	                    }
-	                    function onDivAP_ListRemovePossibleValue(id)
-	                    {
-	                        ap_ListPossibleValues.remove(id);
-	                        if(ap_ListPossibleValues.length>0)
-	                        {
-	                            ap_ListPossibleValuesDefaultId=0;
-	                        }
-	                        onDivAP_TypeListRenderPossibleValues();
-	                    }
-	                    function onDivAP_TypeListRenderPossibleValues()
-	                    {
-	                        var div = document.getElementById("divAP_ListPossibleValues");
-	                        if(ap_ListPossibleValues.length==0)
-	                        {
-	                            div.innerHTML = "There are no possible values defined yet."; 
-	                        }
-	                        else
-	                        {
-	                            var str = "";
-	                            str+="<table border=\"0\" width=\"100%\" cellspacing=\"5\">";
-	                            for(var i=0;i<ap_ListPossibleValues.length;i++)
-	                            {
-	                                str+="<tr style=\"background:#dddddd;\">";
-	                                str+="<td>";
-	                                str+=escapeHTML(ap_ListPossibleValues[i]);
-	                                str+="<input type=\"hidden\" name=\"AP_ListPossibleValue_"+i+"\" value=\""+ap_ListPossibleValues[i]+"\"/>";
-	                                str+="</td>";
-	                                str+="<td width = \"50px\">";
-	                                str+="<a href=\"javascript:onDivAP_ListRemovePossibleValue("+i+");\">Remove</a>";
-	                                str+="</td>";
-	                                str+="</tr>";
-	                            }
-	                            str+="</table>";
-	                            str+="<input type=\"hidden\" name=\"AP_ListPossibleValuesCount\" value=\""+ap_ListPossibleValues.length+"\"/>";
-	                            div.innerHTML = str;
-	                        }
-	                    }
-	                    </script>
-	                    <div id="divAP_ListDetails" style="display:none;">
-	                        <div id="divAP_ListPossibleValues">
-	                            There are no possible values defined yet.
-	                        </div>
-	                        New Possible Value:<br/>
-	                        <table border="0">
-	                            <tr>
-	                                <td><input id="AP_ListAddPossibleValueName" name="AP_ListAddPossibleValueName" type="text" /></td>
-	                                <td><input type="button" value="Add" onclick="onDivAP_TypeListAddPossibleValue(); return false;"/></td>
-	                            </tr>
-	                        </table>
-	                    </div>
-	                </td>
-	            </tr>
-	        </tbody>
-	        <tfoot>
-	           <tr>
-	               <td colspan="2" align="center">
-	                   <tag:submit name="Submit" value="Add Parameter"></tag:submit>
-	               </td>
-	           </tr>
-	        </tfoot>
-	    </table>
-	</form>
-</tag:panel>
+<table id="suite-parameters-list"></table>
+<input type='submit' id="add-parameter-to-table" class="custom-button-text" x-parameter-type="input" value="Add parameter"/>
+
+
+<div id="parameterDialog"  style="display:none;">
+    <tag:panel title="Parameter" align="center" width="400px" height="500px" closeDivName="parameterDialog">
+        <p>
+            Name: <br/>
+            <tag:edit-field-simple name="parameter-name" id="parameter-name" width="100%" value=""/>
+        </p>
+        <p>
+            Description: <br/>
+            <textarea class="custom-edit-text" name="parameter-description" id="parameter-description" rows="5" style="width:100%"></textarea>
+        </p>
+        <div class="input-parameter-configs">
+            <p>
+                Type: <br/>
+                <select id="inputParameter-controlType">
+                    <option value="text">Text</option>
+                    <option value="list">List</option>
+                    <option value="boolean">Boolean</option>
+                </select>
+            </p>
+            <div class="default-values">
+                <div class="default-value-layout" id="inputParameter-text-values" style="display:none;">
+                    Default value:<br/>
+                    <tag:edit-field-simple name="inputParameter-default-text-value" id="inputParameter-default-text-value" width="100%" value=""/>
+                </div>
+                <div class="default-value-layout" id="inputParameter-list-values" style="display:none;">
+                    <div class="panel-border" style="height:180px;overflow:auto;">
+                        <table id="possible-values-list-table" class="possible-values-list">
+                        </table>
+                    </div>
+                    <input type="text" name="possible-value-list-add-text" id="possible-value-list-add-text" class="custom-edit-text"/> 
+                    <input id="possible-value-list-add-submit" class="custom-button-text" type="submit" name="possible-value-list-add-submit" value="Add Value"/>
+                </div>
+                <div class="default-value-layout" id="inputParameter-boolean-values" style="display:none;">
+                    Default value:<br/>
+                    <select id="inputParameter-default-boolean-value">
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <tag:submit id="parameterDialogSubmit" value="" onclick="return false;" ></tag:submit>
+        <tag:submit value="Cancel" onclick="closePopup('parameterDialog');return false;"></tag:submit>
+    </tag:panel>
+</div>
+
+<form method="post" onsubmit="onSubmitForm();">
+    <input id="parameters-json" name="parameters" type="hidden" value=""/>
+	<div style="margin-top:20px">
+	    When you are done save changes 
+	    <tag:submit name="Submit" value="Save"/>
+	</div>
+</form>

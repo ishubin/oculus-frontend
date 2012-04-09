@@ -43,7 +43,7 @@ public class TrmProperty {
 	public class Controls {
 		public final static String _TEXT = "text";
 		public final static String _LIST = "list";
-		public final static String _CHECKBOX = "checkbox";
+		public final static String _BOOLEAN = "boolean";
 	}
 
 	public Long getId() {
@@ -89,12 +89,12 @@ public class TrmProperty {
 	public void setSubtype(String subtype) {
 		this.subtype = subtype;
 	}
-
+	
 	public String getSubtype() {
 		return subtype;
 	}
 
-	public List<String> getValuesAsList() {
+	public List<String> getPossibleValuesList() {
 		List<String> values = new LinkedList<String>();
 		if (value != null) {
 			String[] str = value.split("<value>");

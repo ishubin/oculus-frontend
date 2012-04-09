@@ -67,9 +67,10 @@ public interface TrmDAO {
 	 * Creates a Test Run Manager property in DB
 	 * 
 	 * @param property
+	 * @return id of property in database
 	 * @throws Exception
 	 */
-	public void createProperty(TrmProperty property) throws Exception;
+	public Long createProperty(TrmProperty property) throws Exception;
 
 	/**
 	 * Deletes the Test Run Manager property from DB
@@ -264,5 +265,7 @@ public interface TrmDAO {
     public void saveTaskProperty(Long taskId, TrmProperty property) throws Exception;
 
     public List<TrmProperty> getTaskProperties(Long projectId, Long taskId, String type) throws Exception;
+
+    public void saveTrmPropertiesForProject(Long projectId, List<TrmProperty> properties, String typeSuiteParameter) throws Exception;
 
 }

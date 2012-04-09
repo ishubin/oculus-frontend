@@ -176,112 +176,6 @@ var ParametersTable = {
 	}
 };	
 
-var ParameterDialog = {
-	parameter:null,
-	type: "input",
-	save: function () {
-		this.parameter.name = $("#parameter-name").val();
-		this.parameter.description = $("#parameter-description").val();
-		if ( this.type == "input" ) {
-			this.parameter.controlType = $("#inputParameter-controlType").val();
-	        this.parameter.possibleValuesList = null;
-	        if ( this.parameter.controlType == "text") {
-	            this.parameter.defaultValue = $("#inputParameter-default-text-value").val(); 
-	        }
-	        else if ( this.parameter.controlType == "boolean") {
-	            this.parameter.defaultValue = $("#inputParameter-default-boolean-value").val(); 
-	        }
-	        else if ( this.parameter.controlType == "list") {
-	            this.parameter.possibleValuesList = TestParametersListEditor.getValuesList();
-	            this.parameter.defaultValue = TestParametersListEditor.getDefaultValue(); 
-	        }	
-		}
-		
-		if ( this.parameter.index == null ) {
-			var index = TestParameters[this.type].length;
-			TestParameters[this.type][index] = this.parameter;
-			ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
-		}
-		else {
-			TestParameters[this.type][this.parameter.index] = this.parameter;
-            ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
-		}
-		this.parameter = null;
-		return true;
-	},
-	open: function (parameter, type) {
-		this.type = type;
-		var valuesList = [];
-        if ( parameter == null ) {
-            $("#parameterDialogSubmit").val("Add");
-            this.parameter = {name:"", controlType:"text", defaultValue:"", id: null, index:null, type:type};
-        }
-        else {
-            $("#parameterDialogSubmit").val("Save");
-            this.parameter = parameter;
-            if ( parameter.possibleValuesList != null ) {
-                valuesList = parameter.possibleValuesList;
-            }
-        }
-        
-		if ( type == "input" ) {
-			$(".input-parameter-configs").show();
-			$("#inputParameter-default-text-value").val("");
-	        $("#inputParameter-default-boolean-value").val("true");
-	        
-	        TestParametersListEditor.init("#possible-values-list-table tbody", valuesList, this.parameter.defaultValue);
-	        $("#possible-value-list-add-text").val("");
-	        
-	        this.initControls();
-		}
-		else {
-			$(".input-parameter-configs").hide();
-		}
-		$("#parameter-name").val(this.parameter.name);
-		$("#parameter-description").val(this.parameter.description);
-		$(".default-values .default-value-layout").hide();
-		showPopup("parameterDialog", 400, 500);
-	},
-	initControls: function () {
-		$("#inputParameter-controlType").val(this.parameter.controlType);
-		if ( this.parameter.controlType == "text" ) {
-			$("#inputParameter-default-text-value").val(this.parameter.defaultValue);
-		}
-		else if ( this.parameter.controlType == "boolean" ) {
-            $("#inputParameter-default-boolean-value").val(this.parameter.defaultValue);
-        } 
-		this.setControlType(this.parameter.controlType);
-	},
-	
-	_previousControlType: null,
-	setControlType: function (controlType) {
-		this.parameter.controlType = controlType;
-		if ( this._previousControlType != null ) {
-			$(".default-values #inputParameter-" + this._previousControlType + "-values").slideUp("fast", function (){
-	            $(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");  
-	        });	
-		}
-		else {
-			$(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");
-		}
-		
-		this._previousControlType = controlType;
-	},
-	init: function () {
-		$("#parameterDialogSubmit").click(function (){
-			if ( ParameterDialog.save() ) {
-				closePopup("parameterDialog");	
-			}
-			return false;
-		});
-		
-		$("#inputParameter-controlType").change(function (){
-			var controlType = $("#inputParameter-controlType option:selected").val();
-			ParameterDialog.setControlType(controlType);
-		});		
-	}
-};
-
 
 $(function() {
 	$("#copy-parameters-button").click(function (){
@@ -289,6 +183,18 @@ $(function() {
 		return false;
 	});
 	
+	ParameterDialog.defaultValuesEnabled = true;
+	ParameterDialog.onSave = function() {
+		if ( this.parameter.index == null ) {
+            var index = TestParameters[this.type].length;
+            TestParameters[this.type][index] = this.parameter;
+            ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
+        }
+        else {
+            TestParameters[this.type][this.parameter.index] = this.parameter;
+            ParametersTable.initTable("#test-" + this.type + "-parameters-list", TestParameters[this.type]);
+        }
+	};
 	ParameterDialog.init();
 	
 	$("#testTabs").tabs();

@@ -570,6 +570,7 @@ var Tab = {
 //Used in test-parameteres-editor
 var TestParametersListEditor = {
 	id: "test-parameters-list-editor",
+	defautValuesEnabled: true,
 	_uniqueId:0,
 	uniqueId: function () {
 		this._uniqueId++;
@@ -595,7 +596,9 @@ var TestParametersListEditor = {
 		var id = this.uniqueId();
 		var h = "";
 		h += "<tr x-id='" + id + "'>";
-		h += "<td class='border'><input type='radio' class='" + this.id + "-pv-default' name='" + this.id + "-pv-default' value='" + id + "'/></td>";
+		if ( this.defautValuesEnabled ) {
+			h += "<td class='border'><input type='radio' class='" + this.id + "-pv-default' name='" + this.id + "-pv-default' value='" + id + "'/></td>";
+		}
 		h += "<td class='border'><input type='text' class='" + this.id + "-pv-name' value='" + escapeHTML(value) + "' x-value-id='" + id + "'/></td>";
 		h += "<td><a class='" + this.id + "-remove-link' x-value-id='" + id + "'>Remove</a></td>";
 		h += "</tr>";
@@ -604,10 +607,24 @@ var TestParametersListEditor = {
 			var id = $(this).attr("x-value-id");
 			$(TestParametersListEditor._tableBodyLocator+" tr[x-id=" + id + "]").remove();
 		});
+		
+		
 		return id;
 	},
 	_controlsInit: false,
-	init: function(tableBodyLocator, valuesList, defaultValue) {
+	renderTable: function(locator) {
+		var h = "";
+		h += "<thead><tr>";
+		if ( this.defautValuesEnabled ) {
+			h += "<th width='70px' class='border'>Default</th>";
+		}
+		h += "<th class='border'>Name</th>";
+		h += "<th width='70px'></th>";
+		h += "</tr></thead>";
+		h += "<tbody></tbody>";
+		$(locator).html(h);
+	},
+	init: function(tableLocator, valuesList, defaultValue) {
 		if ( !this._controlsInit ) {
 			$("#possible-value-list-add-text").val("");
 			$("#possible-value-list-add-submit").button();
@@ -621,8 +638,9 @@ var TestParametersListEditor = {
 		}
 	    
 		this._uniqueId = 0;
-		this._tableBodyLocator = tableBodyLocator;
-		$(tableBodyLocator).html("");
+		
+		this.renderTable(tableLocator);
+		this._tableBodyLocator = tableLocator + " tbody";
 		
 		var selectedId = null;
 		for ( var i=0; i < valuesList.length; i++ ) {
@@ -637,3 +655,117 @@ var TestParametersListEditor = {
 	}
 };
 
+var ParameterDialog = {
+	parameter:null,
+	type: "input",
+	defaultValuesEnabled: true,
+	onSave: null,
+	controlTypeField: "controlType",
+	save: function () {
+		this.parameter.name = $("#parameter-name").val();
+		this.parameter.description = $("#parameter-description").val();
+		
+		if ( this.type == "input" ) {
+			this.parameter[this.controlTypeField] = $("#inputParameter-controlType").val();
+	        this.parameter.possibleValuesList = null;
+	        if ( this.parameter[this.controlTypeField] == "text") {
+	            this.parameter.defaultValue = $("#inputParameter-default-text-value").val(); 
+	        }
+	        else if ( this.parameter[this.controlTypeField] == "boolean") {
+	            this.parameter.defaultValue = $("#inputParameter-default-boolean-value").val(); 
+	        }
+	        else if ( this.parameter[this.controlTypeField] == "list") {
+	            this.parameter.possibleValuesList = TestParametersListEditor.getValuesList();
+	            this.parameter.defaultValue = TestParametersListEditor.getDefaultValue(); 
+	        }	
+		}
+		
+		this.onSave();
+		this.parameter = null;
+		return true;
+	},
+	open: function (parameter, type) {
+		
+		$(".default-values .default-value-layout").hide();
+		this.type = type;
+		var valuesList = [];
+        if ( parameter == null ) {
+            $("#parameterDialogSubmit").val("Add");
+            this.parameter = {name:"", controlType:"text", defaultValue:"", id: null, index:null, type:type};
+        }
+        else {
+            $("#parameterDialogSubmit").val("Save");
+            this.parameter = parameter;
+            if ( parameter.possibleValuesList != null ) {
+                valuesList = parameter.possibleValuesList;
+            }
+        }
+        
+		if ( type == "input" ) {
+			$(".input-parameter-configs").show();
+			$("#inputParameter-default-text-value").val("");
+	        $("#inputParameter-default-boolean-value").val("true");
+	        
+	        TestParametersListEditor.defautValuesEnabled = this.defaultValuesEnabled;
+	        TestParametersListEditor.init("#possible-values-list-table", valuesList, this.parameter.defaultValue);
+	        $("#possible-value-list-add-text").val("");
+	        
+	        this.initControls();
+		}
+		else {
+			$(".input-parameter-configs").hide();
+		}
+		$("#parameter-name").val(this.parameter.name);
+		$("#parameter-description").val(this.parameter.description);
+		
+		showPopup("parameterDialog", 400, 500);
+	},
+	initControls: function () {
+	    $("#inputParameter-controlType").val(this.parameter[this.controlTypeField]);
+		if ( this.parameter[this.controlTypeField] == "text" ) {
+			$("#inputParameter-default-text-value").val(this.parameter.defaultValue);
+		}
+		else if ( this.parameter[this.controlTypeField] == "boolean" ) {
+            $("#inputParameter-default-boolean-value").val(this.parameter.defaultValue);
+        } 
+		this.setControlType(this.parameter[this.controlTypeField]);
+	},
+	
+	_previousControlType: null,
+	setControlType: function (controlType) {
+		if ( this.defaultValuesEnabled ) {
+			this.parameter[this.controlTypeField] = controlType;
+			if ( this._previousControlType != null ) {
+				$(".default-values #inputParameter-" + this._previousControlType + "-values").slideUp("fast", function (){
+		            $(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");  
+		        });	
+			}
+			else {
+				$(".default-values #inputParameter-" + controlType + "-values").slideDown("fast");
+			}
+			
+			this._previousControlType = controlType;
+		}
+		else {
+			if ( controlType == "list") {
+				$(".default-values #inputParameter-list-values").slideDown("fast");
+			}
+			else {
+				$(".default-values #inputParameter-list-values").slideUp("fast");
+			}
+		}
+	},
+	init: function () {
+		$("#parameterDialogSubmit").click(function (){
+			if ( ParameterDialog.save() ) {
+				closePopup("parameterDialog");	
+			}
+			return false;
+		});
+		
+		$("#inputParameter-controlType").change(function (){
+			var controlType = $("#inputParameter-controlType option:selected").val();
+			ParameterDialog.setControlType(controlType);
+		});		
+	}
+};

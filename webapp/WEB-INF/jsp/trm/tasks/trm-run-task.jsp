@@ -56,12 +56,12 @@
 	                             </c:when>
 	                             <c:when test="${parameter.subtype == 'list'}">
 	                                 <select name="sp_${parameter.id}" id="sp_${parameter.id}" style="width:100%;">
-	                                     <c:forEach items="${parameter.valuesAsList}" var="possibleValue">
+	                                     <c:forEach items="${parameter.possibleValuesList}" var="possibleValue">
 	                                         <option value="${possibleValue}" <c:if test="${parameter.taskValue == possibleValue }">selected="selected"</c:if> >${possibleValue}</option>
 	                                     </c:forEach>
 	                                 </select>
 	                             </c:when>
-	                             <c:when test="${parameter.subtype == 'checkbox'}">
+	                             <c:when test="${parameter.subtype == 'boolean'}">
 	                                 <input type="checkbox" name="sp_${parameter.id}" id="sp_${parameter.id}" <c:if test="${parameter.taskValue=='true' }">checked="checked"</c:if> />
 	                             </c:when>
 	                             <c:otherwise>Undefined Control</c:otherwise>

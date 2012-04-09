@@ -45,7 +45,7 @@ public class TrmPropertyStub {
 		this.setId(trmProperty.getId());
 		this.setName(trmProperty.getName());
 		this.setDescription(trmProperty.getDescription());
-		this.setValues(trmProperty.getValuesAsList());
+		this.setValues(trmProperty.getPossibleValuesList());
 		this.setType(trmProperty.getType());
 		this.setSubtype(trmProperty.getSubtype());
 		this.setProjectId(trmProperty.getProjectId());

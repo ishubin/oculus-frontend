@@ -111,7 +111,7 @@ public class EditTaskController extends SecureSimpleViewController {
         for(TrmProperty property : taskProperties) {
             
             String value = request.getParameter("sp_" + property.getId());
-            if(property.getSubtype().equals(TrmProperty.Controls._CHECKBOX)) {
+            if(property.getSubtype().equals(TrmProperty.Controls._BOOLEAN)) {
                 if(value!=null && value.equals("on")) {
                     value = "true";
                 }

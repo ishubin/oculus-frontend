@@ -18,14 +18,17 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.web.controllers.trm.customize;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.mindengine.oculus.frontend.domain.project.Project;
 import net.mindengine.oculus.frontend.domain.trm.TrmProperty;
 import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
@@ -33,6 +36,8 @@ import net.mindengine.oculus.frontend.service.trm.TrmDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -62,99 +67,42 @@ public class CustomizeSuiteParametersController extends SecureSimpleViewControll
 	private TrmDAO trmDAO;
 	private ProjectDAO projectDAO;
 
-	public void addParameter(HttpServletRequest request, Long projectId) throws Exception {
-		TrmProperty property = new TrmProperty();
-		property.setType(TrmProperty._TYPE_SUITE_PARAMETER);
-		property.setName(request.getParameter("AP_Name"));
-		property.setDescription(request.getParameter("AP_Description"));
-
-		property.setProjectId(projectId);
-		String subtype = request.getParameter("AP_ControlType");
-		property.setSubtype(subtype);
-		if (subtype == null) {
-			throw new InvalidRequest("Subtype wasn't defined");
-		}
-
-		if (subtype.equals(TrmProperty.Controls._LIST)) {
-			// Collecting possible values list from request for control type
-			// list
-			int valuesCount = Integer.parseInt(request.getParameter("AP_ListPossibleValuesCount"));
-
-			String possibleValues = "";
-			for (int i = 0; i < valuesCount; i++) {
-				String pv = request.getParameter("AP_ListPossibleValue_" + i);
-				if (pv == null || pv.isEmpty())
-					throw new InvalidRequest("Possible Values for List Control are defined incorectly");
-				possibleValues += "<value>" + StringEscapeUtils.escapeXml(pv);
-			}
-			if (valuesCount == 0)
-				throw new InvalidRequest("You cannot specify list without possible values");
-			property.setValue(possibleValues);
-		}
-
-		trmDAO.createProperty(property);
-	}
-
-	public void deleteParameter(HttpServletRequest request, Long projectId) throws Exception {
-		Long parameterId = Long.parseLong(request.getParameter("deleteParameterId"));
-		trmDAO.deleteProperty(parameterId);
-
-	}
-
-	@SuppressWarnings("unchecked")
-	public void saveParameter(HttpServletRequest request, Long projectId) throws Exception {
-		Long parameterId = Long.parseLong(request.getParameter("changeParameterId"));
-		TrmProperty property = trmDAO.getProperty(parameterId);
-		String subtype = request.getParameter("changeParameterType");
-		if (subtype == null)
-			throw new InvalidRequest("The control type parameter wasn't specified");
-		property.setSubtype(subtype);
-
-		if (subtype.equals(TrmProperty.Controls._LIST)) {
-			/*
-			 * Collecting all possible values for list control
-			 */
-			String value = "";
-			Enumeration<String> names = request.getParameterNames();
-			while (names.hasMoreElements()) {
-				String name = names.nextElement();
-				if (name.startsWith("changePossibleValue")) {
-					String pv = request.getParameter(name);
-					value += "<value>" + StringEscapeUtils.escapeXml(pv);
-				}
-			}
-			property.setValue(value);
-		}
-		else
-			property.setValue("");
-
-		trmDAO.changeProperty(property);
-	}
-
 	@Override
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Long projectId = Long.parseLong(request.getParameter("projectId"));
+		
+		Project project = projectDAO.getProject(projectId);
+		if ( project == null ) {
+            throw new IllegalArgumentException("Project with id " + projectId + " doesn't exist");
+        }
+		
+		map.put("project", project);
+        
 		String submit = request.getParameter("Submit");
-		if (submit != null) {
-			if (submit.equals("Add Parameter")) {
-				addParameter(request, projectId);
-			}
-			else if (submit.equals("Delete Parameter")) {
-				deleteParameter(request, projectId);
-			}
-			else if (submit.equals("Save")) {
-				saveParameter(request, projectId);
+		if (submit != null && submit.equals("Save")) {
+			String jsonParameters = request.getParameter("parameters");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			if ( jsonParameters != null ) {
+			    TrmProperty[] propertiesFromJson = mapper.readValue(jsonParameters, TrmProperty[].class);
+			    List<TrmProperty> properties = new LinkedList<TrmProperty>();
+			    
+			    if ( propertiesFromJson != null ) {
+			        Collections.addAll(properties, propertiesFromJson);
+			    }
+			    
+			    trmDAO.saveTrmPropertiesForProject(projectId, properties, TrmProperty._TYPE_SUITE_PARAMETER);
 			}
 		}
 		List<TrmProperty> properties = trmDAO.getProperties(projectId, TrmProperty._TYPE_SUITE_PARAMETER);
 
 		map.put("suiteProperties", properties);
-
+		
 		return map;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("projectId") == null) {
