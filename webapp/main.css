@@ -203,8 +203,8 @@ label {
 
 
 .small-description, a span.small-description{
-	font-size:10pt;
-	color:#444444;
+	font-size:9pt;
+	color:#777;
 	font-family: tahoma,verdana,helvetica;
 }
 .small-description a, .small-description a:ACTIVE, .small-description a:VISITED {

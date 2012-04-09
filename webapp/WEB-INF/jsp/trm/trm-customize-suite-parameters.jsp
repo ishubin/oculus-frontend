@@ -61,7 +61,7 @@ var Formatters = {
         if(cellValue != null){
             var str = "<img src='../images/workflow-icon-settings.png'/> <b>" + escapeHTML( cellValue ) + "</b>";
             if ( rowObject.description != null && rowObject.description != "" ) {
-                str += "<br/>" + escapeHTML(rowObject.description);
+                str += "<br/><div class='small-description'>" + escapeHTML(rowObject.description) + "</div>";
             }
             return str;
         }
