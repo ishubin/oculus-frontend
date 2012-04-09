@@ -21,33 +21,18 @@
     
            
 <form name="editSuiteForm" method="post" onsubmit="return submitEditSuiteForm();">
+    <input type="hidden" name="suiteData" value=""/>
     <tag:submit name="Submit" value="Save" ></tag:submit><br/>    
      <tag:panel align="left" title="Suite Description" width="100%" disclosure="true" closed="false" id="suiteDescriptionPanel"> 
-	                <table width="100%" border="0" cellpadding="0" cellspacing="0">
-	                    <tbody>
-	                        <tr>
-	                            <td class="small-description">Name:</td>
-	                        </tr>
-	                        <tr>
-	                            <td>
-	                                <tag:edit-field-simple name="suiteName" id="editTaskName" width="100%" value="${suite.name}"></tag:edit-field-simple>
-	                            </td>
-	                        </tr>
-	                        <tr>
-	                            <td  class="small-description">Description:</td>
-	                        </tr>
-	                        <tr>
-	                            <td>
-	                                <tag:textarea-simple name="suiteDescription" style="width:100%;" rows="5" value="${suite.description}"/>
-	                                <input type="hidden" name="suiteData" value=""/>
-	                            </td>
-	                        </tr>
-	                        <tr>
-	                            <td  class="small-description">Group:</td>
-	                        </tr>
-	                    </tbody>
-	                </table>
-	            </tag:panel><br/>
+          <p>
+              Name:<br/>
+              <tag:edit-field-simple name="suiteName" id="editTaskName" width="100%" value="${suite.name}"></tag:edit-field-simple>
+          </p>
+             <p>
+                 Description:<br/>
+              <tag:textarea-simple name="suiteDescription" style="width:100%;" rows="5" value="${suite.description}"/>
+          </p>
+	</tag:panel><br/>
                 <tag:panel align="left" title="Tests" width="100%" disclosure="true" closed="false" id="testsPanel"> 
                             <script>
                             
@@ -818,7 +803,7 @@
                     </tag:panel>
                 </div>
                 
-                <a href="javascript:onAddTestGroup();">Add test group</a>
+                <a class="button" href="javascript:onAddTestGroup();">Add test group</a>
             </tag:panel>
 </form>
 

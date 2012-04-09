@@ -190,7 +190,7 @@
 				if (testGroup.name != null) {
 					html += escapeHTML(testGroup.name);
 				} else
-					html += "<span style='color:gray;'>Unknown Group</span>";
+					html += "<span style='color:gray;'>Ungrouped</span>";
 
 				html += "</span>";
 				html += "<ul>";

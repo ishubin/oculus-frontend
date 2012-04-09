@@ -145,7 +145,7 @@ function renderStatus(status){
 	return "<img src='../images/workflow-icon-status-"+icon+".png' title='"+text+"'/>";
 }
 
-function completedDateFormatter(cellValue, options, rowObject){
+function completedDateFormatter(cellValue, options, rowObject) {
 	var id = rowObject.childNodes[1].textContent;
 	var str ="";
 	if(cellValue!=null) str = cellValue;

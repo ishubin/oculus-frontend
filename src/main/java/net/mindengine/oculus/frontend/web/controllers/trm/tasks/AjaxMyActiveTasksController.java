@@ -52,10 +52,6 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         private Date completed;
         private Date created;
         private int percents;
-        //0 - waiting
-        //1 - assigned/running
-        //2 - completed
-        //3 - interrupted
         private int status;
         private String parentId;
         private boolean hasChildren;
