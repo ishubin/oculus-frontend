@@ -68,7 +68,7 @@ CREATE TABLE `comments` (
   `unit_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `unit` enum('project','test','issue','document','build') NOT NULL DEFAULT 'project',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,91 +89,6 @@ CREATE TABLE `cron_ict_test_runs` (
   `test_name` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `custom_statistic_charts`
---
-
-DROP TABLE IF EXISTS `custom_statistic_charts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_statistic_charts` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `custom_statistic_id` bigint(20) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `parameters` mediumtext,
-  `type` enum('line','bar') NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `custom_statistic_data`
---
-
-DROP TABLE IF EXISTS `custom_statistic_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_statistic_data` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `custom_statistic_id` bigint(20) NOT NULL,
-  `value` varchar(128) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `custom_statistic_data_parameters`
---
-
-DROP TABLE IF EXISTS `custom_statistic_data_parameters`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_statistic_data_parameters` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `custom_statistic_data_id` bigint(20) NOT NULL,
-  `custom_statistic_parameter_id` bigint(20) NOT NULL,
-  `value` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `custom_statistic_parameters`
---
-
-DROP TABLE IF EXISTS `custom_statistic_parameters`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_statistic_parameters` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `custom_statistic_id` bigint(20) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `short_name` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `custom_statistics`
---
-
-DROP TABLE IF EXISTS `custom_statistics`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `custom_statistics` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `project_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL DEFAULT '0',
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +185,7 @@ CREATE TABLE `documents` (
   `type_extended` varchar(16) DEFAULT NULL,
   `size` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,7 +369,7 @@ CREATE TABLE `suite_runs` (
   `parameters` mediumtext NOT NULL,
   `agent_name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -474,7 +389,7 @@ CREATE TABLE `suite_statistics` (
   `warning` int(10) unsigned NOT NULL DEFAULT '0',
   `runner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +423,7 @@ CREATE TABLE `test_groups` (
   `description` mediumtext NOT NULL,
   `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +445,7 @@ CREATE TABLE `test_parameters` (
   `sortindex` int(10) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`test_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -571,7 +486,7 @@ CREATE TABLE `test_runs` (
   `issue_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `description` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -594,22 +509,6 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
--- Table structure for table `test_supporters`
---
-
-DROP TABLE IF EXISTS `test_supporters`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_supporters` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `test_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `description` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `tests`
 --
 
@@ -628,7 +527,7 @@ CREATE TABLE `tests` (
   `group_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `content` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -648,7 +547,7 @@ CREATE TABLE `trm_properties` (
   `project_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`type`,`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -771,7 +670,7 @@ CREATE TABLE `unit_customization_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1519,4 +1418,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-02-26 20:08:47
+-- Dump completed on 2012-04-09 17:12:34
