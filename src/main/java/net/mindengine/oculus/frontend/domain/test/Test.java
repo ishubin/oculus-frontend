@@ -39,7 +39,7 @@ public class Test {
 	private Long groupId;
 	private String groupName;
 	private String content;
-	
+	private Boolean automated = false;
 	/**
 	 * This field is used for automation test mapping in TestRunManager For now
 	 * it is used to define class-path
@@ -188,6 +188,14 @@ public class Test {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Boolean getAutomated() {
+        return automated;
+    }
+
+    public void setAutomated(Boolean automated) {
+        this.automated = automated;
     }
 
 }

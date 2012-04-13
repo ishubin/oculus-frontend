@@ -35,7 +35,12 @@
 			                    </td>
 			                </c:if>
 			                
-			                <td><div id="panel_${id}_title">${title}</div></td>
+			                <td>
+			                 <div id="panel_${id}_title">
+			                     <c:if test="${logo!=null && logo!=''}"><img src="${logo}"/></c:if>
+			                     ${title}
+			                 </div>
+			                 </td>
 			                
 			                  <c:if test="${closeDivName!=null}">
 			                      <td width="20px">

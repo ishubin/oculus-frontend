@@ -45,7 +45,7 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 
 	@Override
 	public long create(Test test) throws Exception {
-		PreparedStatement ps = getConnection().prepareStatement("insert into tests (name, description, project_id, author_id, date, mapping, group_id, content) values (?, ?, ?, ?, ?, ?, ?, ?)");
+		PreparedStatement ps = getConnection().prepareStatement("insert into tests (name, description, project_id, author_id, date, mapping, group_id, content, automated) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 		ps.setString(1, test.getName());
 		ps.setString(2, test.getDescription());
@@ -55,6 +55,7 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 		ps.setString(6, test.getMapping());
 		ps.setLong(7, test.getGroupId());
 		ps.setString(8, test.getContent());
+		ps.setBoolean(9, test.getAutomated());
 
 		logger.info(ps);
 		ps.executeUpdate();
@@ -85,9 +86,10 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 
 	@Override
 	public void updateTest(Long id, Test test) throws Exception {
-		update("update tests set name = :name, description = :description, project_id =:projectId, mapping =:mappingId, group_id =:groupId, content = :content where id = :id", "id", id, "name", test.getName(), "description", test.getDescription(), "projectId", test.getProjectId(), "mappingId", test.getMapping(),
+		update("update tests set name = :name, description = :description, project_id =:projectId, mapping =:mappingId, group_id =:groupId, content = :content, automated = :automated where id = :id", "id", id, "name", test.getName(), "description", test.getDescription(), "projectId", test.getProjectId(), "mappingId", test.getMapping(),
 				"groupId", test.getGroupId(),
-				"content", test.getContent());
+				"content", test.getContent(),
+				"automated", test.getAutomated());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -383,6 +385,13 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 					condition.append(condition.createSimpleCondition(user, true, "u.name", "u.login"));
 				}
 			}
+		}
+		//Automated 
+		{
+		    String automated = filter.getAutomated();
+		    if ( automated != null && !automated.isEmpty() ) {
+		        condition.append(condition.createArrayCondition(automated, "t.automated"));
+		    }
 		}
 
 		BrowseResult<Test> result = new BrowseResult<Test>();

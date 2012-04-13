@@ -25,7 +25,7 @@ $(document).ready(function() {
         url: '../grid/ajax-my-active-tasks',
         datatype: "xml",
         mtype: "GET",
-        colNames:["id","Name","Created", "Completed", "Progress","Status","Report","Actions"],
+        colNames:["id","Name","Created", "Completed", "Progress","Status","Message","Report","Actions"],
         colModel:[
              {name:'id',index:'id', width:1,hidden:true,key:true},
              {name:'name',index:'name', width:180, formatter:nameFormatter},
@@ -33,6 +33,7 @@ $(document).ready(function() {
              {name:'completed',index:'completed', width:80, align:"center", formatter:completedDateFormatter},      
              {name:'progress',index:'progress', width:100,align:"left", formatter:progressFormatter},      
              {name:'status',index:'status', width:40,align:"center", formatter:statusFormatter},
+             {name:'message',index:'message', width:100,align:"center"},
              {name:'report',index:'report', width:80,align:"center", formatter:reportFormatter},
              {name:'operations',index:'operations', width:80,align:"left",formatter:operationsFormatter}      
         ],

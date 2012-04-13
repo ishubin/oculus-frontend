@@ -131,10 +131,22 @@ function onExportXLS(){
         <tr>
             <td>
                 <tag:panel title="Common" id="common" align="left" width="100%" disclosure="true" closed="false">
-                    Name:<br/>
-                    <tag:edit-field name="name" value="${searchFilter.name}" width="100%"/>
-                    <br/>Group:<br/>
-                    <tag:edit-field name="testGroup" value="${searchFilter.testGroup}" width="100%"/>
+                    <p>
+                        Name:<br/>
+                        <tag:edit-field name="name" value="${searchFilter.name}" width="100%"/>
+                    </p>
+                    <p>
+                        Group:<br/>
+                        <tag:edit-field name="testGroup" value="${searchFilter.testGroup}" width="100%"/>
+                    </p>
+                    <p>
+                        Automated:
+                        <select name="automated">
+                            <option value=""> </option>
+                            <option value="1" <c:if test="${searchFilter.automated=='1' }">selected="selected"</c:if>>Yes</option>
+                            <option value="0" <c:if test="${searchFilter.automated=='0' }">selected="selected"</c:if>>No</option>
+                        </select>
+                    </p>
                 </tag:panel>
             </td>
         </tr>

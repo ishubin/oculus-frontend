@@ -40,6 +40,7 @@ public class TestSearchFilter {
 	private String designer;
 	private String testGroup;
 	private Boolean groupBySubProject;
+	private String automated;
 
 	private Collection<SearchColumn> columns;
 	/**
@@ -156,4 +157,12 @@ public class TestSearchFilter {
 	public String getTestGroup() {
 		return testGroup;
 	}
+
+    public String getAutomated() {
+        return automated;
+    }
+
+    public void setAutomated(String automated) {
+        this.automated = automated;
+    }
 }

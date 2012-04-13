@@ -66,6 +66,7 @@
         <property name="groupId" column="group_id"/>
         <property name="groupName" column="groupName"/>
         <property name="content" column="content"/>
+        <property name="automated" column="automated"/>
     </bean>
     
     

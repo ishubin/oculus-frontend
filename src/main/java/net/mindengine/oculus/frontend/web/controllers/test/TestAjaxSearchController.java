@@ -57,6 +57,8 @@ public class TestAjaxSearchController extends SimpleAjaxController {
 		filter.setTestGroup(request.getParameter("testGroup"));
 		filter.setPageLimit(Integer.parseInt(request.getParameter("pageLimit")));
 		filter.setColumns(columnFactory.getColumnList());
+		filter.setAutomated(request.getParameter("automated"));
+		
 		Integer page;
 		String strPage = request.getParameter("page");
 		if (strPage != null) {

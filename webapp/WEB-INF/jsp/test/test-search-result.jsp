@@ -12,7 +12,8 @@
 <%@page import="net.mindengine.oculus.frontend.domain.test.Test"%>
 <%@page import="java.util.Collection"%>
 <%@page import="org.apache.commons.lang.StringEscapeUtils"%>
-<%@page import="java.text.SimpleDateFormat"%><script language="javascript">
+<%@page import="java.text.SimpleDateFormat"%>
+<script>
 function onPageLimitChange(select)
 {
     document.forms.searchFilter.pageLimit.value = select.options[select.selectedIndex].value;

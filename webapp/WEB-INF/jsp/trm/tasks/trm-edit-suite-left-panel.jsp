@@ -111,13 +111,10 @@
 
 		ps[ps.length] = createParameter("page", page);
 
-		var str = "";
-		var bAmp = false;
+		var str = "automated=true";
+		
 		for ( var i = 0; i < ps.length; i++) {
-			if (bAmp)
-				str += "&";
-			bAmp = true;
-			str += ps[i].name + "=" + escape(ps[i].value);
+			str += "&" + ps[i].name + "=" + escape(ps[i].value);
 		}
 
 		dhtmlxAjax.post("../test/ajax-search", str, onAjaxTestSearchResponse);

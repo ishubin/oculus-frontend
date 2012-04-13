@@ -83,6 +83,17 @@
                 </c:if>
             </td>
         </tr>
+        <tr class="odd">
+            <td class="issue-table-left">
+                Automated
+            </td>
+            <td class="issue-table">
+                <c:choose>
+                    <c:when test="${test.automated==true }">Yes</c:when>
+                    <c:otherwise>No</c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
         <c:if test="${testInputParametersCount>0}">
             <tr>
                 <td class="issue-table-separator" colspan="2">

@@ -6,23 +6,15 @@
 
 <tag:panel title="Remind Password" align="center">
     <form method="post">
-        <table border="0" align="center">
-            <tr>
-                <td class="small-description">Email:</td>
-                <td><tag:edit-field name="email" value=""/></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <tag:submit value="Send me password"/>
-               </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <div class="error">
-                    ${errorMessage}
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <p>
+            Email:<br/>
+            <tag:edit-field name="email" value=""/>
+        </p>
+        <p>
+            <tag:submit value="Send me password"/>
+        </p>
+        <div class="error">
+        ${errorMessage}
+        </div>
     </form>
 </tag:panel>

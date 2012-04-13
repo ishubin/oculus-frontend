@@ -28,7 +28,7 @@ ObjectMapper mapper = new ObjectMapper();
 
 function onSubmitTest() {
     $("#testContentField").val(testCaseEditor.exportContent());
-    
+    $("input[name=automated]").val($("input[name=__automated]").is(":checked"));
     
     for ( var i=0;i<TestParameters.input.length; i++ ) {
     	var p = TestParameters.input[i];
@@ -267,8 +267,15 @@ $(function() {
 			<textarea name="description" style="width:100%;" rows="10" class="custom-edit-text"><tag:escape text="${test.description}"/></textarea>
 		</p>
 		<p>
+            Automated 
+            
+            <input type="hidden" name="automated" value="${test.automated}"/>
+            <input type="checkbox" name="__automated" <c:if test="${test.automated==true}">checked="checked"</c:if>  />
+            
+        </p>
+		<p>
 			Mapping <br/>
-			<tag:edit-field name="mapping" width="100%" value="${test.mapping}"></tag:edit-field>
+			<input class="custom-edit-text" name="mapping" style="width:100%;" value="${test.mapping}"/>
 		</p>
 		<p>
 			Test Group <br/>

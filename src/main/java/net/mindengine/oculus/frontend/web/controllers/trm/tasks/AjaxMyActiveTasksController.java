@@ -30,6 +30,7 @@ import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 import net.mindengine.oculus.grid.domain.agent.AgentInformation;
 import net.mindengine.oculus.grid.domain.task.TaskInformation;
+import net.mindengine.oculus.grid.domain.task.TaskStatus;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
 /**
@@ -56,6 +57,7 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         private String parentId;
         private boolean hasChildren;
         private AgentInformation assignedAgent;
+        private String message;
         private String report;
         private int level;
         public int getType() {
@@ -130,6 +132,12 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         public String getReport() {
             return report;
         }
+        public String getMessage() {
+            return message;
+        }
+        public void setMessage(String message) {
+            this.message = message;
+        }
         
     }
     
@@ -143,6 +151,23 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         row.setCompleted(task.getCompletedDate());
         row.setCreated(task.getCreatedDate());
         row.setStatus(task.getTaskStatus().getStatus());
+        
+        AgentInformation assignedAgent = task.getTaskStatus().getAssignedAgent();
+        
+        row.setMessage("");
+        if ( TaskStatus.ERROR.equals(task.getTaskStatus().getStatus()) ) {
+            row.setMessage(task.getTaskStatus().getMessage());
+        }
+        else if ( assignedAgent != null ) {
+            if ( TaskStatus.ACTIVE.equals(task.getTaskStatus().getStatus())) {
+                row.setMessage( "Assigned to " + assignedAgent.getName() );
+            }
+            else if ( TaskStatus.COMPLETED.equals(task.getTaskStatus().getStatus())) {
+                row.setMessage( "Completed on " + assignedAgent.getName() );
+            } 
+        }
+        
+        
         row.setPercents(task.getTaskStatus().getPercent().intValue());
         row.setAssignedAgent(task.getTaskStatus().getAssignedAgent());
         
