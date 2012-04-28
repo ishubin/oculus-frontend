@@ -178,24 +178,28 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
             
             
             TaskInformation[] childTasks = server.getTasks(task.getTaskId());
-            String report = "";
+            StringBuilder report = new StringBuilder();
             boolean bcomma = false;
             for(TaskInformation childTask : childTasks) {
                 if(childTask.getTaskStatus().getSuiteInformation()!=null) {
-                    if(bcomma) {
-                        report+=",";
+                    Long suiteId = childTask.getTaskStatus().getSuiteInformation().getSuiteId(); 
+                    if ( suiteId != null ) {
+                        if(bcomma) {
+                            report.append(",");
+                            bcomma = true;
+                        }
+                        report.append(Long.toString(suiteId));
                     }
-                    report+=childTask.getTaskStatus().getSuiteInformation().getSuiteId();
                 }
             }
-            row.setReport(report);
+            row.setReport(report.toString());
         }
         else {
             row.setType(1);
             row.setHasChildren(false);
             row.setId("ste"+task.getTaskId());
             Long suiteId = task.getTaskStatus().getSuiteInformation().getSuiteId();
-            if(suiteId!=null){
+            if(suiteId!=null) {
                 row.setReport(suiteId.toString());
             }
             else row.setReport("");

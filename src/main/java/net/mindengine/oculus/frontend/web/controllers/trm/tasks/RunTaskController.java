@@ -140,7 +140,7 @@ public class RunTaskController extends SecureSimpleViewController {
                     }
                     else suiteTask.setProjectVersion("current");
     
-                    Suite suite = TrmSuite.convertSuiteFromJSON(StringEscapeUtils.unescapeJavaScript(trmSuite.getSuiteData()));
+                    Suite suite = TrmSuite.convertSuiteFromJSON(StringEscapeUtils.unescapeJavaScript(trmSuite.getSuiteData()), testDAO);
                     //Filling test definition with all missing data
                     for(TestDefinition td : suite.getTests()){
                         fillTestDefinition(td, cashedTests, cashedProjectPath);
@@ -208,6 +208,11 @@ public class RunTaskController extends SecureSimpleViewController {
 	        td.setMapping(test.getMapping());
 	        td.setProject(test.getParentProjectPath());
 	        td.setName(test.getName());
+	    }
+	    if ( td.getInjectedTests() != null && td.getInjectedTests().size() > 0 ) {
+	        for ( TestDefinition injectedTestDiDefinition : td.getInjectedTests() ) {
+	            fillTestDefinition(injectedTestDiDefinition, cashedTests, cashedProjectPath);
+	        }
 	    }
 	}
 
@@ -331,7 +336,7 @@ public class RunTaskController extends SecureSimpleViewController {
 		
 		for (TrmSuite trmSuite : suites) {
 		    if(trmSuite.getSuiteData()!=null && !trmSuite.getSuiteData().isEmpty()){
-    			Suite suite = TrmSuite.convertSuiteFromJSON(StringEscapeUtils.unescapeJavaScript(trmSuite.getSuiteData()));
+    			Suite suite = TrmSuite.convertSuiteFromJSON(StringEscapeUtils.unescapeJavaScript(trmSuite.getSuiteData()), testDAO);
     			suite.setAgentName("");
     			
     			suite.setParameters(suiteParameters);

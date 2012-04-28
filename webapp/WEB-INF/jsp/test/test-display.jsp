@@ -10,12 +10,12 @@
     <c:if test="${test.groupId>0}">
         <img src="../images/breadcrump-arrow.png"/>
         <a href="../project/display-${project.path}?groupId=${test.groupId}">
-            <img src="../images/iconTestGroup.png"/>
+            <img src="../images/iconTestGroup.png" width="16px" height="16px"/>
             <tag:escape text="${test.groupName}"/>
         </a>
     </c:if>
     <img src="../images/breadcrump-arrow.png"/> 
-    <span style="white-space: nowrap;"><img src="../images/iconTest.png"/> ${test.name}</span>
+    <span style="white-space: nowrap;"><img src="../images/workflow-icon-test.png"/> ${test.name}</span>
 </div>
 
 <table class="issue-table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -27,14 +27,6 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="odd">
-            <td class="issue-table-left">
-                Name
-            </td>
-            <td class="issue-table">
-               <tag:escape text="${test.name}"/>
-            </td>
-        </tr>
         <tr class="even">
             <td class="issue-table-left">
                 Description
@@ -89,8 +81,8 @@
             </td>
             <td class="issue-table">
                 <c:choose>
-                    <c:when test="${test.automated==true }">Yes</c:when>
-                    <c:otherwise>No</c:otherwise>
+                    <c:when test="${test.automated==true }"><img src="../images/workflow-icon-yes.png"/></c:when>
+                    <c:otherwise><img src="../images/workflow-icon-no.png"/></c:otherwise>
                 </c:choose>
             </td>
         </tr>

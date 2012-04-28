@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import net.mindengine.jeremy.registry.Lookup;
 import net.mindengine.oculus.grid.GridUtils;
+import net.mindengine.oculus.grid.server.Server;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
 /**
@@ -55,9 +56,9 @@ public class Config {
 	}
 
 	/**
-	 * Searches for the remote instance of the {@link TRMServer}.
+	 * Searches for the remote instance of the {@link Server}.
 	 * 
-	 * @return Remote instance of the {@link TRMServer}
+	 * @return Remote instance of the {@link Server}
 	 * @throws Exception
 	 */
 	public ClientServerRemoteInterface getGridServer() throws Exception {

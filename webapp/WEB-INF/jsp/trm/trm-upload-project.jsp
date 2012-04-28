@@ -3,12 +3,7 @@
 <%@ taglib prefix="tiles" uri="/WEB-INF/tld/struts-tiles.tld" %>
 
 <div class="breadcrump" align="center">
-    <a href="../grid/main">Test Run Manager</a>
-    <img src="../images/breadcrump-arrow.png"/> 
-    
-    <a href="../grid/customize">Customize Settings</a>
-    <img src="../images/breadcrump-arrow.png"/>
-    Upload Project
+    Upload Project to Grid
 </div>
 
 <script language="javascript">

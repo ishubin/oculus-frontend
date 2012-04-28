@@ -6,6 +6,28 @@ body{
     height:100%;    
 }
 
+
+#divGlobalLoadingPopup {
+	display:block;
+	border: 1px solid #AED0EA;
+	background: #D7EBF9;
+	padding: 10px;
+	width: 150px;
+	height: 30px;
+	-moz-border-radius: 5px;
+    border-radius: 5px;
+    
+	-moz-box-shadow: 3px 3px 4px #777;
+    -webkit-box-shadow: 3px 3px 4px #777;
+    box-shadow: 3px 3px 4px #777;
+    
+    text-align: center;
+}
+#divGlobalLoadingPopup span {
+	color: #2779AA;
+	font-weight: bold;
+}
+
 .container-left-panel{
 	width:250px;
 	background:#f5f5f5;
@@ -206,10 +228,11 @@ label {
 
 
 /*HEADER*/
-.header{
+table.header{
     height:40px;
     width:100%;
     background:#D7EBF9;
+    border-bottom: 2px solid #2779AA;
 }
 .header .header-left{
 	width:150px;
@@ -350,13 +373,14 @@ ul.workflow-list li{
 	padding:0;
 }
 ul.workflow-list li.workflow-item-odd{
-    background:#C5D5E0;
+    background:#D7EBF9;
 }
 ul.workflow-list li.workflow-item-even{
-    background:#d7e1e8;
+    background:#C1E0F5;
 }
 ul.workflow-list li.workflow-item:hover{
 	background:#2779AA;
+	text-shadow: 1px 1px 1px #000;
 }
 ul.workflow-list li.workflow-item:hover a.workflow-panel-link{
 	color:white;
@@ -506,7 +530,8 @@ table.issue-table tbody tr.odd td.issue-table{
     background:#ffffff;
 }
 table.issue-table tbody td.issue-table-head{
-    background:#bbc4ca;
+    background:#D7EBF9;
+    font-weight:bold;
 }
 table.issue-table tfoot td.issue-table{
     background:#bbc4ca;
@@ -735,13 +760,19 @@ trm test search list
     white-space: nowrap;
 }
 .test-search-list span.test-search-list-project{
-	background:#d0d0d0;
+	background:#C8E5FA;
 	height:25px;
 	display:block;
 	font-weight:bold;
+	border: 1px solid #80C3F2; 
+	-moz-border-radius: 3px;
+    border-radius: 3px;
 }
 .test-search-list span.test-search-list-group{
-    background:#e0e0e0;
+	border: 1px solid #80C3F2;
+    background:#D7EBF9;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     height:25px;
     display:block;
     font-weight:bold;
@@ -1387,6 +1418,7 @@ div.grid-agent-layout {
 .agent-tag-selected span {
 	color:white;
 	white-space:nowrap;
+	text-shadow: 1px 1px 1px #000;
 }
 .agent-tag-selected {
 	color: white;

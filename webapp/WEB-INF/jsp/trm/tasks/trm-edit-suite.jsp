@@ -69,17 +69,19 @@
                                 return uid.toString();
                             }
                             
-                            function addSelectedTestsToMySuite()
-                            {
+                            function addSelectedTestsToMySuite() {
                                 var str = "";
                                 for(var i=0;i<checkedTests.length;i++)
                                 {
                                     if(i>0)str+=",";
                                     str+=checkedTests[i];
                                 }
+                                
+                                showGlobalLoadingPopup();
                                 dhtmlxAjax.post("../test/ajax-fetch", "ids="+str, onAjaxTestFetchResponse);
                             }
                             function onAjaxTestFetchResponse(loader) {
+                            	closeGlobalLoadingPopup();
                                 var str = loader.xmlDoc.responseText;
                                 var obj = eval("("+str+")");
                         
@@ -360,7 +362,7 @@
                                 str+= "             <td>";
                                 str+= "                 <div onMouseDown=\"onAddedBrickMouseDown(this, "+test.customId+",'"+(isChild?'child':'test')+"'); return false;\">";
                                 str+= "                 <a class=\"test-title-link\" style=\"padding:5px;width:100%;height:100%;display: block;margin:0px;outline-color:invert;outline-style:none;outline-width:medium;\" ";
-                                str+= "                      href=\"javascript:onTestPanelClick('"+test.customId+"');\"><b>"+escapeHTML(test.name)+"</b>";
+                                str+= "                      href=\"javascript:onTestPanelClick('"+test.customId+"');\"><b id=\"test-name-" + test.customId + "\">"+escapeHTML(test.name)+"</b>";
                                 str+= "                     <span id=\"divIconTC"+test.customId+"\" class=\""+disclosureIcon+"\" style=\"float:left;\"></span>";
                                 
                                 if(test.tests==null) {
@@ -467,8 +469,8 @@
                             }
                             function renderDependentParameter(test, parameter){
                             	var prerTest = findTestByCustomId(parameter.depends.testCustomId);
-                                var prerParameterName = findInputParameterNameById(parameter.depends.parameterId, prerTest);
-                        
+                            	var prerParameterName = findParameterNameById(parameter.depends.parameterId, prerTest);
+                            	
                                 var parentTest = findParentForCustomId(prerTest.customId);
                                 var parentTitle = "";
                                 if(parentTest!=null) {
@@ -518,9 +520,17 @@
                                 }
                                 return -1;
                             }
-                            function findInputParameterNameById(parameterId, test) {
-                            	for(var i=0;i<test.inputParameters.length;i++) {
-                                    if(test.inputParameters[i].id == parameterId) return test.inputParameters[i].name;
+                            function findParameterNameById(parameterId, test) {
+                            	for(var i=0; i<test.inputParameters.length; i++) {
+                                    if(test.inputParameters[i].id == parameterId) {
+                                    	return test.inputParameters[i].name;
+                                    }
+                                }
+                            	
+                            	for(var i=0; i<test.outputParameters.length; i++) {
+                                    if(test.outputParameters[i].id == parameterId) {
+                                    	return test.outputParameters[i].name;
+                                    }
                                 }
                                 return -1;
                             }
@@ -708,6 +718,7 @@
                             
                             function showParameterInBigEditor(testCustomId, parameterId) {
                                 _bigEditor = {
+                                		editName: false,
                                         testCustomId: testCustomId,
                                         parameterId: parameterId,
                                         onSave: function(){
@@ -716,16 +727,21 @@
 		                                    //Replacing all breaklines with spaces
 		                                    text = text.replace(/(\r\n|\n|\r)/gm," ");
 		                                    $("[name=\"test_"+this.testCustomId+"_parameter_"+this.parameterId+"\"]").val(text);
+		                                    
 		                                    closePopup("divBigEditor");
                                         }
                                  };
-                                  
-                                var text = $("[name=\"test_"+testCustomId+"_parameter_"+parameterId+"\"]").val();
+                                
+                                var text = $("input[name=\"test_"+testCustomId+"_parameter_"+parameterId+"\"]").val();
+                                
+                                
                                 var title = document.getElementById("panel_bigEditor_title");
                                 var test = findTestByCustomId(testCustomId);
-                                var parameterName = findInputParameterNameById(parameterId, test);
+                                
+                                var parameterName = findParameterNameById(parameterId, test);
                                 title.innerHTML = parameterName;
-                                $("#bigEditorTextarea").text(text);
+                                $("#bigEditorTextarea").val(text);
+                                $("#big-editor-test-name").hide();
                                 showPopup("divBigEditor", 600, 400);
                             }
 
@@ -733,6 +749,7 @@
                                 var test  = findTestByCustomId(testCustomId);
                                 
                                 _bigEditor = {
+                                		editName: false,
                                 	    test: test,
                                         testCustomId: testCustomId,
                                         onSave: function(){
@@ -740,18 +757,37 @@
                                             var text = textarea.value;
                                             this.test.testRunDescription = text;
                                             $("#testRunDescription_"+this.testCustomId).html(escapeHTML(text));
+                                            
+                                            if ( this.editName ) {
+                                                var testName = $("#big-editor-test-name input").val();
+                                                this.test.name = testName;
+                                                $("#test-name-" + this.testCustomId).html(escapeHTML(testName));
+                                            }
+                                            
                                             closePopup("divBigEditor");
                                         }
                                  };
                                   
-                                
                                  var title = document.getElementById("panel_bigEditor_title");
                                  title.innerHTML = "Edit description for test \""+escapeHTML(test.name)+"\"";
-                                 var textarea = document.getElementById("bigEditorTextarea");
-                                 textarea.value = "";
-                                 if(test.testRunDescription!=null){
-                                     textarea.value = test.testRunDescription;
+                                 
+                                 var desc = "";
+                                 if ( test.testRunDescription != null ) {
+                                	 desc = test.testRunDescription;
                                  }
+                                 $("#bigEditorTextarea").val(desc);
+                                 
+                                 
+                                 if ( test.tests != null) {
+                                     _bigEditor.editName = true;
+                                 }
+                                 
+                                 if ( _bigEditor.editName ) {
+                                     $("#big-editor-test-name").show();
+                                     $("#big-editor-test-name input").val(test.name);
+                                 }
+                                 else $("#big-editor-test-name").hide();
+                                 
                                  showPopup("divBigEditor", 600, 400);
                             }
                             
@@ -815,21 +851,17 @@
                 id="bigEditor"
                 logo="../images/workflow-icon-settings.png"
                 >
-        <table border="0px" cellspacing="0px" cellpadding="0px" width="100%" height="100%">
-            <tr>
-                <td colspan="2">
-                    <textarea id="bigEditorTextarea" style="width:100%" rows="18"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
+                <p id="big-editor-test-name" style="display:none;">
+                    <tag:edit-field-simple name="big-editor-test-name"/>
+                </p>
+                <p>
+                    Description
+                    <textarea id="bigEditorTextarea" class="custom-textarea" style="width:100%" rows="18"></textarea>
+                <p>
+                <p>
                     <tag:submit value="OK" onclick="javascript:_bigEditor.onSave(); return false;" width="100px"></tag:submit>
-                </td>
-                <td>
                     <tag:submit value="Cancel" onclick="javascript:closePopup('divBigEditor'); return false;" width="100px"></tag:submit>
-                </td>
-            </tr>
-        </table>
+                </p>
     </tag:panel>
 </div>
 

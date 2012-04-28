@@ -214,6 +214,7 @@ function onDropAreaMouseUp(dropArea, type, testCustomId, isBig) {
 					str += ",";
 				str += _testsToDrag[i].id;
 			}
+			showGlobalLoadingPopup();
 			dhtmlxAjax.post("../test/ajax-fetch", "ids=" + str,
 					onAjaxTestFetchResponse);
 		}

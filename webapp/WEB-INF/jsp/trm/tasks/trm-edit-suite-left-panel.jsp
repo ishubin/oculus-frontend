@@ -111,7 +111,7 @@
 
 		ps[ps.length] = createParameter("page", page);
 
-		var str = "automated=true";
+		var str = "automated=1";
 		
 		for ( var i = 0; i < ps.length; i++) {
 			str += "&" + ps[i].name + "=" + escape(ps[i].value);

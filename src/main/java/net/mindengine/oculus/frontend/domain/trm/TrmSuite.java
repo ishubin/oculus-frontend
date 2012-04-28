@@ -30,6 +30,7 @@ import net.mindengine.oculus.experior.exception.TestIsNotDefinedException;
 import net.mindengine.oculus.experior.test.descriptors.TestDefinition;
 import net.mindengine.oculus.experior.test.descriptors.TestDependency;
 import net.mindengine.oculus.experior.test.descriptors.TestParameter;
+import net.mindengine.oculus.frontend.service.test.TestDAO;
 import net.mindengine.oculus.frontend.utils.JSONUtils;
 
 import antlr.RecognitionException;
@@ -190,24 +191,28 @@ public class TrmSuite implements Serializable {
 		return suiteData;
 	}
 
-	public static net.mindengine.oculus.experior.suite.Suite convertSuiteFromJSON(String str) throws TokenStreamException, RecognitionException, SecurityException, ClassNotFoundException, NoSuchMethodException, TestIsNotDefinedException {
+	public static net.mindengine.oculus.experior.suite.Suite convertSuiteFromJSON(String str, TestDAO testDAO) throws Exception {
 		net.mindengine.oculus.experior.suite.Suite suite = new net.mindengine.oculus.experior.suite.Suite();
 		JSONParser parser = new JSONParser(new StringReader(str));
 
+		Map<Long, net.mindengine.oculus.frontend.domain.test.TestParameter> cashedParameters = new HashMap<Long, net.mindengine.oculus.frontend.domain.test.TestParameter>();
+		
 		JSONArray tests = (JSONArray) parser.nextValue();
 		for (JSONValue value : tests.getValue()) {
 			JSONObject testObject = (JSONObject) value;
-			suite.addTest(readTestFromJsonValue(testObject));
+			suite.addTest(readTestFromJsonValue(testObject, testDAO, cashedParameters));
 		}
-
 		return suite;
 	}
 	
-	private static TestDefinition readTestFromJsonValue(JSONObject test) {
+	private static TestDefinition readTestFromJsonValue(JSONObject test, TestDAO testDAO, Map<Long, net.mindengine.oculus.frontend.domain.test.TestParameter> cashedParameters) throws Exception {
         TestDefinition td = new TestDefinition();
         td.setCustomId(JSONUtils.readString(test.get("customId")));
         if(test.containsKey("id")) {
             td.setTestId(JSONUtils.readInteger(test.get("id")));
+        }
+        if ( test.containsKey("name")) {
+            td.setName(JSONUtils.readString(test.get("name")));
         }
         if(test.containsKey("testRunDescription")){
             td.setDescription(JSONUtils.readString(test.get("testRunDescription")));
@@ -217,7 +222,7 @@ public class TrmSuite implements Serializable {
             JSONArray childTests = (JSONArray)test.get("tests");
             for (JSONValue value : childTests.getValue()) {
                 JSONObject childTestObject = (JSONObject) value;
-                injectedTests.add(readTestFromJsonValue(childTestObject));
+                injectedTests.add(readTestFromJsonValue(childTestObject, testDAO, cashedParameters));
             }
             td.setInjectedTests(injectedTests);
         }
@@ -246,7 +251,10 @@ public class TrmSuite implements Serializable {
                     }
                     TestDependency testDependency = new TestDependency();
                     testDependency.setRefTestId(JSONUtils.readString(depends.get("testCustomId")));
-                    testDependency.setRefParameterName(JSONUtils.readString(depends.get("parameterName")));
+                    
+                    Long refParameterId = JSONUtils.readInteger(depends.get("parameterId"));
+                    net.mindengine.oculus.frontend.domain.test.TestParameter dbTestParameter = obtainTestParameterInDb(refParameterId, testDAO, cashedParameters);
+                    testDependency.setRefParameterName(dbTestParameter.getName());
                     testDependency.setDependentParameterName(JSONUtils.readString(parameter.get("name")));
                     td.getParameterDependencies().add(testDependency);
                 }
@@ -256,7 +264,20 @@ public class TrmSuite implements Serializable {
 	}
 	
 	
-	private static TrmSuiteStub convertTestFromJSONToStub(JSONObject test) throws TokenStreamException, RecognitionException, SecurityException, ClassNotFoundException, NoSuchMethodException, TestIsNotDefinedException {
+	private static net.mindengine.oculus.frontend.domain.test.TestParameter obtainTestParameterInDb(Long refParameterId, TestDAO testDAO, 
+	        Map<Long, net.mindengine.oculus.frontend.domain.test.TestParameter> cashedParameters) throws Exception {
+        
+	    if ( cashedParameters.containsKey(refParameterId)) { 
+	        return cashedParameters.get(refParameterId);
+	    }
+	    else {
+            net.mindengine.oculus.frontend.domain.test.TestParameter parameter = testDAO.getParameter(refParameterId);
+            cashedParameters.put(refParameterId, parameter);
+            return parameter;
+	    }
+    }
+
+    private static TrmSuiteStub convertTestFromJSONToStub(JSONObject test) throws TokenStreamException, RecognitionException, SecurityException, ClassNotFoundException, NoSuchMethodException, TestIsNotDefinedException {
 	    TrmSuiteStub stub = new TrmSuiteStub();
 	    JSONValue testIdValue = test.get("id");
 	    if(testIdValue!=null) {

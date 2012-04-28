@@ -456,7 +456,7 @@ var rowsToColor = [];
 var columnModel = [ 
     {name:'repid', sortCustomId: 0,  index:'repid', width:30, sorttype:'int', sortable:true, shown:true, formatter:reportCheckboxFormatter},
     {name:'report',sortCustomId: 0, index:'report', width:70, sorttype:'int', sortable:true, shown:true, formatter:reportLinkFormatter},
-    {name:'status',sortCustomId: 3, index:'status', width:95, sorttype:'int', sortable:true, shown:true, formatter:rowColorFormatter},
+    {name:'status',sortCustomId: 3, index:'status', width:70, sorttype:'int', sortable:true, shown:true, formatter:rowColorFormatter},
     {name:'testName', sortCustomId: 1, index:'testName', sorttype:'int', sortable:true, shown:true, formatter:testNameFormatter},
     {name:'subProject', sortCustomId: 2, index:'subProject', sorttype:'int', sortable:true, shown:true, formatter:subProjectFormatter},
     {name:'designer', sortCustomId: 4, index:'designer', sorttype:'int', sortable:true, shown:true, formatter:userFormatter},
@@ -543,7 +543,7 @@ function rowColorFormatter(cellValue, options, rowObject) {
         rowsToColor[rowsToColor.length] = {id:options.rowId,color:"#FFFA66"};
         color="#900";
     }
-    return "<img src='../images/filter-"+cellValue+".png'/> <span style='margin:0;padding:0;color:"+color+";'>" + cellValue+"</span>";
+    return "<img src='../images/filter-"+cellValue+".png'/>";
 }
 
 

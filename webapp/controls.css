@@ -13,6 +13,7 @@
     filter: alpha(opacity=70);	
 }
 
+
 .popup{
 	z-index:999;
 }
@@ -56,7 +57,9 @@ a.icon-button-white:hover{
 .custom-edit-text, .custom-textarea{
 	background: white;
 	padding:4px;
-	border:1px solid #888;
+	border:1px solid #bbb;
+	font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+	font-size:1em;
     -moz-border-radius: 5px;
     border-radius: 5px;
     -moz-box-shadow: inset 2px 2px 2px #ddd;
@@ -64,6 +67,7 @@ a.icon-button-white:hover{
     box-shadow: inset 2px 2px 2px #ddd;
 }
 .custom-edit-text-error, .custom-textarea-error{
+	font-size:1em;
     background: #f0a0a0;
     padding:4px;
     border:1px solid #ff0000;
@@ -95,7 +99,7 @@ div.custom-panel-wrap{
     margin-right:5px;
     margin-bottom:15px;
     border:1px solid #89C1E8;
-    background:#f0f0ff;
+    background:#F2F5F7;
     -moz-border-radius: 5px;
     border-radius: 5px;
     -moz-box-shadow: 1px 1px 4px #bbb;

@@ -29,6 +29,9 @@
                       Builds
                  </a>
             </li>
+            <li>
+                 <a class="sf-with-ul" href="../project/create"><img src="../images/workflow-icon-create.png"/>  New Project</a>
+            </li>
         </ul>
     </li>
     <li>
@@ -38,7 +41,7 @@
         		<a class="sf-with-ul" href="../report/browse"><img src="../images/workflow-icon-search.png"/> Search Reports</a>
         	</li>
         	<c:if test="${user!=null}">
-            	<li><a class="sf-with-ul" href="<c:url value="../report/my-filters"/>"><img src="../images/workflow-icon-filter.png"/> My Filters</a></li>
+            	<li><a class="sf-with-ul" href="../report/my-filters"><img src="../images/workflow-icon-filter.png"/> My Filters</a></li>
             </c:if>
         </ul>
     </li>
@@ -86,27 +89,19 @@
                       </a>
                   </li>
                   <c:if test="${user.hasPermissions.trm_administration == true}">
-                   <li>
-                       <a class="sf-with-ul" href="#">
-                           <img src="../images/workflow-icon-settings.png"/>
-                           Settings
-                       </a>
-                       <ul>
-                              <li>
-                                  <a class="sf-with-ul" href="../grid/customize-suite-parameters">
-                                      <img src="../images/workflow-icon-settings.png"/>
-                                      Suite Parameters
-                                  </a>
-                              </li>
-                              <li>
-                                  <a class="sf-with-ul" href="../grid/upload-project-choose-project">
-                                      <img src="../images/workflow-icon-upload.png"/>
-                                      Upload Project
-                                  </a>
-                              </li>
-                          </ul>
-                   </li>
-                  </c:if>
+                      <li>
+                          <a class="sf-with-ul" href="../grid/customize-suite-parameters">
+                              <img src="../images/workflow-icon-settings.png"/>
+                              Suite Parameters
+                          </a>
+                      </li>
+                      <li>
+                          <a class="sf-with-ul" href="../grid/upload-project-choose-project">
+                              <img src="../images/workflow-icon-upload.png"/>
+                              Upload Project
+                          </a>
+                      </li>
+                   </c:if>
             </ul>
 	    </li>
 	</c:if>
@@ -115,39 +110,24 @@
         <ul>
             <c:choose>
                 <c:when test="${user != null}">
-                    <li><a class="sf-with-ul" href="<c:url value="../user/profile-${user.login}"/>">
+                    <li><a class="sf-with-ul" href="../user/profile-${user.login}">
                             <img src="../images/workflow-icon-user.png"/>
                             My Profile
                         </a>
                     </li>
-                    <li><a class="sf-with-ul" href="<c:url value="../user/logout"/>"><img src="../images/workflow-icon-exit.png"/> Logout</a></li>
+                    <li><a class="sf-with-ul" href="../user/logout"><img src="../images/workflow-icon-exit.png"/> Logout</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a class="sf-with-ul" href="<c:url value="../user/login"/>"><img src="../images/workflow-icon-login.png"/> Login</a></li>
+                    <li><a class="sf-with-ul" href="../user/login"><img src="../images/workflow-icon-login.png"/> Login</a></li>
                 </c:otherwise>
             </c:choose>
             
             <c:if test="${user!=null && user.hasPermissions.user_managment}">
                 <li>
-                    <a class="sf-with-ul" href="#"><img src="../images/workflow-icon-usergroup.png"/> User Management</a>
-                    <ul>
-                        <li>
-                            <a class="sf-with-ul" href="../admin/user-create">
-                                <img src="../images/workflow-icon-add-user.png"/>
-                                Create User
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </c:if>
-            <c:if test="${user!=null && user.hasPermissions.project_managment}">
-                <li>
-                    <a class="sf-with-ul" href="#"><img src="../images/workflow-icon-project.png"/> Project Management</a>
-                    <ul>
-                        <li>
-                            <a class="sf-with-ul" href="<c:url value="../project/create"/>">New Project</a>
-                        </li>
-                    </ul>
+                    <a class="sf-with-ul" href="../admin/user-create">
+                        <img src="../images/workflow-icon-add-user.png"/>
+                        Create User
+                    </a>
                 </li>
             </c:if>
         </ul>

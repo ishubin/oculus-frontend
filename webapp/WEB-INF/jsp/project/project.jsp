@@ -49,7 +49,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="odd">
+                    <tr class="even">
                         <td class="issue-table-left">
                             #Path:
                         </td>
@@ -57,20 +57,12 @@
                             ${project.path}
                         </td>
                     </tr>
-                    <tr class="even">
+                    <tr class="odd">
                         <td class="issue-table-left">
                             #ID:
                         </td>
                         <td class="issue-table">
                             ${project.id}
-                        </td>
-                    </tr>
-                    <tr class="odd">
-                        <td class="issue-table-left">
-                            Name:
-                        </td>
-                        <td class="issue-table">
-                            ${fn:escapeXml(project.name)}
                         </td>
                     </tr>
                     <tr class="even">

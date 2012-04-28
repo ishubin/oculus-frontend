@@ -57,7 +57,11 @@
     <body  <c:if test="${bodyOnLoad!=null}">onload="${bodyOnLoad}"</c:if>>
         <div id="divShadow" class="shadow" style="display:none;">
         </div>
-        
+        <div id="divGlobalLoadingPopup" class="global-loading" style="display:none;">
+            <span>Loading...</span> 
+            <br/>
+            <img src="../images/loading-line.gif"/>
+        </div>
     	<table width="100%" height="100%" border="0" cellpadding="0"  cellspacing="0">
     	   <tr>
     	       <td>

@@ -31,10 +31,10 @@
     <c:when test="${customization.type == 'checkbox'}">
         <c:choose>
             <c:when test="${customization.value == 'true' }">
-                Yes
+                <img src="../images/workflow-icon-yes.png"/>
             </c:when>
             <c:otherwise>
-                No
+                <img src="../images/workflow-icon-no.png"/>
             </c:otherwise>
         </c:choose>
     </c:when>
