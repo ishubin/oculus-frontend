@@ -27,8 +27,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import net.mindengine.oculus.frontend.config.Config;
+import net.mindengine.oculus.frontend.domain.trm.SuiteStatisticUtils;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 import net.mindengine.oculus.grid.domain.agent.AgentInformation;
+import net.mindengine.oculus.grid.domain.task.SuiteInformation;
+import net.mindengine.oculus.grid.domain.task.SuiteStatistic;
 import net.mindengine.oculus.grid.domain.task.TaskInformation;
 import net.mindengine.oculus.grid.domain.task.TaskStatus;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
@@ -158,12 +161,39 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         if ( TaskStatus.ERROR.equals(task.getTaskStatus().getStatus()) ) {
             row.setMessage(task.getTaskStatus().getMessage());
         }
+        else if ( task.getParentId() == null ) {
+            StringBuffer mainMessage = new StringBuffer();
+            try {
+                TaskInformation[] tasks = server.getTasks(task.getTaskId());
+                SuiteStatistic statistics = SuiteStatisticUtils.collectStatisticFromTasks(tasks);
+                if ( statistics != null ) {
+                    mainMessage.append(SuiteStatisticUtils.getPrettyStatistics(statistics));
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            row.setMessage(mainMessage.toString());
+        }
         else if ( assignedAgent != null ) {
             if ( TaskStatus.ACTIVE.equals(task.getTaskStatus().getStatus())) {
                 row.setMessage( "Assigned to " + assignedAgent.getName() );
             }
             else if ( TaskStatus.COMPLETED.equals(task.getTaskStatus().getStatus())) {
-                row.setMessage( "Completed on " + assignedAgent.getName() );
+                StringBuffer message = new StringBuffer();
+                message.append( "Completed on " + assignedAgent.getName());
+                
+                try {
+                    SuiteInformation suiteInformation = task.getTaskStatus().getSuiteInformation();
+                    if ( suiteInformation != null ) {
+                        SuiteStatistic statistics = suiteInformation.calculateStatistics();
+                        message.append(SuiteStatisticUtils.getPrettyStatistics(statistics));
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                row.setMessage(message.toString());
             } 
         }
         
@@ -209,7 +239,7 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         row.setLevel(parentLevel+1);
         return row;
     }
-    
+
     @Override
     public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
         String nodeId = request.getParameter("nodeid");
@@ -226,7 +256,8 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
         Collection<Row> rows = new LinkedList<Row>();
         TaskInformation[] tasks = null;
         Long userId = getUser(request).getId();
-        if(nodeId==null){
+        
+        if( nodeId == null ){
             nodeId = "0";
             tasks = server().getAllUserTasks(userId);
         }
@@ -234,7 +265,8 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
             Long taskId = Long.parseLong(nodeId.substring(3));
             tasks = server().getTasks(taskId);
         }
-        if(tasks!=null) {
+        
+        if( tasks != null ) {
             for(TaskInformation task : tasks) {
                 rows.add(convertTask(task, level, nodeId, server()));
             }

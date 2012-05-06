@@ -26,12 +26,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.AjaxModel;
+import net.mindengine.oculus.frontend.domain.trm.SuiteStatisticUtils;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 import net.mindengine.oculus.grid.domain.agent.AgentInformation;
 import net.mindengine.oculus.grid.domain.task.SuiteInformation;
+import net.mindengine.oculus.grid.domain.task.SuiteStatistic;
 import net.mindengine.oculus.grid.domain.task.TaskInformation;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
@@ -55,6 +57,7 @@ public class AjaxFetchTasks extends SimpleAjaxController {
 	    private int type; //0-task, 1-suite
 	    private Date created;
 	    private Date completed;
+	    private String message;
 	    private Float progress; //percents from 0.0 to 100.00
 	    private int status;//uses the same status numbers as in TaskStatus
 	    private String report; //comma separated list of suiteIds
@@ -120,6 +123,12 @@ public class AjaxFetchTasks extends SimpleAjaxController {
         public void setChildren(Collection<TaskNode> children) {
             this.children = children;
         }
+        public String getMessage() {
+            return message;
+        }
+        public void setMessage(String message) {
+            this.message = message;
+        }
 	}
 	
 	public TaskNode convert(TaskInformation task, ClientServerRemoteInterface server){
@@ -145,24 +154,35 @@ public class AjaxFetchTasks extends SimpleAjaxController {
 	                node.getChildren().add(convert(childTask, server));
 	                SuiteInformation suiteInformation = childTask.getTaskStatus().getSuiteInformation();
 	                if(suiteInformation!=null && suiteInformation.getSuiteId()!=null) {
-	                    if(bcomma) {
-	                        report+=",";
+	                    if ( bcomma ) {
+	                        report += ",";
 	                    }
-	                    report+= childTask.getTaskStatus().getSuiteInformation().getSuiteId();
+	                    report += childTask.getTaskStatus().getSuiteInformation().getSuiteId();
 	                    bcomma = true;
 	                }
 	            }
 	            
+	            SuiteStatistic statisticFromTasks = SuiteStatisticUtils.collectStatisticFromTasks(childTasks);
+	            if ( statisticFromTasks != null ) {
+	                node.setMessage(SuiteStatisticUtils.getPrettyStatistics(statisticFromTasks));
+	            }
+	            
 	            node.setReport(report);
 	        }
-	        
 	    }
 	    else {
             node.setType(1);
             
-            Long suiteId = task.getTaskStatus().getSuiteInformation().getSuiteId();
-            if(suiteId!=null){
-                node.setReport(suiteId.toString());
+            SuiteInformation suiteInformation = task.getTaskStatus().getSuiteInformation();
+            
+            if ( suiteInformation != null ) {
+                Long suiteId = task.getTaskStatus().getSuiteInformation().getSuiteId();
+                
+                if ( suiteId!=null ) {
+                    node.setReport(suiteId.toString());
+                }
+                
+                node.setMessage(SuiteStatisticUtils.getPrettyStatistics(suiteInformation.calculateStatistics()));
             }
         } 
 	    return node;

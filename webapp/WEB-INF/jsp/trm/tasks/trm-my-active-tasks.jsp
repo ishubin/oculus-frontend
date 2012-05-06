@@ -33,7 +33,7 @@ $(document).ready(function() {
              {name:'completed',index:'completed', width:80, align:"center", formatter:completedDateFormatter},      
              {name:'progress',index:'progress', width:100,align:"left", formatter:progressFormatter},      
              {name:'status',index:'status', width:40,align:"center", formatter:statusFormatter},
-             {name:'message',index:'message', width:100,align:"center"},
+             {name:'message',index:'message', width:100,align:"center", formatter:messageFormatter},
              {name:'report',index:'report', width:80,align:"center", formatter:reportFormatter},
              {name:'operations',index:'operations', width:80,align:"left",formatter:operationsFormatter}      
         ],
@@ -56,18 +56,21 @@ $(document).ready(function() {
 function updateTasks(){
 	$.getJSON('../grid/ajax-fetch-tasks', function(data) {
         if(data.result=="error"){
-            alert("Error occured: "+data.object.text);
+            //alert("Error occured: "+data.object.text);
         }
-        else if(data.result == 'fetched'){
+        else if(data.result == 'fetched') {
             var tasks = data.object;
             for(var i=0; i<tasks.length; i++){
                 if($('#status_tsk'+tasks[i].id).length>0){
                     $('#status_tsk'+tasks[i].id).html(renderStatus(tasks[i].status));
                     setProgressBar('tsk'+tasks[i].id, tasks[i].progress);
-                    if(tasks[i].report!=null && tasks[i].report!=""){
+                    if ( tasks[i].report != null && tasks[i].report != "" ){
                     	$('#report_tsk'+tasks[i].id).html("<a href='../report/browse?suite="+tasks[i].report+"'>Report</a>");    
                     }
                     
+                    if ( tasks[i].message != null ) {
+                    	$("#taskMessage_tsk" + tasks[i].id).html( tasks[i].message );
+                    }
                     $('#operations_tsk'+tasks[i].id).html(renderOperations(tasks[i].id, tasks[i].status));
                 }
                 //updating status for all suites
@@ -79,6 +82,10 @@ function updateTasks(){
                             setProgressBar('ste'+suite.id, suite.progress);
                             if(suite.report!=null && suite.report!=""){
                                 $('#report_ste'+suite.id).html("<a href='../report/browse?suite="+suite.report+"'>Report</a>");    
+                            }
+                            
+                            if ( suite.message != null ) {
+                                $("#taskMessage_ste" + suite.id).html( suite.message );
                             }
                         }
                     }
@@ -121,6 +128,15 @@ function progressFormatter(cellValue, options, rowObject){
 		return "<div id='progressBar_"+id+"' class='progressbar'></div><div id='progressBarValue_"+id+"' class='progressbar-text'></div>";
     }
     return "";
+}
+
+function messageFormatter(cellValue, options, rowObject){
+    var id = rowObject.childNodes[1].textContent;
+
+    if ( cellValue == null) { 
+    	cellValue = "";
+    }
+    return "<div id='taskMessage_"+id+"'>" + cellValue + "</div>";
 }
 
 function renderStatus(status){
@@ -181,7 +197,7 @@ function stopTask(taskId){
 		$('#operations_tsk'+taskId).html('');
         $.getJSON('../grid/ajax-stop-task?taskId='+taskId, function(data) {
             if(data.result=="error"){
-                alert("Error occured: "+data.object.text);
+                //alert("Error occured: "+data.object.text);
             }
         }); 
     }
@@ -194,9 +210,9 @@ function removeTask(taskId){
 	            $('#jqgTreeGrid').delTreeNode('tsk'+taskId);
 	        }
 	        else if(data.result=="error"){
-	            alert("Error occured: "+data.object.text);
+	            //alert("Error occured: "+data.object.text);
 	        }
-	        else alert("Unexpected error occured");
+	        //else alert("Unexpected error occured");
 	    }); 
 	}
 }

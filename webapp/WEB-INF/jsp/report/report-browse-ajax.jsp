@@ -66,7 +66,7 @@ for(TestRunSearchData row : rows){
     
     
     if(row.getTestRunStartTime()!=null){
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         out.print(",\"" + sdf.format(row.getTestRunStartTime())+ "\"");
     }
     else out.print(",null");

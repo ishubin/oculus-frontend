@@ -155,10 +155,11 @@ function onSaveFilter()
     <tr>
         <td>
             <tag:panel title="Test" id="testCase" align="left" width="100%" disclosure="true" closed="false">
-		          <div class="small-description">Test:</div>
+		          Test:
 		          <tag:edit-field name="testCaseName" value="${reportSearchFilter.testCaseName }" width="100%"/>
 		          <br/>
-		          <div class="small-description">Status:</div>
+		          <br/>
+		          Status:
 		          <ul class="flat-list">
 		          <c:forEach items="${testCaseStatusList }" var="status" varStatus="statusVarStatus">
 		          	<li>
@@ -168,9 +169,8 @@ function onSaveFilter()
 		          </c:forEach>
 		          </ul>
 		          <br/>
-		          <br/>
-		                <div class="small-description">Fail Reason:</div>
-		                <tag:edit-field name="testRunReason" value="${reportSearchFilter.testRunReason }"  width="100%"/>
+		          Fail Reason:
+		          <tag:edit-field name="testRunReason" value="${reportSearchFilter.testRunReason }"  width="100%"/>
 		      </tag:panel>
         </td>
     </tr>
@@ -178,7 +178,7 @@ function onSaveFilter()
     <tr>
         <td>
             <tag:panel title="Suite" id="suite" align="left" width="100%"  disclosure="true" closed="false">
-                <div class="small-description">Project:</div>
+                Project:
                 <select name="rootProject" size="6" style="width:100%;">
                     <tag:select-option value="0" style="color:gray;">Not selected</tag:select-option>
                     <c:forEach items="${rootProjects}" var="rp">
@@ -188,13 +188,13 @@ function onSaveFilter()
                 <br/>
                 
                 <br/>
-                <div class="small-description">Sub-Project:</div>
+                Sub-Project:
                 <tag:edit-field name="project" value="${reportSearchFilter.project }"  width="100%"/><br/>
-                
-                <div class="small-description">Suite:</div>
+                Suite:
                 <tag:edit-field name="suite" value="${reportSearchFilter.suite }"  width="100%"/>
                 <br/>
-                <tag:panel-border title="Time" align="center" width="100%">
+                Time:<br/>
+                <tag:panel-border title="" align="center" width="100%">
                  <table border="0"  width="100%">
                      <tr>
                          <td class="small-description">after:</td>
@@ -221,10 +221,10 @@ function onSaveFilter()
                  </table>
                 </tag:panel-border>
                 
-                <div class="small-description">Parameters:</div>
+                Parameters:
                 <textarea name="suiteRunParameters" style="width:100%;overflow:auto;" rows="5"><tag:escape text="${reportSearchFilter.suiteRunParameters}"/></textarea>
                 <br/>
-                <div class="small-description">Agent:</div>
+                Agent:
                 <tag:edit-field name="suiteRunAgent" value="${reportSearchFilter.suiteRunAgent }"  width="100%"/>
             </tag:panel>
         </td>
@@ -233,10 +233,10 @@ function onSaveFilter()
     <tr>
         <td>
             <tag:panel title="User" id="user" align="left" width="100%"  disclosure="true" closed="false">
-                <div class="small-description">Designer:</div>
+                Designer:
                 <tag:edit-field name="userDesigner" value="${reportSearchFilter.userDesigner }"  width="100%"/>
                 <br/>
-                <div class="small-description">Runner:</div>
+                Runner:
                 <tag:edit-field name="userRunner" value="${reportSearchFilter.userRunner}"  width="100%"/>
             </tag:panel>
         </td>
@@ -245,7 +245,7 @@ function onSaveFilter()
     <tr>
         <td>
             <tag:panel title="Issue" id="issue" align="left" width="100%"  disclosure="true" closed="false">
-                <div class="small-description">Issue:</div>
+                Issue:
                 <tag:edit-field name="issue" value="${reportSearchFilter.issue }" width="100%"/>
             </tag:panel>
         </td>
