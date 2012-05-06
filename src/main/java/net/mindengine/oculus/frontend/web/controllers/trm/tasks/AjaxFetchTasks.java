@@ -35,6 +35,7 @@ import net.mindengine.oculus.grid.domain.agent.AgentInformation;
 import net.mindengine.oculus.grid.domain.task.SuiteInformation;
 import net.mindengine.oculus.grid.domain.task.SuiteStatistic;
 import net.mindengine.oculus.grid.domain.task.TaskInformation;
+import net.mindengine.oculus.grid.domain.task.TaskStatus;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
 
 /**
@@ -173,6 +174,17 @@ public class AjaxFetchTasks extends SimpleAjaxController {
 	    else {
             node.setType(1);
             
+            StringBuffer message = new StringBuffer();
+            AgentInformation assignedAgent = task.getTaskStatus().getAssignedAgent();
+            if ( assignedAgent != null ) {
+                if ( TaskStatus.ACTIVE.equals(task.getTaskStatus().getStatus())) {
+                    message.append("Assigned to " + assignedAgent.getName() );
+                }
+                else if ( TaskStatus.COMPLETED.equals(task.getTaskStatus().getStatus())) {
+                    message.append( "Completed on " + assignedAgent.getName());
+                }
+            }
+            
             SuiteInformation suiteInformation = task.getTaskStatus().getSuiteInformation();
             
             if ( suiteInformation != null ) {
@@ -182,8 +194,10 @@ public class AjaxFetchTasks extends SimpleAjaxController {
                     node.setReport(suiteId.toString());
                 }
                 
-                node.setMessage(SuiteStatisticUtils.getPrettyStatistics(suiteInformation.calculateStatistics()));
+                message.append(SuiteStatisticUtils.getPrettyStatistics(suiteInformation.calculateStatistics()));
             }
+            
+            node.setMessage(message.toString());
         } 
 	    return node;
 	}
