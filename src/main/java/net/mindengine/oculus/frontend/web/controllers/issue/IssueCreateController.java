@@ -51,6 +51,7 @@ public class IssueCreateController extends SecureSimpleFormController {
 		if (request.getParameter("projectId") == null) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("projects", projectDAO.getRootProjects());
+			map.put("title", getTitle());
 			return new ModelAndView(chooseProjectView, map);
 		}
 		return super.handleRequest(request, response);
@@ -59,7 +60,7 @@ public class IssueCreateController extends SecureSimpleFormController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Map referenceData(HttpServletRequest request) throws Exception {
-		Map map = new HashMap<String, Object>();
+		Map map = super.referenceData(request);
 		Long projectId = Long.parseLong(request.getParameter("projectId"));
 		Long rootId = projectDAO.getProjectRootId(projectId, 10);
 		map.put("rootProjectId", rootId);
@@ -69,7 +70,6 @@ public class IssueCreateController extends SecureSimpleFormController {
 			map.put("subprojects", projectDAO.getSubprojects(projectId));
 		}
 		map.put("customizationGroups", CustomizationUtils.fetchCustomizationGroups(customizationDAO, userDAO, rootId, 0L, Customization.UNIT_ISSUE));
-		map.put("title", getTitle());
 		return map;
 	}
 

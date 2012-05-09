@@ -101,7 +101,8 @@ public class EditSuiteController extends SecureSimpleViewController {
 		Long suiteId = Long.parseLong(request.getParameter("id"));
 
 		TrmSuite suite = trmDAO.getSuite(suiteId);
-
+		map.put("title", "Grid suite - " + suite.getName());
+		
 		if (suite == null)
 			throw new UnexistentResource("The suite with id = " + suiteId + " wasn't found");
 

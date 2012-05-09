@@ -9,12 +9,7 @@
 <%@ include file="/session-handler.jsp" %>
 
 <div class="breadcrump" align="center">
-    <a href="../grid/main">Test Run Manager</a>
-    <img src="../images/breadcrump-arrow.png"/> 
-    
-    <a href="../grid/customize">Customize Settings</a>
-    <img src="../images/breadcrump-arrow.png"/>
-    <a href="../grid/customize-suite-parameters">Customize Suite Parameters</a>
+    <a href="../grid/customize-suite-parameters">Customize Suite Parameters for Grid</a>
     <img src="../images/breadcrump-arrow.png"/>
     ${fn:escapeXml(project.name)}
 </div>

@@ -2,17 +2,10 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 
 <div class="breadcrump" align="center">
-    <a href="../grid/main">Test Run Manager</a>
-    <img src="../images/breadcrump-arrow.png"/> 
-    
-    <a href="../grid/customize">Customize Settings</a>
-    <img src="../images/breadcrump-arrow.png"/>
-    Customize Suite Parameters
+    Customize Suite Parameters for Grid
 </div>
 
-<div class="small-description" align="center">
 Choose the project
-</div>
 
 <br/>
 <br/>

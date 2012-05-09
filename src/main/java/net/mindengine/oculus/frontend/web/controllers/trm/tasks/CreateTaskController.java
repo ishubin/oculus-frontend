@@ -42,7 +42,7 @@ public class CreateTaskController extends SecureSimpleFormController {
 	@SuppressWarnings("unchecked")
     @Override
 	protected Map referenceData(HttpServletRequest request) throws Exception {
-	    Map map = new HashMap();
+	    Map map =super.referenceData(request);
 	    map.put("projects", projectDAO.getRootProjects());
 	    return map;
 	}

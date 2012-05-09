@@ -121,7 +121,7 @@ public class EditTaskController extends SecureSimpleViewController {
 		List<TrmSuite> suites = trmDAO.getTaskSuites(taskId);
 		
 		TrmTask task = trmDAO.getTask(taskId);
-		
+		map.put("title", "Grid Task - " + task.getName());
 		List<TrmProperty> taskProperties = trmDAO.getTaskProperties(task.getProjectId(), taskId, TrmProperty._TYPE_SUITE_PARAMETER);
 		
 		if (submit != null) {

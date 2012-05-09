@@ -4,12 +4,6 @@
 "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
 
 <tiles-definitions>
-
-    <definition name="trm-main-page" extends="html-container">
-        <put name="left-panel" type="string" content=""/>
-        <put name="content" value="/WEB-INF/jsp/trm/trm-main-page.jsp" type="page"/>
-        <put name="right-panel" value="" type="string"/>
-    </definition>
     
     <definition name="trm-customize-suite-parameters-choose-project" extends="html-container">
         <put name="left-panel" type="string" content=""/>

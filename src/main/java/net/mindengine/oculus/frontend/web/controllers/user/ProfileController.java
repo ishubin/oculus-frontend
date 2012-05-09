@@ -36,7 +36,7 @@ public class ProfileController extends SimpleViewController {
 		String login = request.getPathInfo().substring(9);
 
 		User user = userDAO.getUserByLogin(login);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = super.handleController(request);
 		map.put("choosenUser", user);
 		return map;
 	}

@@ -5,9 +5,7 @@
     Upload Project to Grid
 </div>
 
-<div class="small-description" align="center">
 Choose the project
-</div>
 
 <br/>
 <br/>

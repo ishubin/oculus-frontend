@@ -92,7 +92,7 @@ public class UploadProjectController extends SecureSimpleFormController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Map referenceData(HttpServletRequest request) throws Exception {
-		Map map = new HashMap<String, Object>();
+		Map map = super.referenceData(request);
 		String strProjectId = request.getParameter("projectId");
 		if (strProjectId != null) {
 			Long projectId = Long.parseLong(strProjectId);

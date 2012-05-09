@@ -18,6 +18,7 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.web.controllers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 public class SimpleViewController implements Controller {
 	private String view;
+	private String title;
 
 	public String getView() {
 		return view;
@@ -37,7 +39,9 @@ public class SimpleViewController implements Controller {
 	}
 
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
-		return null;
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("title", title);
+		return map;
 	}
 
 	@Override
@@ -48,5 +52,13 @@ public class SimpleViewController implements Controller {
 			mav.addAllObjects(model);
 		return mav;
 	}
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 }

@@ -10,15 +10,12 @@
         <property name="file" value="WEB-INF/conf/task-columns.xml"/>
     </bean>
     
-    <bean name="/main" class="net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController">
-        <property name="view" value="trm-main-page"/>
-    </bean>
-    
     <bean name="/customize-suite-parameters" class="net.mindengine.oculus.frontend.web.controllers.trm.customize.CustomizeSuiteParametersController">
         <property name="view" value="trm-customize-suite-parameters"/>
         <property name="trmDAO" ref="trmDAO"/>
         <property name="projectDAO" ref="projectDAO"/>
         <property name="authorizationCheck" value="true"/>
+        <property name="title" value="Custom Suite Parameters"/>
         <property name="permissions">
             <list>
                 <ref bean="_P_TRM_ADMINISTRATION"/>
@@ -31,12 +28,14 @@
         <property name="authorizationCheck" value="true"/>
         <property name="trmDAO" ref="trmDAO"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Saved Tasks"/>
     </bean>
     
     <bean name="/my-active-tasks" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.MyActiveTasksController">
         <property name="view" value="trm-my-active-tasks"/>
         <property name="authorizationCheck" value="true"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Active Tasks"/>
     </bean>
     
     <bean name="/create-task" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.CreateTaskController">
@@ -50,6 +49,7 @@
         <property name="authorizationCheck" value="true"/>
         <property name="trmDAO" ref="trmDAO"/>
         <property name="projectDAO" ref="projectDAO"/>
+        <property name="title" value="Create Task"/>
     </bean>
     
     <bean name="/delete-task" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.DeleteTaskController">
@@ -118,6 +118,7 @@
     <bean name="/upload-project-choose-project" class="net.mindengine.oculus.frontend.web.controllers.trm.customize.UploadProjectChooseProjectController">
         <property name="projectDAO" ref="projectDAO"/>
         <property name="view" value="trm-upload-project-choose-project"/>
+        <property name="title" value="Upload Project to Grid"/>
     </bean>
     
     <bean name="/upload-project" class="net.mindengine.oculus.frontend.web.controllers.trm.customize.UploadProjectController">
@@ -132,6 +133,7 @@
         <property name="authorizationCheck" value="true"/>
         <property name="projectDAO" ref="projectDAO"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Upload Project to Grid"/>
     </bean>
     
     
@@ -145,10 +147,11 @@
         <property name="agentTagRulesContainer" ref="agentTagRulesContainer"/>
         <property name="view" value="trm-agents"/>
         <property name="authorizationCheck" value="true"/>
+        <property name="title" value="Grid Agents"/>
     </bean>
     
     <bean name="/shared-tasks" class="net.mindengine.oculus.frontend.web.controllers.trm.tasks.SharedTaskSearchController">
-        <property name="title" value="Search Tasks"/>
+        <property name="title" value="Shared Tasks"/>
         <property name="sessionForm" value="true"/>
         <property name="commandName" value="searchFilter"/>
         <property name="commandClass" value="net.mindengine.oculus.frontend.domain.trm.TaskSearchFilter"/>

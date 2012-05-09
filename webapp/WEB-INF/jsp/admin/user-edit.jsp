@@ -46,61 +46,35 @@ pageContext.setAttribute("permissions",permissionsModel);
 
 <form method="post">
 	<tag:panel title="General Information" align="center">
-		<table border="0" width="500px" align="center">
-		   <tbody>
-		       <tr>
-		           <td>
-			           Name:<br/>
-			           <tag:edit-field name="name" width="100%" value="${editUser.name}"/>
-			       </td>
-		       </tr>
-		       <tr>
-	               <td>
-	                   Login:<br/><tag:edit-field name="login" width="100%" value="${editUser.login}"/>
-	               </td>
-	               
-	               
-	           </tr>
-	           <tr>
-	               <td>
-	                   Mail:<br/><tag:edit-field name="email" width="100%" value="${editUser.email}"/>
-	               </td>
-	           </tr>
-		       <tr>
-	               <td align="center">
-	                   <tag:submit value="Change"/>
-	               </td>
-	           </tr>
-		       <tr>
-		           <td>
-		               <div class="error">
-		               		<tag:spring-form-error field="" command="editUser"></tag:spring-form-error>
-		               </div>
-		           </td>
-		       </tr>
-		   </tbody>
-		</table>
-	
-	</tag:panel>
-	<br/>
-	
-	
-	
-	<tag:panel title="Permissions" align="center">
-	   <table border="0">
+		<p>
+            Name:<br/>
+            <tag:edit-field name="name" width="100%" value="${editUser.name}"/>
+        </p>
+		<p>
+		  Login:<br/>
+		  <tag:edit-field name="login" width="100%" value="${editUser.login}"/>
+	    </p>
+	    <p>
+	       Mail:<br/>
+	       <tag:edit-field name="email" width="100%" value="${editUser.email}"/>
+	    </p>
+	    
+	    <tag:panel-border title="Permissions" align="left">
 	       <c:forEach items="${permissions}" var="p">
-	           <tr>
-	               <td>
-	                   <input type="checkbox" 
-	                           id="p_${p.code}" 
-	                           name="p_${p.code}"
-	                           <c:if test="${p.selected==true}">checked="true"</c:if>
-	                       />
-	                   <label for="p_${p.code}">${p.description}</label>
-	               </td>
-	           </tr>
-	       </c:forEach>
-	   </table>
-	   
+               <input type="checkbox" 
+                               id="p_${p.code}" 
+                               name="p_${p.code}"
+                               <c:if test="${p.selected==true}">checked="true"</c:if>
+                           />
+                       <label for="p_${p.code}">${p.description}</label>
+               <br/>
+           </c:forEach>
+	    </tag:panel-border>
+	    
+		<tag:submit value="Change"/>
+		<div class="error">
+		    <tag:spring-form-error field="" command="editUser"></tag:spring-form-error>
+		</div>
+
 	</tag:panel>
 </form>

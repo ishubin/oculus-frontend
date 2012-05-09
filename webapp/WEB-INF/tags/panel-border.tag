@@ -10,6 +10,6 @@
 
 
 <div class="panel-border">
-<span class="panel-border-title"><tag:escape text="${title}"></tag:escape></span>
+<span class="panel-border-title"><tag:escape text="${title}"></tag:escape></span></br>
 <jsp:doBody></jsp:doBody>
 </div>

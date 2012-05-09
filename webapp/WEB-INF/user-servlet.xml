@@ -12,6 +12,7 @@
     <bean name="/profile-*" class="net.mindengine.oculus.frontend.web.controllers.user.ProfileController">
         <property name="view" value="profile"/>
         <property name="userDAO" ref="userDAO"/>
+        <property name="title" value="My Profile"/>
     </bean>
     
         
@@ -26,6 +27,7 @@
         <property name="userDAO" ref="userDAO"/>
         <property name="permissionList" ref="permissionList"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Login"/>
     </bean>
     
     <bean name="/forgot-password" class="net.mindengine.oculus.frontend.web.controllers.user.ForgotPasswordController">
@@ -37,6 +39,7 @@
         <property name="failedView" value="forgot-password"/>
         <property name="userDAO" ref="userDAO"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Forgot Password"/>
     </bean>
     
     <bean name="/change-password" class="net.mindengine.oculus.frontend.web.controllers.user.ChangePasswordController">
@@ -49,6 +52,7 @@
         <property name="formView" value="user-change-password"/>
         <property name="userDAO" ref="userDAO"/>
         <property name="config" ref="oculusConfig"/>
+        <property name="title" value="Change Password"/>
     </bean>
    
    
