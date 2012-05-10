@@ -134,7 +134,7 @@ public class EditTaskController extends SecureSimpleViewController {
 		
 		try {
 		    //In case there is no connection to Grid user should still be able to edit his tasks
-		    ClientServerRemoteInterface server = config.getGridServer();
+		    ClientServerRemoteInterface server = config.lookupGridServer();
 		    AgentStatus[] agents = server.getAgents();
             agentTagRulesContainer.wrapAgentTags(agents);
             map.put("agents", agents);

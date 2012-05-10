@@ -11,20 +11,11 @@
     <import resource="applicationContext-security.xml"/>
     
     
-    <bean id="oculusConfig" class="net.mindengine.oculus.frontend.config.Config">
-    	<property name="file" value="oculus.properties"/>
+    <bean id="oculusConfig" class="net.mindengine.oculus.frontend.config.Config" factory-method="getInstance">
     </bean>
     
     <bean id="agentTagRulesContainer" class="net.mindengine.oculus.frontend.service.trm.AgentTagRulesContainer">
     	<property name="file" value="agent.tags.rules"/>
-    </bean>
-    
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>oculus.properties</value>
-            </list>
-        </property>
     </bean>
     
     <bean id="userDAO" class="net.mindengine.oculus.frontend.service.user.JdbcUserDAO">
@@ -102,11 +93,13 @@
        <property name="beanMappingFactory" ref="beanMappingFactory"/>
     </bean>
     
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    	<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-	    <property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.scheme}"/>
-	    <property name="username" value="${db.username}"/>
-        <property name="password" value="${db.password}"/>
+    <bean id="dataSource" class="net.mindengine.oculus.frontend.service.jdbc.OculusJdbcDataSource">
+        <constructor-arg>
+            <value>com.mysql.jdbc.Driver</value>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="oculusConfig"/>
+        </constructor-arg>
 	</bean>
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">

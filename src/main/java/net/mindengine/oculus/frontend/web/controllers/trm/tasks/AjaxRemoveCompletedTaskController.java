@@ -40,7 +40,7 @@ public class AjaxRemoveCompletedTaskController extends SimpleAjaxController {
 		if (user == null)
 			throw new NotAuthorizedException();
 
-		ClientServerRemoteInterface server = config.getGridServer();
+		ClientServerRemoteInterface server = config.lookupGridServer();
 		TaskInformation task = server.getTask(taskId);
 
 		if (user.getId().equals(task.getTaskUser().getId())) {

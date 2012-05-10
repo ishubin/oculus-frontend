@@ -18,6 +18,7 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend;
 
+import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.grid.storage.DefaultGridStorage;
 
 import org.eclipse.jetty.server.Handler;
@@ -28,22 +29,22 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class OculusFrontend {
 
     private net.mindengine.oculus.grid.server.Server gridServer;
-    
-    public OculusFrontend() {
-        
+    private Config config;
+    public OculusFrontend(Config config) {
+        this.config = config;
     }
-    
+
     public void startGrid() {
         gridServer = new net.mindengine.oculus.grid.server.Server();
         
         DefaultGridStorage storage = new DefaultGridStorage();
-        storage.setStoragePath("../data/storage-server");
+        storage.setStoragePath(config.getGridServerStorage());
         gridServer.setStorage(storage);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    gridServer.startServer(8081, "grid");
+                    gridServer.startServer(config.getGridServerPort(), config.getGridServerName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -53,10 +54,12 @@ public class OculusFrontend {
     }
     
     public void start() throws Exception {
-        startGrid();
+        if (config.getGridEmbedded() ) {
+            startGrid();
+        }
         
         //Starting frontend web-server
-        Server server = new Server(8080);
+        Server server = new Server(config.getOculusServerPort());
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
         context.setWar("webapp");
@@ -70,7 +73,7 @@ public class OculusFrontend {
     }
     
     public static void main(String[] args) throws Exception {
-         OculusFrontend frontend = new OculusFrontend();
+         OculusFrontend frontend = new OculusFrontend(Config.getInstance());
          frontend.start();
     }
 }

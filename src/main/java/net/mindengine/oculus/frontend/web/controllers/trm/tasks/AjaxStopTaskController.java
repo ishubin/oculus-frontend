@@ -46,7 +46,7 @@ public class AjaxStopTaskController extends SimpleAjaxController {
 
 		Long taskId = Long.parseLong(request.getParameter("taskId"));
 		AjaxModel model = new AjaxModel();
-		ClientServerRemoteInterface server = config.getGridServer();
+		ClientServerRemoteInterface server = config.lookupGridServer();
 		/*
 		 * Checking that the task was run by this user.
 		 */

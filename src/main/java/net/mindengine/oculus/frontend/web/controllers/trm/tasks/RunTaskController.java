@@ -102,7 +102,7 @@ public class RunTaskController extends SecureSimpleViewController {
             taskUser.setId(user.getId());
             taskUser.setName(user.getName());
 
-            ClientServerRemoteInterface server = config.getGridServer();
+            ClientServerRemoteInterface server = config.lookupGridServer();
             DefaultTask task = new DefaultTask();
             task.setTaskUser(taskUser);
             task.setName(trmTask.getName());
@@ -242,7 +242,7 @@ public class RunTaskController extends SecureSimpleViewController {
 	         */
 	        ClientServerRemoteInterface server = null;
 	        try {
-	            server = config.getGridServer();
+	            server = config.lookupGridServer();
 	        }
 	        catch (Exception e) {
 	            logger.error("Can't connect to TRMServer", e);

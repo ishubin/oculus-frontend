@@ -145,7 +145,7 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
     }
     
     public ClientServerRemoteInterface server() throws Exception{
-        return config.getGridServer();
+        return config.lookupGridServer();
     }
     
     public Row convertTask(TaskInformation task, int parentLevel, String parentId, ClientServerRemoteInterface server){

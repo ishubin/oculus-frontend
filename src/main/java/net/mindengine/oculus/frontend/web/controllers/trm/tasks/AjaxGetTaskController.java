@@ -45,7 +45,7 @@ public class AjaxGetTaskController extends SimpleAjaxController {
 		Long taskId = Long.parseLong(request.getParameter("taskId"));
 		AjaxModel model = new AjaxModel();
 
-		ClientServerRemoteInterface server = config.getGridServer();
+		ClientServerRemoteInterface server = config.lookupGridServer();
 
 		TaskInformation serverTask = server.getTask(taskId);
 		

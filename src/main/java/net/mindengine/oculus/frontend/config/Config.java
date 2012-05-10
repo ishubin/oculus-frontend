@@ -20,6 +20,7 @@ package net.mindengine.oculus.frontend.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import net.mindengine.jeremy.registry.Lookup;
@@ -36,11 +37,6 @@ import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
  */
 public class Config {
 	
-	/**
-	 * Used as a Java bean property for specifiying the oculus path from
-	 * applicationContext.xml
-	 */
-	private File file;
 	private String dataFolder;
 	private String documentsFolder;
 	private String trmFolder;
@@ -50,9 +46,72 @@ public class Config {
 	private String mailSmtpHost;
 	private String mailSender;
 	private String oculusServerUrl;
+	private int oculusServerPort;
 
-	public Config() {
+	private String gridServerName;
+	private int gridServerPort;
+	private String gridServerStorage;
+	private String gridServerHost;
+	private Boolean gridEmbedded = true;
+	private static Config _config = null;
+	
+	private String dbHost;
+	private Integer dbPort;
+	private String dbUsername;
+	private String dbPassword;
+	private String dbScheme;
+	
+	private Config() {
+	    Properties properties = loadPropertiesFile(new File("oculus.properties"));
+	    overrideWithSystemProperties(properties);
+	    readProperties(properties);
+	}
+	
+	private void overrideWithSystemProperties(Properties properties) {
+        Properties systemProperties = System.getProperties();
+        for ( Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
+            String value;
+            if ( entry.getValue() != null ) {
+                value = entry.getValue().toString();
+            }
+            else value = "";
+            properties.setProperty(entry.getKey().toString(), value);
+        }
+    }
 
+    private void readProperties(Properties properties) {
+	    setDataFolder(properties.getProperty("data.folder"));
+        setDocumentsFolder(properties.getProperty("documents.folder"));
+        setTrmFolder(properties.getProperty("trm.folder"));
+
+        setTrmServerHost(properties.getProperty("trm.server.host"));
+        setTrmServerPort(properties.getProperty("trm.server.port"));
+        setTrmServerName(properties.getProperty("trm.server.name"));
+
+        setMailSmtpHost(properties.getProperty("mail.smtp.host"));
+        setMailSender(properties.getProperty("mail.sender"));
+
+        setOculusServerUrl(properties.getProperty("oculus.server.url"));
+        setOculusServerPort(Integer.parseInt(properties.getProperty("oculus.server.port", "8080")));
+        
+        setGridServerName(properties.getProperty("grid.server.name","grid"));
+        setGridServerHost(properties.getProperty("grid.server.host","localhost"));
+        setGridServerPort(Integer.parseInt(properties.getProperty("grid.server.port", "8081")));
+        setGridServerStorage(properties.getProperty("grid.server.storage"));
+        setGridEmbedded(Boolean.parseBoolean(properties.getProperty("grid.embedded", "true")));
+        
+        setDbHost(properties.getProperty("db.host"));
+        setDbPort(Integer.parseInt(properties.getProperty("db.port", "3306")));
+        setDbUsername(properties.getProperty("db.username"));
+        setDbPassword(properties.getProperty("db.password"));
+        setDbScheme(properties.getProperty("db.scheme"));
+    }
+
+    public synchronized static Config getInstance() {
+	    if ( _config == null) {
+	        _config = new Config();
+	    }   
+	    return _config;
 	}
 
 	/**
@@ -61,10 +120,10 @@ public class Config {
 	 * @return Remote instance of the {@link Server}
 	 * @throws Exception
 	 */
-	public ClientServerRemoteInterface getGridServer() throws Exception {
+	public ClientServerRemoteInterface lookupGridServer() throws Exception {
 	    Lookup lookup = GridUtils.createDefaultLookup();
-        lookup.setUrl("http://localhost:8081");
-        return lookup.getRemoteObject("grid", ClientServerRemoteInterface.class);
+        lookup.setUrl("http://" + getGridServerHost() + ":" + getGridServerPort());
+        return lookup.getRemoteObject(getGridServerName(), ClientServerRemoteInterface.class);
 	}
 
 	public String getDataFolder() {
@@ -75,37 +134,19 @@ public class Config {
 		this.dataFolder = dataFolder;
 	}
 
-	public File getFile() {
-		return file;
-	}
-
-	/**
-	 * This method is mainly used to specify the Oculus configuration file from
-	 * <b>applicationContext.xml</b>. Once the method was invoked the
-	 * configuration file will be pick up and parsed for all existent
-	 * properties.
-	 * 
-	 * @param file
-	 * @throws Exception
-	 */
-	public void setFile(File file) throws Exception {
+	private Properties loadPropertiesFile(File file) {
 		Properties props = new Properties();
-		FileInputStream fis = new FileInputStream(file);
-		props.load(fis);
-		fis.close();
-
-		setDataFolder(props.getProperty("data.folder"));
-		setDocumentsFolder(props.getProperty("documents.folder"));
-		setTrmFolder(props.getProperty("trm.folder"));
-
-		setTrmServerHost(props.getProperty("trm.server.host"));
-		setTrmServerPort(props.getProperty("trm.server.port"));
-		setTrmServerName(props.getProperty("trm.server.name"));
-
-		setMailSmtpHost(props.getProperty("mail.smtp.host"));
-		setMailSender(props.getProperty("mail.sender"));
-
-		setOculusServerUrl(props.getProperty("oculus.server.url"));
+		
+		try {
+    		FileInputStream fis = new FileInputStream(file);
+    		props.load(fis);
+    		fis.close();
+		}
+		catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		return props;
 	}
 
 	public void setDocumentsFolder(String documentsFolder) {
@@ -171,5 +212,93 @@ public class Config {
 	public String getOculusServerUrl() {
 		return oculusServerUrl;
 	}
+
+    public String getGridServerName() {
+        return gridServerName;
+    }
+
+    public void setGridServerName(String gridServerName) {
+        this.gridServerName = gridServerName;
+    }
+
+    public int getGridServerPort() {
+        return gridServerPort;
+    }
+
+    public void setGridServerPort(int gridServerPort) {
+        this.gridServerPort = gridServerPort;
+    }
+
+    public String getGridServerStorage() {
+        return gridServerStorage;
+    }
+
+    public void setGridServerStorage(String gridServerStorage) {
+        this.gridServerStorage = gridServerStorage;
+    }
+
+    public int getOculusServerPort() {
+        return oculusServerPort;
+    }
+
+    public void setOculusServerPort(int oculusServerPort) {
+        this.oculusServerPort = oculusServerPort;
+    }
+
+    public String getGridServerHost() {
+        return gridServerHost;
+    }
+
+    public void setGridServerHost(String gridServerHost) {
+        this.gridServerHost = gridServerHost;
+    }
+
+    public Boolean getGridEmbedded() {
+        return gridEmbedded;
+    }
+
+    public void setGridEmbedded(Boolean gridEmbedded) {
+        this.gridEmbedded = gridEmbedded;
+    }
+
+    public String getDbHost() {
+        return dbHost;
+    }
+
+    public void setDbHost(String dbHost) {
+        this.dbHost = dbHost;
+    }
+
+    public Integer getDbPort() {
+        return dbPort;
+    }
+
+    public void setDbPort(Integer dbPort) {
+        this.dbPort = dbPort;
+    }
+
+    public String getDbUsername() {
+        return dbUsername;
+    }
+
+    public void setDbUsername(String dbUsername) {
+        this.dbUsername = dbUsername;
+    }
+
+    public String getDbPassword() {
+        return dbPassword;
+    }
+
+    public void setDbPassword(String dbPassword) {
+        this.dbPassword = dbPassword;
+    }
+
+    public String getDbScheme() {
+        return dbScheme;
+    }
+
+    public void setDbScheme(String dbScheme) {
+        this.dbScheme = dbScheme;
+    }
 
 }

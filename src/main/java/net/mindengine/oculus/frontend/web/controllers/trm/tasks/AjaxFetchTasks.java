@@ -210,7 +210,7 @@ public class AjaxFetchTasks extends SimpleAjaxController {
 
 		AjaxModel ajaxModel = new AjaxModel();
 
-		ClientServerRemoteInterface server = config.getGridServer();
+		ClientServerRemoteInterface server = config.lookupGridServer();
 
 		TaskInformation[] tasks = server.getAllUserTasks(user.getId());
 
