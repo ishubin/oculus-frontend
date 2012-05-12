@@ -44,7 +44,8 @@ public class Config {
 	private String trmServerPort;
 	private String trmServerName;
 	private String mailSmtpHost;
-	private String mailSender;
+	private String mailSenderName;
+	private Integer mailSmtpPort;
 	private String oculusServerUrl;
 	private int oculusServerPort;
 
@@ -89,7 +90,8 @@ public class Config {
         setTrmServerName(properties.getProperty("trm.server.name"));
 
         setMailSmtpHost(properties.getProperty("mail.smtp.host"));
-        setMailSender(properties.getProperty("mail.sender"));
+        setMailSmtpPort(Integer.parseInt(properties.getProperty("mail.smtp.port", "25")));
+        setMailSenderName(properties.getProperty("mail.sender.name"));
 
         setOculusServerUrl(properties.getProperty("oculus.server.url"));
         setOculusServerPort(Integer.parseInt(properties.getProperty("oculus.server.port", "8080")));
@@ -197,14 +199,6 @@ public class Config {
 		return mailSmtpHost;
 	}
 
-	public void setMailSender(String mailSender) {
-		this.mailSender = mailSender;
-	}
-
-	public String getMailSender() {
-		return mailSender;
-	}
-
 	public void setOculusServerUrl(String oculusServerUrl) {
 		this.oculusServerUrl = oculusServerUrl;
 	}
@@ -299,6 +293,22 @@ public class Config {
 
     public void setDbScheme(String dbScheme) {
         this.dbScheme = dbScheme;
+    }
+
+    public Integer getMailSmtpPort() {
+        return mailSmtpPort;
+    }
+
+    public void setMailSmtpPort(Integer mailSmtpPort) {
+        this.mailSmtpPort = mailSmtpPort;
+    }
+
+    public String getMailSenderName() {
+        return mailSenderName;
+    }
+
+    public void setMailSenderName(String mailSenderName) {
+        this.mailSenderName = mailSenderName;
     }
 
 }

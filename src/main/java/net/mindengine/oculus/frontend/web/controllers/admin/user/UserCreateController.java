@@ -57,7 +57,7 @@ public class UserCreateController extends SecureSimpleFormController {
 		boolean isMailSent = true;
 		String mailExceptionMessage = "";
 		try {
-			MailUtils.postMail(config.getMailSmtpHost(), new String[] { user.getEmail() }, "Oculus Password Recovery", msg, config.getMailSender());
+			MailUtils.postMail(config.getMailSmtpHost(), config.getMailSmtpPort(), new String[] { user.getEmail() }, "Oculus Password Recovery", msg, config.getMailSenderName());
 		}
 		catch (Exception e) {
 			e.printStackTrace();

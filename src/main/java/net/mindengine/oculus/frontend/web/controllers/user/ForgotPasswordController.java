@@ -55,7 +55,7 @@ public class ForgotPasswordController extends SecureSimpleFormController {
 			msg += "Login: " + user.getLogin() + "\n";
 			msg += "Password: " + user.getPassword();
 
-			MailUtils.postMail(config.getMailSmtpHost(), new String[] { user.getEmail() }, "Oculus Password Recovery", msg, config.getMailSender());
+			MailUtils.postMail(config.getMailSmtpHost(), config.getMailSmtpPort(), new String[] { user.getEmail() }, "Oculus Password Recovery", msg, config.getMailSenderName());
 
 			ModelAndView mav = new ModelAndView(getSuccessView());
 			mav.addObject("forgotPasswordEmail", data.getEmail());

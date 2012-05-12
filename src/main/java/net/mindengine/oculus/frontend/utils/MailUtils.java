@@ -28,12 +28,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class MailUtils {
-	public static void postMail(String smtpHost, String recipients[], String subject, String message, String from) throws MessagingException {
+	public static void postMail(String smtpHost, Integer smtpPort, String recipients[], String subject, String message, String from) throws MessagingException {
 		boolean debug = false;
 
 		// Set the host smtp address
 		Properties props = new Properties();
 		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
 
 		// create some properties and get the default Session
 		Session session = Session.getDefaultInstance(props, null);
