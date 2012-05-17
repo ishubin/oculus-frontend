@@ -15,14 +15,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
-
-<table border="0" <c:if test="${align!=null}">align="${align}"</c:if>
-    <c:if test="${width!=null}">width="${width}"</c:if>
-    <c:if test="${height!=null}">height="${height}"</c:if>
->
-    <tr>
-        <td>
-            <div class="custom-panel-wrap">
+<c:if test="${width==null || width=='' || width=='100%' }">
+    <c:set var="width" value="auto"/>
+</c:if>
+            <div class="custom-panel-wrap" style="width:${width};">
 			    <div class="custom-panel-title ${disclosure==true?'custom-panel-title-active':''}"
 			        <c:if test="${disclosure==true}">onclick="onPanelToggle('${id}');"</c:if>
 			    >
@@ -61,6 +57,3 @@
 			        <jsp:doBody></jsp:doBody>
 			    </div>
 			</div>
-        </td>
-    </tr>
-</table>

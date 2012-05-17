@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.mindengine.jeremy.registry.Lookup;
+import net.mindengine.oculus.experior.utils.PropertyUtils;
 import net.mindengine.oculus.grid.GridUtils;
 import net.mindengine.oculus.grid.server.Server;
 import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
@@ -64,22 +65,11 @@ public class Config {
 	
 	private Config() {
 	    Properties properties = loadPropertiesFile(new File("oculus.properties"));
-	    overrideWithSystemProperties(properties);
+	    PropertyUtils.overridePropertiesWithSystemProperties(properties);
 	    readProperties(properties);
 	}
 	
-	private void overrideWithSystemProperties(Properties properties) {
-        Properties systemProperties = System.getProperties();
-        for ( Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
-            String value;
-            if ( entry.getValue() != null ) {
-                value = entry.getValue().toString();
-            }
-            else value = "";
-            properties.setProperty(entry.getKey().toString(), value);
-        }
-    }
-
+	
     private void readProperties(Properties properties) {
 	    setDataFolder(properties.getProperty("data.folder"));
         setDocumentsFolder(properties.getProperty("documents.folder"));
