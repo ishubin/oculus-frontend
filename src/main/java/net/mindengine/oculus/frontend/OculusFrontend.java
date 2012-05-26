@@ -21,6 +21,7 @@ package net.mindengine.oculus.frontend;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.grid.storage.DefaultGridStorage;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -73,7 +74,8 @@ public class OculusFrontend {
     }
     
     public static void main(String[] args) throws Exception {
-         OculusFrontend frontend = new OculusFrontend(Config.getInstance());
-         frontend.start();
+        PropertyConfigurator.configure("log4j.properties");
+        OculusFrontend frontend = new OculusFrontend(Config.getInstance());
+        frontend.start();
     }
 }
