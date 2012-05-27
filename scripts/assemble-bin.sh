@@ -20,8 +20,11 @@ if [[ ! -f target/oculus-frontend-jar-with-dependencies.jar ]]; then
 fi
 
 cp target/oculus-frontend-jar-with-dependencies.jar  bin/oculus-frontend.jar
-cp oculus.properties bin/oculus.properties
+cp _oculus.properties bin/oculus.properties
 cp log4j.properties bin/log4j.properties
 cp scripts/run.sh bin/run.sh
+cp -r webapp bin/webapp
+cd bin
+zip -r -9 oculus-frontend.zip *
 
 echo Oculus Fronted project was successfully assembled
