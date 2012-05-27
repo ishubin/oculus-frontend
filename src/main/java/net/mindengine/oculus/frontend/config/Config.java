@@ -83,7 +83,7 @@ public class Config {
         setMailSmtpPort(Integer.parseInt(properties.getProperty("mail.smtp.port", "25")));
         setMailSenderName(properties.getProperty("mail.sender.name"));
 
-        setOculusServerUrl(properties.getProperty("oculus.server.url"));
+        setOculusServerUrl(properties.getProperty("oculus.offline.report.server.url"));
         setOculusServerPort(Integer.parseInt(properties.getProperty("oculus.server.port", "8080")));
         
         setGridServerName(properties.getProperty("grid.server.name","grid"));
