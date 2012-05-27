@@ -18,15 +18,20 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.web.controllers.project;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.customization.Customization;
 import net.mindengine.oculus.frontend.domain.project.Project;
@@ -36,7 +41,6 @@ import net.mindengine.oculus.frontend.service.customization.CustomizationUtils;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.user.UserDAO;
-import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
 import org.springframework.validation.BindException;
@@ -98,25 +102,23 @@ public class ProjectEditController extends SecureSimpleFormController {
 
 		MultipartFile multipartFile = project.getIconFile();
 		if (multipartFile != null) {
-			if (multipartFile.getOriginalFilename().toLowerCase().endsWith(".png")) {
-				Project oldProject = projectDAO.getProject(id);
-				// Deleting old icon
-				if (oldProject.getIcon() != null && !oldProject.getIcon().isEmpty()) {
-					String path = config.getDataFolder() + File.separator + "projects" + File.separator + id + File.separator + "icon_" + oldProject.getIcon() + ".png";
-					File file = new File(path);
-					file.delete();
-				}
-
-				Date date = new Date();
-				String path = config.getDataFolder() + File.separator + "projects" + File.separator + id;
-				FileUtils.mkdirs(path);
-				File file = new File(path + File.separator + "icon_" + date.getTime() + ".png");
-				file.createNewFile();
-				FileOutputStream fos = new FileOutputStream(file);
-				fos.write(multipartFile.getBytes());
-				fos.close();
-				project.setIcon(Long.toString(date.getTime()));
-			}
+		    
+		    Project oldProject = projectDAO.getProject(id);
+		    String oldIconPath = null;
+		    if (oldProject.getIcon() != null && !oldProject.getIcon().isEmpty()) {
+                oldIconPath = config.getDataFolder() + File.separator + "projects" + File.separator + id + File.separator + "icon_" + oldProject.getIcon() + ".png";
+		    }
+		    
+		    
+		    BufferedImage image = readImageFromMultipartFile(multipartFile); 
+		    if ( image != null ) {
+		        if ( oldIconPath != null ) {
+		            File file = new File(oldIconPath);
+                    file.delete();
+		        }
+		        
+		        project.setIcon(saveProjectIconFromBufferedImage(resize(image, 120, 120), project.getId()));
+		    }
 		}
 
 		projectDAO.updateProject(id, project);
@@ -124,8 +126,43 @@ public class ProjectEditController extends SecureSimpleFormController {
 
 		return new ModelAndView(new RedirectView("../project/edit?id=" + id));
 	}
+	
+	private static BufferedImage resize(BufferedImage image, int width, int height) {
+	    BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g = resizedImage.createGraphics();
+	    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-	public void updateProjectCustomizationValues(HttpServletRequest request, Project project) throws Exception {
+	    g.drawImage(image, 0, 0, width, height, null);
+	    g.dispose();
+	    return resizedImage;
+	} 
+
+	private String saveProjectIconFromBufferedImage(BufferedImage image, Long id) throws IOException {
+	    Date date = new Date();
+        String path = config.getDataFolder() + File.separator + "projects" + File.separator + id;
+        new File(path).mkdirs();
+        File file = new File(path + File.separator + "icon_" + date.getTime() + ".png");
+        file.createNewFile();
+        
+        BufferedImage imageRGB = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        imageRGB.setData(image.getData());
+        
+        ImageIO.write(imageRGB, "png", file);
+
+        return Long.toString(date.getTime());
+    }
+
+    private BufferedImage readImageFromMultipartFile(MultipartFile multipartFile) {
+	    try {
+	        return ImageIO.read(multipartFile.getInputStream());
+	    }
+	    catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void updateProjectCustomizationValues(HttpServletRequest request, Project project) throws Exception {
 		Long rootId = projectDAO.getProjectRootId(project.getId(), 10);
 		CustomizationUtils.updateUnitCustomizationValues(rootId, project.getId(), Customization.UNIT_PROJECT, customizationDAO, request);
 	}
