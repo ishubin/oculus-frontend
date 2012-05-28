@@ -33,7 +33,6 @@ import net.mindengine.oculus.frontend.service.customization.CustomizationUtils;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.user.UserDAO;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
 import org.springframework.validation.BindException;
@@ -78,8 +77,7 @@ public class ProjectCreateController extends SecureSimpleFormController {
 		if (project == null)
 			throw new UnexistentResource("");
 
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
+		User user = getAuthorizedUser(request);
 		project.setAuthorId(user.getId());
 		project.setDate(new Date());
 		if (project.getParentId() == null || project.getParentId().equals(0)) {

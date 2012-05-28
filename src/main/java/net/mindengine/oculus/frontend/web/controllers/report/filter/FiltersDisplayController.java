@@ -36,10 +36,7 @@ public class FiltersDisplayController extends SecureSimpleViewController {
 
 	@Override
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
-		if (user == null)
-			throw new NotAuthorizedException();
+		User user = getAuthorizedUser(request);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Filter> filters = filterDAO.getUserFilters(user.getId());

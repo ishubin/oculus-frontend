@@ -26,7 +26,6 @@ import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.folder.FolderDAO;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 
 import org.apache.commons.logging.Log;
@@ -39,8 +38,7 @@ public class DocumentFolderDeleteController extends SimpleAjaxController {
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
 		verifyPermissions(request);
-		Session s = Session.create(request);
-		User user = s.getAuthorizedUser();
+		User user = getUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

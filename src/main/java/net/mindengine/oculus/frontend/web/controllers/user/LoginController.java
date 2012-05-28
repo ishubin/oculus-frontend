@@ -20,6 +20,9 @@ package net.mindengine.oculus.frontend.web.controllers.user;
 
 import java.util.Map;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,6 +31,7 @@ import net.mindengine.oculus.frontend.domain.user.LoginData;
 import net.mindengine.oculus.frontend.domain.user.PermissionList;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.user.UserDAO;
+import net.mindengine.oculus.frontend.web.Auth;
 import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
@@ -62,17 +66,17 @@ public class LoginController extends SecureSimpleFormController {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-		Session session = Session.create(request);
 		LoginData loginData = (LoginData) command;
 
 		User user = userDAO.authorizeUser(loginData.getLogin(), loginData.getPassword());
 		if (user != null) {
 			logger.info("Authorization Allowed for user:[" + user.getId() + "," + user.getEmail() + "]");
-			session.authorizeUser(user, permissionList);
+			user.updatePermissions(getPermissionList());
+			Auth.setUserCookieToResponse(response, user);
+			
 			String redirectUrl = "../user/profile-" + user.getLogin();
 
 			ModelAndView mav = new ModelAndView(new RedirectView(redirectUrl));
-
 			return mav;
 		}
 		else {

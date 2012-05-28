@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.mindengine.oculus.frontend.domain.folder.Folder;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.folder.FolderDAO;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -44,8 +43,7 @@ public class DocumentFolderCreateController extends SecureSimpleViewController {
 		try {
 			verifyPermissions(request);
 			logger.info("Creating folder");
-			Session s = Session.create(request);
-			User user = s.getAuthorizedUser();
+			User user = getUser(request);
 
 			String folderName = request.getParameter("name");
 			String projectId = request.getParameter("projectId");

@@ -22,6 +22,7 @@ import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.AjaxModel;
 import net.mindengine.oculus.frontend.domain.document.Document;
@@ -29,8 +30,6 @@ import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
-import net.mindengine.oculus.experior.utils.FileUtils;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 
 public class DocumentFileDeleteController extends SimpleAjaxController {
@@ -39,8 +38,7 @@ public class DocumentFileDeleteController extends SimpleAjaxController {
 
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
-		Session s = Session.create(request);
-		User user = s.getAuthorizedUser();
+	    User user = getUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

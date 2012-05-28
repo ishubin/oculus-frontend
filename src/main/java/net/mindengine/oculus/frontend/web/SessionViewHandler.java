@@ -18,6 +18,7 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.web;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
@@ -32,16 +33,15 @@ import net.mindengine.oculus.frontend.domain.user.User;
  * 
  */
 public class SessionViewHandler {
-	public static void createSessionModel(PageContext pageContext, HttpSession httpSession) {
-		User user = null;
-
+	public static void createSessionModel(PageContext pageContext, HttpServletRequest request) {
 		String temporaryMessage = null;
+		HttpSession httpSession = request.getSession();
 		if (httpSession != null) {
 			Session session = Session.create(httpSession);
-			user = session.getAuthorizedUser();
-
 			temporaryMessage = session.getTemporaryMessage();
 		}
+		
+		User user = Auth.getUserFromRequest(request);
 		pageContext.setAttribute("user", user);
 
 		pageContext.setAttribute("temporaryMessage", temporaryMessage);

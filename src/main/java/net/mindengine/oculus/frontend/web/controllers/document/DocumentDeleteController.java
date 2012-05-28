@@ -25,7 +25,6 @@ import net.mindengine.oculus.frontend.domain.document.Document;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 
 public class DocumentDeleteController extends SimpleAjaxController {
@@ -34,8 +33,7 @@ public class DocumentDeleteController extends SimpleAjaxController {
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
 		verifyPermissions(request);
-		Session s = Session.create(request);
-		User user = s.getAuthorizedUser();
+		User user = getUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

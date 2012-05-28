@@ -29,7 +29,7 @@ import net.mindengine.oculus.frontend.domain.user.Permission;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.PermissionDeniedException;
-import net.mindengine.oculus.frontend.web.Session;
+import net.mindengine.oculus.frontend.web.Auth;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,9 +74,12 @@ public class SecureSimpleFormController extends SimpleFormController {
 	 * @return
 	 */
 	public User getUser(HttpServletRequest request) {
-		Session session = Session.create(request);
-		return session.getAuthorizedUser();
+		return Auth.getUserFromRequest(request);
 	}
+	
+	public User getAuthorizedUser(HttpServletRequest request) throws NotAuthorizedException {
+	    return Auth.getAuthorizedUser(request);
+    }
 
 	protected void verifyPermissions(HttpServletRequest request) throws Exception {
 		User user = getUser(request);

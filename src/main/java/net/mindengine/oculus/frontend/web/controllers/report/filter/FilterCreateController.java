@@ -25,9 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.mindengine.oculus.frontend.domain.report.filter.Filter;
 import net.mindengine.oculus.frontend.domain.user.User;
-import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.report.filter.FilterDAO;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -38,11 +36,8 @@ public class FilterCreateController extends SecureSimpleViewController {
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
-		if (user == null)
-			throw new NotAuthorizedException();
-
+		User user = getAuthorizedUser(request);
+		
 		String name = request.getParameter("name");
 		String description = request.getParameter("description");
 		String strFilter = request.getParameter("filter");

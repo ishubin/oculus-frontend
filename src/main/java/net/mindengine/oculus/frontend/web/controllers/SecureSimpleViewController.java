@@ -30,7 +30,7 @@ import net.mindengine.oculus.frontend.service.exceptions.InvalidRequest;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.PermissionDeniedException;
 import net.mindengine.oculus.frontend.service.exceptions.RedirectException;
-import net.mindengine.oculus.frontend.web.Session;
+import net.mindengine.oculus.frontend.web.Auth;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,9 +53,12 @@ public class SecureSimpleViewController implements Controller {
 	 * @return
 	 */
 	public User getUser(HttpServletRequest request) {
-		Session session = Session.create(request);
-		return session.getAuthorizedUser();
+		return Auth.getUserFromRequest(request);
 	}
+	
+	public User getAuthorizedUser(HttpServletRequest request) throws NotAuthorizedException {
+        return Auth.getAuthorizedUser(request);
+    }
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {

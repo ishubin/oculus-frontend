@@ -18,6 +18,7 @@
 ******************************************************************************/
 package net.mindengine.oculus.frontend.domain.user;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,13 @@ import java.util.Map;
 import net.mindengine.oculus.frontend.service.crypt.BitCrypter;
 import net.mindengine.oculus.frontend.service.exceptions.PermissionDeniedException;
 
-public class User {
+public class User implements Serializable {
 
-	private Long id;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 4110792533124191561L;
+    private Long id;
 	private String name;
 	private String login;
 	private String password;

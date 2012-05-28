@@ -52,8 +52,7 @@ public class BuildsBrowseController extends SecureSimpleViewController {
 		}
 
 		boolean bManageBuild = false;
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
+		User user = getAuthorizedUser(request);
 		if (user != null && user.hasPermission(7)) {
 			bManageBuild = true;
 		}

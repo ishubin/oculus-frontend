@@ -27,17 +27,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.config.Config;
-import net.mindengine.oculus.frontend.domain.document.Document;
 import net.mindengine.oculus.frontend.domain.document.DocumentAttachment;
-import net.mindengine.oculus.frontend.domain.folder.Folder;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
-import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.folder.FolderDAO;
-import net.mindengine.oculus.experior.utils.FileUtils;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -53,8 +49,7 @@ public class DocumentAttachmentUploadController extends SecureSimpleFormControll
     @Override
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         ModelAndView mav = new ModelAndView(getSuccessView());
-        Session session = Session.create(request);
-        User user = session.getAuthorizedUser();
+        User user = getUser(request);
         if (user == null)
             throw new NotAuthorizedException();
 

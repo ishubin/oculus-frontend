@@ -35,7 +35,7 @@ public class DeleteTaskController extends SecureSimpleViewController {
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
 		Long taskId = Long.parseLong(request.getParameter("taskId"));
 		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
+		User user = getAuthorizedUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

@@ -34,15 +34,12 @@ import org.jfree.chart.JFreeChart;
 
 public class Session {
 
+    
+    
 	private HttpSession session;
 
 	public Session(HttpSession session) {
 		this.session = session;
-	}
-
-	public void authorizeUser(User user, PermissionList permissionList) {
-		user.updatePermissions(permissionList);
-		session.setAttribute("user", user);
 	}
 
 	public void saveChart(String chartId, JFreeChart chart) {
@@ -107,14 +104,6 @@ public class Session {
 	 */
 	public void setTemporaryMessage(String message) {
 		session.setAttribute("temporary_message", message);
-	}
-
-	public User getAuthorizedUser() {
-		return (User) session.getAttribute("user");
-	}
-
-	public void cleanUserData() {
-		session.removeAttribute("user");
 	}
 
 	public HttpSession getSession() {

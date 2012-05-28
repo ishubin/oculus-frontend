@@ -21,7 +21,7 @@ package net.mindengine.oculus.frontend.web.controllers.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.mindengine.oculus.frontend.web.Session;
+import net.mindengine.oculus.frontend.web.Auth;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -31,8 +31,7 @@ public class LogoutController implements Controller {
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Session session = Session.create(request);
-		session.cleanUserData();
+		Auth.removeUserCookie(response);
 		return new ModelAndView(new RedirectView("../display/home"));
 	}
 

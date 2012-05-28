@@ -97,7 +97,7 @@ public class RunTaskController extends SecureSimpleViewController {
         if(suites.size()>0){
             trmTask.setSuites(suites);
             
-            User user = Session.create(request).getAuthorizedUser();
+            User user = getAuthorizedUser(request);
             TaskUser taskUser = new TaskUser();
             taskUser.setId(user.getId());
             taskUser.setName(user.getName());

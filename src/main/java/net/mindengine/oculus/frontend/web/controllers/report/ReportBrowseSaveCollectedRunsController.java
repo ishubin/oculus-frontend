@@ -35,6 +35,7 @@ import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.runs.TestRunDAO;
 import net.mindengine.oculus.experior.utils.FileUtils;
+import net.mindengine.oculus.frontend.web.Auth;
 import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
@@ -53,7 +54,7 @@ public class ReportBrowseSaveCollectedRunsController extends SecureSimpleViewCon
 		if (redirect == null) {
 			redirect = "";
 		}
-		User user = session.getAuthorizedUser();
+		User user = Auth.getAuthorizedUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

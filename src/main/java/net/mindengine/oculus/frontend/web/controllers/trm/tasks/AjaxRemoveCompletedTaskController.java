@@ -34,9 +34,8 @@ public class AjaxRemoveCompletedTaskController extends SimpleAjaxController {
 
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
-		Session session = Session.create(request);
 		Long taskId = Long.parseLong(request.getParameter("taskId"));
-		User user = session.getAuthorizedUser();
+		User user = getAuthorizedUser(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

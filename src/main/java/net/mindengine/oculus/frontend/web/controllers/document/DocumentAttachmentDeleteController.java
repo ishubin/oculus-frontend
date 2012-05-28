@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.AjaxModel;
 import net.mindengine.oculus.frontend.domain.document.DocumentAttachment;
@@ -30,8 +31,6 @@ import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
-import net.mindengine.oculus.experior.utils.FileUtils;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 
 public class DocumentAttachmentDeleteController  extends SimpleAjaxController {
@@ -40,10 +39,10 @@ public class DocumentAttachmentDeleteController  extends SimpleAjaxController {
 
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
-		Session s = Session.create(request);
-		User user = s.getAuthorizedUser();
-		if (user == null)
+		User user = getUser(request);
+		if (user == null) {
 			throw new NotAuthorizedException();
+		}
 
 		verifyPermissions(request);
 		AjaxModel model = new AjaxModel();

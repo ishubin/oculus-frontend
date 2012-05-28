@@ -26,7 +26,7 @@ import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.comment.CommentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
-import net.mindengine.oculus.frontend.web.Session;
+import net.mindengine.oculus.frontend.web.Auth;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -36,8 +36,7 @@ public class CommentRemoveController extends SecureSimpleViewController {
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
+		User user = Auth.getUserFromRequest(request);
 		if (user == null)
 			throw new NotAuthorizedException();
 

@@ -28,8 +28,6 @@ import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.AjaxModel;
 import net.mindengine.oculus.frontend.domain.trm.SuiteStatisticUtils;
 import net.mindengine.oculus.frontend.domain.user.User;
-import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 import net.mindengine.oculus.grid.domain.agent.AgentInformation;
 import net.mindengine.oculus.grid.domain.task.SuiteInformation;
@@ -204,9 +202,7 @@ public class AjaxFetchTasks extends SimpleAjaxController {
 	
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
-		User user = Session.create(request).getAuthorizedUser();
-		if (user == null)
-			throw new NotAuthorizedException();
+		User user = getAuthorizedUser(request);
 
 		AjaxModel ajaxModel = new AjaxModel();
 

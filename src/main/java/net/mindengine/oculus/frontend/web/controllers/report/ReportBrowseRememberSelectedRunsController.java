@@ -26,8 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.mindengine.oculus.frontend.domain.report.TestRunSearchData;
+import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.runs.TestRunDAO;
+import net.mindengine.oculus.frontend.web.Auth;
 import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
@@ -51,7 +53,7 @@ public class ReportBrowseRememberSelectedRunsController extends SecureSimpleView
 			for (int i = 0; i < ids.length; i++) {
 				list.add(Integer.parseInt(ids[i]));
 			}
-			collectTestRuns(list, session);
+			collectTestRuns(request, list, session);
 		}
 
 		String removeIds = request.getParameter("removeIds");
@@ -85,8 +87,10 @@ public class ReportBrowseRememberSelectedRunsController extends SecureSimpleView
 		session.setCollectedTestRuns(list);
 	}
 
-	private void collectTestRuns(List<Integer> list, Session session) throws Exception {
-		if (session.getAuthorizedUser() != null) {
+	private void collectTestRuns(HttpServletRequest request, List<Integer> list, Session session) throws Exception {
+	    
+	    User user = Auth.getUserFromRequest(request);
+		if (user != null) {
 			List<TestRunSearchData> testRunListToSave = testRunDAO.getTestRunsByIds(list);
 			List<TestRunSearchData> savedTestRunList = session.getCollectedTestRuns();
 			// Adding new list to the existent list in session

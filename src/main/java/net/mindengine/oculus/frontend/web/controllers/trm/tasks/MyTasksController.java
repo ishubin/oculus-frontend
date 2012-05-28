@@ -29,7 +29,6 @@ import net.mindengine.oculus.frontend.domain.trm.TrmTask;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
 import net.mindengine.oculus.frontend.service.trm.TrmDAO;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController;
 
 public class MyTasksController extends SecureSimpleViewController {
@@ -39,8 +38,8 @@ public class MyTasksController extends SecureSimpleViewController {
 	@Override
 	public Map<String, Object> handleController(HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		Session session = Session.create(request);
-		User user = session.getAuthorizedUser();
+		
+		User user = getAuthorizedUser(request); 
 		if (user == null)
 			throw new NotAuthorizedException();
 		List<TrmTask> tasks = trmDAO.getUserTasks(user.getId(), null);

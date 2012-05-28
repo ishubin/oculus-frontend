@@ -24,7 +24,6 @@ import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.domain.AjaxModel;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.exceptions.NotAuthorizedException;
-import net.mindengine.oculus.frontend.web.Session;
 import net.mindengine.oculus.frontend.web.controllers.SimpleAjaxController;
 import net.mindengine.oculus.grid.domain.task.TaskInformation;
 import net.mindengine.oculus.grid.domain.task.TaskUser;
@@ -40,10 +39,8 @@ public class AjaxStopTaskController extends SimpleAjaxController {
 
 	@Override
 	public AjaxModel handleController(HttpServletRequest request) throws Exception {
-		User user = Session.create(request).getAuthorizedUser();
-		if (user == null)
-			throw new NotAuthorizedException();
-
+		User user = getAuthorizedUser(request);
+		
 		Long taskId = Long.parseLong(request.getParameter("taskId"));
 		AjaxModel model = new AjaxModel();
 		ClientServerRemoteInterface server = config.lookupGridServer();
