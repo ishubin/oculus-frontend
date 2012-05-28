@@ -23,6 +23,8 @@ public class CronIctTestRun {
 	private Long testRunId;
 	private Long suiteRunId;
 	private Long testId;
+	
+	//An encoded with XmlReportRender list of report reasons
 	private String reason;
 	private String suiteRunParameters;
 	private Long issueCollationId;

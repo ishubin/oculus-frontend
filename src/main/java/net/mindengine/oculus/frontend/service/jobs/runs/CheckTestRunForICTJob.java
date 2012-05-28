@@ -20,9 +20,13 @@ package net.mindengine.oculus.frontend.service.jobs.runs;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 
+import net.mindengine.oculus.experior.reporter.ReportReason;
+import net.mindengine.oculus.experior.reporter.render.ReportRender;
+import net.mindengine.oculus.experior.reporter.render.XmlReportRender;
 import net.mindengine.oculus.frontend.domain.issue.IssueCollation;
 import net.mindengine.oculus.frontend.domain.issue.IssueCollationCondition;
 import net.mindengine.oculus.frontend.domain.run.CronIctTestRun;
@@ -62,29 +66,7 @@ public class CheckTestRunForICTJob extends TimerTask {
 						 * Checking the reasons match of the created run and
 						 * issue collations
 						 */
-						boolean reasonCheckPass = true;
-						if (collation.getReasonPattern() != null && !collation.getReasonPattern().isEmpty()) {
-							if (testRun.getReason() == null) {
-								testRun.setReason("");
-							}
-							/*
-							 * Unescaping xml for test run reason value to
-							 * prevent the following problem:
-							 * 
-							 * At the end of each test the test run reasons are
-							 * taken out of the reports and are saved in one
-							 * column separated by "<r>" string.
-							 * In order to prevent separation collisions each reason is escaped in Xml.
-							 * 
-							 * But in order to use this string for issue collisions check we need to unescape it again
-							 */
-							String reason = StringEscapeUtils.unescapeXml(testRun.getReason());
-							if (!Pattern.matches(collation.getReasonPattern(), reason)) {
-								reasonCheckPass = false;
-							}
-						}
-
-						if (reasonCheckPass) {
+						if (checkReasonsCollation(collation, testRun)) {
 							/*
 							 * Checking the issue collation conditions if it
 							 * matches the test suite parameters for this test
@@ -125,7 +107,30 @@ public class CheckTestRunForICTJob extends TimerTask {
 
 	}
 
-	public void setIssueDAO(IssueDAO issueDAO) {
+	private boolean checkReasonsCollation(IssueCollation collation, CronIctTestRun testRun) {
+	    if (collation.getReasonPattern() != null && !collation.getReasonPattern().isEmpty()) {
+            if (testRun.getReason() == null) {
+                testRun.setReason("");
+            }
+            
+            ReportRender reportRender = new XmlReportRender();
+            if ( testRun.getReason() != null && !testRun.getReason().isEmpty() ) {
+                try {
+                    List<ReportReason> reasons = reportRender.decodeReasons(testRun.getReason());
+                    for ( ReportReason reason : reasons) {
+                        if (Pattern.matches(collation.getReasonPattern(), reason.getReason())) {
+                            return true;
+                        }
+                    }
+                }
+                catch (Exception e) {
+                }
+            }
+        }
+	    return false;
+    }
+
+    public void setIssueDAO(IssueDAO issueDAO) {
 		this.issueDAO = issueDAO;
 	}
 
