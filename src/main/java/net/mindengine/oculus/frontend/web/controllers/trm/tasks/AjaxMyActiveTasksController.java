@@ -216,8 +216,8 @@ public class AjaxMyActiveTasksController extends SecureSimpleViewController{
                     if ( suiteId != null ) {
                         if(bcomma) {
                             report.append(",");
-                            bcomma = true;
                         }
+                        bcomma = true;
                         report.append(Long.toString(suiteId));
                     }
                 }
