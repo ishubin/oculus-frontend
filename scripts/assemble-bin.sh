@@ -26,5 +26,6 @@ cp scripts/run.sh bin/run.sh
 cp -r webapp bin/webapp
 cd bin
 zip -r -9 oculus-frontend.zip *
+ls -1 | grep -v "oculus-frontend.zip" | xargs rm -rf
 
 echo Oculus Fronted project was successfully assembled
