@@ -5,6 +5,7 @@ echo "Dumping database..."
 export OCULUS_DATABASE_HOST=172.16.23.131
 ./dump.sh
 
+mkdir -p ../bin
 rm -rf ../bin/*
 
 cp oculus-db-init.sql ../bin/.
