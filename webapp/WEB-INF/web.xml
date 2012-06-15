@@ -80,6 +80,11 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>13</load-on-startup>
 	</servlet>
+    <servlet>
+        <servlet-name>api</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>14</load-on-startup>
+    </servlet>
 	
 	<servlet-mapping>
 		<servlet-name>oculus</servlet-name>
@@ -146,6 +151,11 @@
 		<servlet-name>comment</servlet-name>
 		<url-pattern>/comment/*</url-pattern>
 	</servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>api</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
