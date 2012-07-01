@@ -120,13 +120,14 @@
     <bean id="beanMappingFactory" class="net.mindengine.oculus.frontend.db.jdbc.BeanMappingFactory">
         <property name="file" value="WEB-INF/db/db-mappings.xml"/>
     </bean>
+    
+    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="0"/>
+    </bean>
 	
 	<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesJstlView"/>
-    </bean>
-    
-    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="order" value="1" />
+        <property name="order" value="1"/>
     </bean>
     
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">

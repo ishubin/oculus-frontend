@@ -4,11 +4,18 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-
-    <bean id="gridTaskController" class="net.mindengine.oculus.frontend.web.controllers.api.trm.ApiGridTaskController">
+    
+    
+    
+    <bean name="/grid/run*/*" class="net.mindengine.oculus.frontend.web.controllers.api.trm.ApiGridRunTaskController">
         <property name="trmDAO" ref="trmDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="config" ref="oculusConfig"/>
     </bean>
     
-    
-    
+    <bean name="/grid/status/*" class="net.mindengine.oculus.frontend.web.controllers.api.trm.ApiGridStatusTaskController">
+        <property name="trmDAO" ref="trmDAO"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
 </beans>

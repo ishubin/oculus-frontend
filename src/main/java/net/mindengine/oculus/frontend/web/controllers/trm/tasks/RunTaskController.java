@@ -76,6 +76,72 @@ public class RunTaskController extends SecureSimpleViewController {
 	private AgentTagRulesContainer agentTagRulesContainer;
 	private Log logger = LogFactory.getLog(getClass());
 
+	
+	@Override
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        /*
+         * Fetching the task
+         */
+        Map<String, Object> map = new HashMap<String, Object>();
+        Long taskId = Long.parseLong(request.getParameter("taskId"));
+
+        TrmTask task = trmDAO.getTask(taskId);
+
+        if (task == null)
+            throw new UnexistentResource("The task doesn't exist");
+
+        Collection<TrmTask> taskDependencies = trmDAO.getDependentTasks(taskId);
+        String submit = request.getParameter("Submit");
+        task.setParameters(trmDAO.getTaskProperties(task.getProjectId(), taskId, TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER));
+        
+        if (submit == null) {
+            map.put("task", task);
+            map.put("tasks", taskDependencies);
+            
+            /*
+             * Checking the connection with the TRMServer.
+             */
+            ClientServerRemoteInterface server = null;
+            try {
+                server = config.lookupGridServer();
+            }
+            catch (Exception e) {
+                logger.error("Can't connect to G", e);
+                return new ModelAndView("trm-server-not-found");
+            }
+            
+            /*
+             * Fetching all available agents
+             */
+            AgentStatus[] agents = server.getAgents();
+            agentTagRulesContainer.wrapAgentTags(agents);
+            map.put("agents", agents);
+            map.put("agentsCount", agents.length);
+            map.put("agentTags", agentTagRulesContainer.fetchAllAgentWrappedTags(agents));
+            
+            ModelAndView mav = new ModelAndView("trm-run-task", map);
+            return mav;
+        }
+        else if (submit.equals("Run Task")) {
+            /*
+             * Sending all tasks to TRMServer
+             */
+            for(TrmTask trmTask : taskDependencies){
+                trmTask.setParameters(task.getParameters());
+                runTask(trmTask, request);
+            }
+            runTask(task, request);
+            
+            return new ModelAndView(new RedirectView("../grid/my-active-tasks"));
+        }
+        else if (submit.equals("Export Task")) {
+            taskDependencies.add(task);
+            return exportTasks(taskDependencies, request, response);
+        }
+        else
+            throw new InvalidRequest();
+    }
+	
 	/**
 	 * Sends the task to {@link TRMServer} and updates the user tasks in
 	 * {@link Session}
@@ -85,7 +151,49 @@ public class RunTaskController extends SecureSimpleViewController {
 	 * @throws Exception
 	 */
 	public void runTask(TrmTask trmTask, HttpServletRequest request) throws Exception {
-	    /*
+	    User user = getAuthorizedUser(request);
+	    DefaultTask task = createGridTask(trmTask, trmDAO, testDAO, projectDAO, new TaskUser(user.getId(), user.getName()));
+	    
+	    String build = request.getParameter("build");
+        if (build.equals("Current Version")) {
+            build = "current";
+        }
+        
+        String[] selectedAgents = fetchSelectedAgents(request.getParameter("selectedAgents"));
+        
+        Map<String, String> suiteParameters = gatherSuiteParametersFromRequest(trmTask, request);
+        for ( SuiteTask suiteTask : task.getSuiteTasks()) {
+	        suiteTask.getSuite().setParameters(suiteParameters);
+	        suiteTask.setProjectVersion(build);
+	        suiteTask.setAgentNames(selectedAgents);
+	    }
+        
+        ClientServerRemoteInterface server = config.lookupGridServer();
+        server.runTask(task);
+	}
+
+    private Map<String, String> gatherSuiteParametersFromRequest(TrmTask trmTask, HttpServletRequest request) {
+        Map<String, String> suiteParameters = new HashMap<String, String>();
+        for (TrmProperty property : trmTask.getParameters()) {
+            String value = request.getParameter("sp_" + property.getId());
+            if (value == null)
+                value = "";
+            suiteParameters.put(property.getName(), value);
+        }
+        return suiteParameters;
+    }
+	
+	
+	private String[] fetchSelectedAgents(String agentsString) {
+	    if(agentsString!=null && !agentsString.trim().isEmpty()) {
+	        String[] agents = agentsString.split(",");
+	        return agents;
+	    }
+        return null;
+    }
+
+	public static DefaultTask createGridTask(TrmTask trmTask, TrmDAO trmDAO, TestDAO testDAO, ProjectDAO projectDAO, TaskUser taskUser) throws Exception {
+        /*
          * Fetching suites from specified task
          */
         List<TrmSuite> rootSuites = trmDAO.getTaskEnabledSuites(trmTask.getId());
@@ -97,28 +205,12 @@ public class RunTaskController extends SecureSimpleViewController {
         if(suites.size()>0){
             trmTask.setSuites(suites);
             
-            User user = getAuthorizedUser(request);
-            TaskUser taskUser = new TaskUser();
-            taskUser.setId(user.getId());
-            taskUser.setName(user.getName());
-
-            ClientServerRemoteInterface server = config.lookupGridServer();
             DefaultTask task = new DefaultTask();
             task.setTaskUser(taskUser);
             task.setName(trmTask.getName());
             List<SuiteTask> tasks = new LinkedList<SuiteTask>();
             
-            /*
-             * Gathering all task parameters sent from client
-             */
-            Map<String, String> suiteParameters = new HashMap<String, String>();
-            for (TrmProperty property : trmTask.getParameters()) {
-                String value = request.getParameter("sp_" + property.getId());
-                if (value == null)
-                    value = "";
-                suiteParameters.put(property.getName(), value);
-            }
-
+            
             //Used for fetching the mapping, name, parent project path
             Map<Long, Test> cashedTests = new HashMap<Long, Test>();
             //Used for fetching parent project path for tests
@@ -134,49 +226,30 @@ public class RunTaskController extends SecureSimpleViewController {
                     suiteTask.setProjectName(project.getPath());
                     suiteTask.setName(trmSuite.getName());
                     
-                    String build = request.getParameter("build");
-                    if (!build.equals("Current Version")) {
-                        suiteTask.setProjectVersion(build);
-                    }
-                    else suiteTask.setProjectVersion("current");
-    
+                    
                     Suite suite = TrmSuite.convertSuiteFromJSON(StringEscapeUtils.unescapeJavaScript(trmSuite.getSuiteData()), testDAO);
                     //Filling test definition with all missing data
                     for(TestDefinition td : suite.getTests()){
-                        fillTestDefinition(td, cashedTests, cashedProjectPath);
+                        fillTestDefinition(testDAO, projectDAO, td, cashedTests, cashedProjectPath);
                     }
                     
-                    suite.setParameters(suiteParameters);
                     suite.setName(trmSuite.getName());
     
-                    suite.setRunnerId(user.getId());
+                    suite.setRunnerId(taskUser.getId());
                     suiteTask.setSuite(suite);
     
-                    suiteTask.setAgentNames(fetchSelectedAgents(request.getParameter("selectedAgents")));
+                    
                     tasks.add(suiteTask);
                 } 
             }
 
             task.setSuiteTasks(tasks);
-
-            /*
-             * Running task on grid server
-             */
-            server.runTask(task);
+            return task;
         }
-	}
-	
-	
-	private String[] fetchSelectedAgents(String agentsString) {
-	    if(agentsString!=null && !agentsString.trim().isEmpty()) {
-	        String[] agents = agentsString.split(",");
-	        return agents;
-	    }
-        return null;
+        else throw new IllegalArgumentException("There are no suites for this task");
     }
 
-
-    public Test fetchTest(Long testId, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
+    private static Test fetchTest(TestDAO testDAO, ProjectDAO projectDAO, Long testId, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
 	    Test test = cashedTests.get(testId);
 	    if(test==null){
 	        test = testDAO.getTest(testId);
@@ -202,89 +275,21 @@ public class RunTaskController extends SecureSimpleViewController {
 	 * @param cashedProjectPath Stores root project paths used in test
 	 * @throws Exception 
 	 */
-	public void fillTestDefinition(TestDefinition td, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
+	private static void fillTestDefinition(TestDAO testDAO, ProjectDAO projectDAO, TestDefinition td, Map<Long, Test> cashedTests, Map<Long, String> cashedProjectPath) throws Exception{
 	    if(td.getTestId() != null) {
-	        Test test = fetchTest(td.getTestId(), cashedTests, cashedProjectPath);
+	        Test test = fetchTest(testDAO, projectDAO, td.getTestId(), cashedTests, cashedProjectPath);
 	        td.setMapping(test.getMapping());
 	        td.setProject(test.getParentProjectPath());
 	        td.setName(test.getName());
 	    }
 	    if ( td.getInjectedTests() != null && td.getInjectedTests().size() > 0 ) {
 	        for ( TestDefinition injectedTestDiDefinition : td.getInjectedTests() ) {
-	            fillTestDefinition(injectedTestDiDefinition, cashedTests, cashedProjectPath);
+	            fillTestDefinition(testDAO, projectDAO, injectedTestDiDefinition, cashedTests, cashedProjectPath);
 	        }
 	    }
 	}
 
-	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		/*
-		 * Fetching the task
-		 */
-		Map<String, Object> map = new HashMap<String, Object>();
-		Long taskId = Long.parseLong(request.getParameter("taskId"));
-
-		TrmTask task = trmDAO.getTask(taskId);
-
-		if (task == null)
-			throw new UnexistentResource("The task doesn't exist");
-
-		Collection<TrmTask> taskDependencies = trmDAO.getDependentTasks(taskId);
-		String submit = request.getParameter("Submit");
-		task.setParameters(trmDAO.getTaskProperties(task.getProjectId(), taskId, TrmDAO.PROPERTY_TYPE_SUITE_PARAMETER));
-		
-		if (submit == null) {
-		    map.put("task", task);
-			map.put("tasks", taskDependencies);
-			
-			/*
-	         * Checking the connection with the TRMServer.
-	         */
-	        ClientServerRemoteInterface server = null;
-	        try {
-	            server = config.lookupGridServer();
-	        }
-	        catch (Exception e) {
-	            logger.error("Can't connect to TRMServer", e);
-	            return new ModelAndView("trm-server-not-found");
-	        }
-	        
-			/*
-			 * Fetching all available agents
-			 */
-			AgentStatus[] agents = server.getAgents();
-			agentTagRulesContainer.wrapAgentTags(agents);
-			map.put("agents", agents);
-			map.put("agentsCount", agents.length);
-			map.put("agentTags", agentTagRulesContainer.fetchAllAgentWrappedTags(agents));
-			
-			ModelAndView mav = new ModelAndView("trm-run-task", map);
-			return mav;
-		}
-		else if (submit.equals("Run Task")) {
-		    /*
-		     * Sending all tasks to TRMServer
-		     */
-		    for(TrmTask trmTask : taskDependencies){
-		        trmTask.setParameters(task.getParameters());
-		        runTask(trmTask, request);
-		    }
-		    runTask(task, request);
-			
-			if ("on".equals(request.getParameter("useScheduler"))) {
-                return new ModelAndView(new RedirectView("../grid/scheduler"));
-            }
-            else {
-                return new ModelAndView(new RedirectView("../grid/my-active-tasks"));
-            }
-		}
-		else if (submit.equals("Export Task")) {
-		    taskDependencies.add(task);
-			return exportTasks(taskDependencies, request, response);
-		}
-		else
-			throw new InvalidRequest();
-	}
+	
 
 	
 	public ModelAndView exportTasks(Collection<TrmTask> tasks, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 import net.mindengine.jeremy.registry.Lookup;
 import net.mindengine.oculus.experior.utils.PropertyUtils;
@@ -38,6 +39,8 @@ import net.mindengine.oculus.grid.service.ClientServerRemoteInterface;
  */
 public class Config {
 	
+    
+    private String apiSuperToken;
 	private String dataFolder;
 	private String documentsFolder;
 	private String trmFolder;
@@ -71,6 +74,8 @@ public class Config {
 	
 	
     private void readProperties(Properties properties) {
+        setApiSuperToken(properties.getProperty("api.token"));
+        
 	    setDataFolder(properties.getProperty("data.folder"));
         setDocumentsFolder(properties.getProperty("documents.folder"));
         setTrmFolder(properties.getProperty("trm.folder"));
@@ -118,6 +123,10 @@ public class Config {
         return lookup.getRemoteObject(getGridServerName(), ClientServerRemoteInterface.class);
 	}
 
+	public static void main(String[] args) {
+        System.out.println(UUID.randomUUID().toString());
+    }
+	
 	public String getDataFolder() {
 		return dataFolder;
 	}
@@ -299,6 +308,16 @@ public class Config {
 
     public void setMailSenderName(String mailSenderName) {
         this.mailSenderName = mailSenderName;
+    }
+
+
+    public String getApiSuperToken() {
+        return apiSuperToken;
+    }
+
+
+    public void setApiSuperToken(String apiSuperToken) {
+        this.apiSuperToken = apiSuperToken;
     }
 
 }
