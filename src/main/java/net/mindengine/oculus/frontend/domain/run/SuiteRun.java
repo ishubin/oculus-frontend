@@ -20,6 +20,7 @@ package net.mindengine.oculus.frontend.domain.run;
 
 import java.util.Date;
 
+
 public class SuiteRun {
 	private Long id;
 	private String name;
@@ -27,6 +28,7 @@ public class SuiteRun {
 	private String parameters;
 	private Date startTime;
 	private Date endTime;
+	private String agentName;
 
 	public Long getId() {
 		return id;
@@ -60,20 +62,28 @@ public class SuiteRun {
 		this.parameters = parameters;
 	}
 
-	public Date getStartTime() {
-		return startTime;
-	}
+	public String getAgentName() {
+        return agentName;
+    }
 
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
 
-	public Date getEndTime() {
-		return endTime;
-	}
+    public Date getEndTime() {
+        return endTime;
+    }
 
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
 
 }

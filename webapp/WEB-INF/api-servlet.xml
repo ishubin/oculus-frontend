@@ -6,6 +6,11 @@
        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
     
     
+    <bean name="/report/suite,/report/suite/*/*" class="net.mindengine.oculus.frontend.web.controllers.api.report.ApiReportSuiteController">
+        <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="config" ref="oculusConfig"/>
+    </bean>
+    
     
     <bean name="/grid/run*/*" class="net.mindengine.oculus.frontend.web.controllers.api.trm.ApiGridRunTaskController">
         <property name="trmDAO" ref="trmDAO"/>

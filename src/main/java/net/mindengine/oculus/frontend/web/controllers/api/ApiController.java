@@ -34,7 +34,6 @@ import org.springframework.web.servlet.mvc.Controller;
 public class ApiController implements Controller {
     
     private Config config;
-    
     private List<ApiMethod> apiMethods = new LinkedList<ApiMethod>();
     
     public ApiController() {
@@ -81,7 +80,10 @@ public class ApiController implements Controller {
             
             try {
                 Object result = matchedMethod.getMethod().invoke(this, arguments);
-                model.put("response", result);
+                if ( matchedMethod.getMethod().getReturnType().equals(Void.TYPE) ) {
+                    return null;
+                }
+                else model.put("response", result);
             }
             catch (InvocationTargetException e) {
                 response.setStatus(400);
@@ -98,6 +100,16 @@ public class ApiController implements Controller {
     }
     
     private boolean userIsAuthorized(HttpServletRequest request) {
+        if ( config == null ) {
+            throw new IllegalStateException("Config is not set");
+        }
+        /**
+         * In case if api.token is not specified authorization should not be checked.
+         */
+        if ( config.getApiSuperToken() == null || config.getApiSuperToken().trim().isEmpty() ) {
+            return true;
+        }
+        
         String token = getTokenFromRequest(request);
         if ( token != null ) {
             return token.equals(config.getApiSuperToken());

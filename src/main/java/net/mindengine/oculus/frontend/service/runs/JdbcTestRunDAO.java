@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -457,5 +458,38 @@ public class JdbcTestRunDAO extends MySimpleJdbcDaoSupport implements TestRunDAO
 	public Collection<TestRunParameter> getTestRunParameters(Long testRunId) throws Exception {
 		return (Collection<TestRunParameter>) query("select * from test_run_parameters where test_run_id = :testRunId", TestRunParameter.class, "testRunId", testRunId);
 	}
+
+    @Override
+    public Long createSuiteRun(SuiteRun suite)  throws Exception{
+        PreparedStatement ps = getConnection().prepareStatement("insert into suite_runs (start_time, end_time, name, runner_id, parameters, agent_name) " + "values (?,?,?,?,?,?)");
+
+        ps.setTimestamp(1, new Timestamp(suite.getStartTime().getTime()));
+        ps.setTimestamp(2, new Timestamp(suite.getEndTime().getTime()));
+        ps.setString(3, suite.getName());
+        if (suite.getRunnerId() == null)
+            suite.setRunnerId(0L);
+        ps.setLong(4, suite.getRunnerId());
+        ps.setString(5, suite.getParameters());
+        String agentName = suite.getAgentName();
+        if (agentName == null) {
+            agentName = "";
+        }
+        ps.setString(6, agentName);
+
+        logger.info(ps);
+        ps.execute();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getLong(1);
+        }
+        return null;
+    }
+    
+    
+    @Override
+    public void updateSuiteEndTime(Long id, Date date) throws Exception {
+        update("update suite_runs set end_time = :date where id = :id", "id", id, "date", date);
+    }
 
 }

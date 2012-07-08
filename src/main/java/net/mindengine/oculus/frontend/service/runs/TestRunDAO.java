@@ -19,6 +19,7 @@
 package net.mindengine.oculus.frontend.service.runs;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import net.mindengine.oculus.frontend.domain.report.SavedRun;
@@ -48,5 +49,11 @@ public interface TestRunDAO {
 	public void deleteCronIctTestRuns(Collection<CronIctTestRun> runs) throws Exception;
 
 	public Collection<TestRunParameter> getTestRunParameters(Long testRunId) throws Exception;
+
+    public Long createSuiteRun(SuiteRun suiteRun) throws Exception;
+
+    public void updateSuiteEndTime(Long id, Date date) throws Exception;
+
+    
 
 }
