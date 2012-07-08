@@ -54,6 +54,9 @@ public interface TestRunDAO {
 
     public void updateSuiteEndTime(Long id, Date date) throws Exception;
 
-    
+    public Long createTestRun(TestRun tr) throws Exception;
 
+    public Long createTestRunParameter(Long testRunId, String name, String value, boolean isInput) throws Exception;
+
+    
 }

@@ -517,5 +517,15 @@ public class JdbcTestDAO extends MySimpleJdbcDaoSupport implements TestDAO {
 	        return new LinkedList<TestParameter>();
 	    }
 	}
+	
+	@Override
+	public Test getTestByNameProjectId(String name, Long projectId) throws Exception {
+	    List<Test> list = (List<Test>) query("select t.*, tg.name as groupName from tests t left join test_groups tg on tg.id=t.group_id where t.name = :name and t.project_id = :projectId", Test.class, "name", name, "projectId", projectId);
+
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+	}
 
 }

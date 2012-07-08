@@ -88,4 +88,6 @@ public interface TestDAO {
 	public void saveTestGroup(TestGroup group) throws Exception;
 
     public List<TestParameter> getParametersByIds(List<Long> ids) throws Exception;
+
+    public Test getTestByNameProjectId(String name, Long projectId) throws Exception;
 }

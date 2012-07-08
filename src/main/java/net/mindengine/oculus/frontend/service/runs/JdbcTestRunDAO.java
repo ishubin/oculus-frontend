@@ -492,4 +492,64 @@ public class JdbcTestRunDAO extends MySimpleJdbcDaoSupport implements TestRunDAO
         update("update suite_runs set end_time = :date where id = :id", "id", id, "date", date);
     }
 
+    
+    @Override
+    public Long createTestRun(TestRun testRun) throws Exception{
+        PreparedStatement ps = getConnection().prepareStatement("insert into test_runs " + "(suite_run_id, " + "test_id, " + "start_time, " + "end_time, " + "reasons, " + "report, " + "name, "
+                + "status, " + "project_id, description) " + "values (?,?,?,?,?,?,?,?,?,?)");
+
+        if (testRun.getReasons() == null) {
+            testRun.setReasons("");
+        }
+        if (testRun.getName() == null) {
+            testRun.setName("");
+        }
+        
+        if( testRun.getSuiteRunId() == null ) {
+            testRun.setSuiteRunId(0L);
+        }
+        
+        ps.setLong(1, testRun.getSuiteRunId());
+        ps.setLong(2, testRun.getTestId());
+        ps.setTimestamp(3, new Timestamp(testRun.getStartTime().getTime()));
+        ps.setTimestamp(4, new Timestamp(testRun.getEndTime().getTime()));
+        ps.setString(5, testRun.getReasons());
+        ps.setString(6, testRun.getReport());
+        ps.setString(7, testRun.getName());
+        ps.setString(8, testRun.getStatus());
+        ps.setLong(9, testRun.getProjectId());
+        ps.setString(10, testRun.getDescription());
+        logger.info(ps);
+        ps.execute();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getLong(1);
+        }
+
+        return null;
+    }
+    
+    @Override
+    public Long createTestRunParameter(Long testRunId, String name, String value, boolean isInput) throws Exception {
+        PreparedStatement ps = getConnection().prepareStatement("insert into test_run_parameters (test_run_id, name, value, type) values (?,?,?,?)");
+
+        ps.setLong(1, testRunId);
+        ps.setString(2, name);
+        ps.setString(3, value);
+        if (isInput) {
+            ps.setString(4, "input");
+        } else
+            ps.setString(4, "output");
+
+        logger.info(ps);
+        ps.execute();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getLong(1);
+        }
+
+        return null;
+    }
 }

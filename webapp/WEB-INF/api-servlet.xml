@@ -8,6 +8,8 @@
     
     <bean name="/report/suite,/report/suite/*/*" class="net.mindengine.oculus.frontend.web.controllers.api.report.ApiReportSuiteController">
         <property name="testRunDAO" ref="testRunDAO"/>
+        <property name="testDAO" ref="testDAO"/>
+        <property name="projectDAO" ref="projectDAO"/>
         <property name="config" ref="oculusConfig"/>
     </bean>
     
