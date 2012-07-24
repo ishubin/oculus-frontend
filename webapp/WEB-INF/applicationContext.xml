@@ -62,12 +62,6 @@
        <property name="beanMappingFactory" ref="beanMappingFactory"/>
     </bean>
     
-    <bean id="projectStatisticsDAO" class="net.mindengine.oculus.frontend.service.dashboard.JdbcProjectStatisticsDAO">
-       <property name="dataSource" ref="dataSource" />
-       <property name="beanMappingFactory" ref="beanMappingFactory"/>
-       <property name="dashboardFetchProjectFile" value="WEB-INF/db/dashboard/dashboard-project-fetch.sql"></property>
-    </bean>
-    
     <bean id="filterDAO" class="net.mindengine.oculus.frontend.service.report.filter.JdbcFilterDAO">
        <property name="dataSource" ref="dataSource" />
        <property name="beanMappingFactory" ref="beanMappingFactory"/>
@@ -137,7 +131,6 @@
                	<value>/WEB-INF/tiles/tiles-test.xml</value>
                	<value>/WEB-INF/tiles/tiles-document.xml</value>
                	<value>/WEB-INF/tiles/tiles-trm.xml</value>
-               	<value>/WEB-INF/tiles/tiles-dashboard.xml</value>
                	<value>/WEB-INF/tiles/tiles-customization.xml</value>
                	<value>/WEB-INF/tiles/tiles-issue.xml</value>
             </list>

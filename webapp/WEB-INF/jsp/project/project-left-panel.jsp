@@ -28,7 +28,6 @@ if(project!=null)
                         </c:if>
                         <c:if test="${project.parentId==0}">
                             <tag:workflow-element icon="search" link="../test/search?project=${project.id}">Tests</tag:workflow-element>
-                            <tag:workflow-element icon="chart" link="../dashboard/project-${project.path}">Dashboard</tag:workflow-element>
                             <tag:workflow-element icon="build" link="../project/builds-${project.path}">Builds</tag:workflow-element>
                             <c:if test="${user.hasPermissions.project_managment == true}">
                                <tag:workflow-element icon="settings" link="../customization/project-${project.path}">Customize Project</tag:workflow-element>

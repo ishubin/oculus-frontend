@@ -56,29 +56,24 @@
 		<load-on-startup>8</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>dashboard</servlet-name>
+		<servlet-name>customization</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>9</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>customization</servlet-name>
+		<servlet-name>issue</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>10</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>issue</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>11</load-on-startup>
-	</servlet>
-	<servlet>
 		<servlet-name>comment</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>12</load-on-startup>
+		<load-on-startup>11</load-on-startup>
 	</servlet>
     <servlet>
         <servlet-name>api</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>13</load-on-startup>
+        <load-on-startup>12</load-on-startup>
     </servlet>
 	
 	<servlet-mapping>
@@ -120,11 +115,6 @@
 	<servlet-mapping>
 		<servlet-name>trm</servlet-name>
 		<url-pattern>/grid/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>dashboard</servlet-name>
-		<url-pattern>/dashboard/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

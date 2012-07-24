@@ -245,26 +245,6 @@
         <property name="date" column="date"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.frontend.domain.dashboard.ProjectStatistics">
-        <property name="suiteRunId" column="srId"/>
-        <property name="projectId" column="pId"/>
-        <property name="projectName" column="pName"/>
-        <property name="projectPath" column="pPath"/>
-        <property name="startTime" column="srStartTime"/>
-        <property name="total" column="ssTotal"/>
-        <property name="failed" column="ssFailed"/>
-        <property name="passed" column="ssPassed"/>
-        <property name="warning" column="ssWarning"/>
-    </bean>
-    
-    <bean class="net.mindengine.oculus.frontend.domain.dashboard.Dashboard">
-        <property name="projectId" column="project_id"/>
-        <property name="runnerId" column="runner_id"/>
-        <property name="daysPeriod" column="days_period"/>
-        <property name="dayStart" column="day_start"/>
-        <property name="summaryStatistics" column="summary_statistics"/>
-        <property name="healthChart" column="healthChart"/>
-    </bean>
     
     <bean class="net.mindengine.oculus.frontend.domain.report.filter.Filter">
         <property name="id" column="id"/>

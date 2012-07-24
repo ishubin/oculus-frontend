@@ -111,10 +111,6 @@ public class JdbcProjectDAO extends MySimpleJdbcDaoSupport implements ProjectDAO
 				update("update projects set subprojects_count = subprojects_count-1 where id = :id", "id", project.getParentId());
 
 			}
-			else {
-				// Delete dashboard
-				update("delete from dashboards where project_id =:projectId", "projectId", id);
-			}
 			update("delete from documents where project_id =:projectId", "projectId", id);
 			update("delete from tests where project_id =:projectId", "projectId", id);
 
