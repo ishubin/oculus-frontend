@@ -275,19 +275,6 @@
         <property name="filter" column="filter"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.experior.chart.Chart">
-        <property name="id" column="id"/>
-        <property name="title" column="title"/>
-        <property name="type" column="type"/>
-        <property name="xAxisName" column="x_axis_name"/>
-        <property name="xAxisType" column="x_axis_type"/>
-        <property name="yAxisName" column="y_axis_name"/>
-        <property name="yAxisType" column="y_axis_type"/>
-        <property name="data" column="data"/>
-    </bean>
-    
-   
-    
     <bean class="net.mindengine.oculus.frontend.domain.customization.Customization">
         <property name="id" column="id"/>
         <property name="name" column="name"/>

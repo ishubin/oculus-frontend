@@ -73,11 +73,6 @@
        <property name="beanMappingFactory" ref="beanMappingFactory"/>
     </bean>
     
-    <bean id="chartDAO" class="net.mindengine.oculus.frontend.service.chart.JdbcChartDAO">
-       <property name="dataSource" ref="dataSource" />
-       <property name="beanMappingFactory" ref="beanMappingFactory"/>
-    </bean>
-    
     <bean id="customizationDAO" class="net.mindengine.oculus.frontend.service.customization.JdbcCustomizationDAO">
        <property name="dataSource" ref="dataSource" />
        <property name="beanMappingFactory" ref="beanMappingFactory"/>
