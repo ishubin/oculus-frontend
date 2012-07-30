@@ -3,6 +3,7 @@ set -e
 echo "Dumping database..."
 
 export OCULUS_DATABASE_HOST=172.16.23.131
+cd scripts
 ./dump.sh
 
 mkdir -p ../bin

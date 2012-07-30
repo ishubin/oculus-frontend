@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.mindengine</groupId>
   <artifactId>oculus-frontend</artifactId>
-  <version>12.1.22-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Oculus Frontend</name>
   <dependencies>
     <dependency>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>net.mindengine</groupId>
       <artifactId>oculus-grid</artifactId>
-      <version>12.3.9-SNAPSHOT</version>
+      <version>1.0.1-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.eclipse.jetty</groupId>

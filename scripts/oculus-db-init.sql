@@ -21,21 +21,6 @@ CREATE TABLE `builds` (
   UNIQUE KEY `unique_name` (`name`,`project_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `charts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `charts` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type` enum('pie','line','bar') DEFAULT NULL,
-  `title` varchar(64) NOT NULL DEFAULT '',
-  `x_axis_name` varchar(64) NOT NULL DEFAULT '',
-  `x_axis_type` enum('int','float','date') DEFAULT NULL,
-  `y_axis_name` varchar(64) NOT NULL DEFAULT '',
-  `y_axis_type` enum('int','float','date') DEFAULT NULL,
-  `data` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -88,19 +73,6 @@ CREATE TABLE `customizations` (
   `group_name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `dashboards`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `dashboards` (
-  `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `runner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `days_period` int(10) unsigned NOT NULL DEFAULT '16',
-  `day_start` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `summary_statistics` tinyint(1) NOT NULL DEFAULT '1',
-  `health_chart` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `document_attachments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -233,23 +205,8 @@ CREATE TABLE `projects` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`,`parent_id`),
   KEY `unique_path` (`path`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `oculus_dashboard_init` AFTER INSERT ON `projects` FOR EACH ROW call create_dashboard(new.id) */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 DROP TABLE IF EXISTS `saved_runs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -532,29 +489,6 @@ BEGIN
 			values (p_test_run_id, p_test_id, p_suite_run_id, p_test_run_reason, sr_parameters, ic_id, p_test_run_name);
 	end if;
 	
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `create_dashboard` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `create_dashboard`(in p_id bigint)
-BEGIN
-  declare parent_id bigint;
-  select p.parent_id into parent_id from projects p where p.id = p_id;
-  if parent_id =0 then
-  insert into dashboards (project_id) values(p_id);
-  end if;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
