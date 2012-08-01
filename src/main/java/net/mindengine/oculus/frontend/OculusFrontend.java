@@ -60,7 +60,7 @@ public class OculusFrontend {
         }
         
         //Starting frontend web-server
-        Server server = new Server(8090);
+        Server server = new Server(config.getOculusServerPort());
         WebAppContext context = new WebAppContext();
         context.setContextPath("/");
         context.setWar("webapp");
