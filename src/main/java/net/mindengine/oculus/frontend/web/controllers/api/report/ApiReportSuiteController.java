@@ -66,8 +66,8 @@ public class ApiReportSuiteController extends ApiController {
     
     @POST @Path("/report/suite/(.*)/test")
     public Long createTestRun(@RequestVar(1) Long suiteId, @RequestBody net.mindengine.oculus.experior.reporter.remote.wrappers.TestRun remoteTestRun) throws Exception {
-        if ( suiteId == null || suiteId.equals(0L) ) {
-            throw new IllegalArgumentException("Id of suite run is not specified");
+        if ( suiteId == null ) {
+            suiteId = 0L;
         }
         TestRun tr = new TestRun();
         tr.setName(remoteTestRun.getName());

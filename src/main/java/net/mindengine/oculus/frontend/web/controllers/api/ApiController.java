@@ -27,6 +27,7 @@ import net.mindengine.oculus.frontend.api.RequestVar;
 import net.mindengine.oculus.frontend.config.Config;
 
 import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -169,6 +170,7 @@ public class ApiController implements Controller {
                     String jsonString = IOUtils.toString(request.getInputStream());
                     
                     ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                     args[i] = objectMapper.readValue(jsonString, parameters[i]);
                 }
                 else {
