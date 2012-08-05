@@ -156,7 +156,7 @@ $(function(){
     colNames:columnNames,
     colModel :columnModel,
     gridview: true,
-    caption: 'Sub-Projects',
+    caption: 'Issues',
     gridComplete: function (){
         for(var i=0; i<columnModel.length; i++){
             $("#jqgh_list_"+columnModel[i].index).html(columnNames[i]);

@@ -72,7 +72,7 @@ public class DocumentFileEditController extends SecureSimpleFormController {
 			if (fileUpload.getFolderId() != null && !fileUpload.getFolderId().equals(0l)) {
 				Folder folder = folderDAO.getFolder(fileUpload.getFolderId());
 				if (folder == null)
-					throw new UnexistentResource("Fodler with id '" + fileUpload.getFolderId() + "' doesn't exist");
+					throw new UnexistentResource("Folder with id '" + fileUpload.getFolderId() + "' doesn't exist");
 				fileUpload.setBranch(folder.getBranch());
 			}
 
