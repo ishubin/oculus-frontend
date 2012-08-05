@@ -25,27 +25,17 @@
 
 <tag:panel title="Create suite" align="center">
     <form action="../grid/create-suite?taskId=${task.id}" method="post">
-        <table border="0" align="center">
-            <tr>
-                <td>Name:</td>
-                <td><tag:edit-field name="name" width="100%" value="${suite.name}"/></td>
-            </tr>
-            <tr>
-                <td valign="top">Description:</td>
-                <td><textarea name="description" cols="40" rows="7"><tag:escape text="${suite.description}"/></textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <tag:submit value="Create"></tag:submit>
-               </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <div class="error">
-                    	<tag:spring-form-error field="" command="suite"></tag:spring-form-error>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <p>
+            Name:<br/>
+            <tag:edit-field name="name" width="100%" value="${suite.name}"/>
+        </p>
+        <p>
+            Description:<br/>
+            <textarea name="description" cols="40"  style="width:100%;" rows="7"><tag:escape text="${suite.description}"/></textarea>
+        </p>
+        <tag:submit value="Create"></tag:submit>
+        <div class="error">
+        	<tag:spring-form-error field="" command="suite"></tag:spring-form-error>
+        </div>
     </form>
 </tag:panel> 
