@@ -8,7 +8,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
-<%@page import="net.mindengine.oculus.frontend.domain.document.DocumentSearchFilter"%>
 <%@page import="net.mindengine.oculus.frontend.domain.project.ProjectSearchFilter"%>
 <%@page import="net.mindengine.oculus.frontend.domain.db.BrowseResult"%>
 <%@page import="net.mindengine.oculus.frontend.domain.project.Project"%>

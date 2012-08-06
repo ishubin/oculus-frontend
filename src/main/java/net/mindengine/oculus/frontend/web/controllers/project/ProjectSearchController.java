@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.mindengine.oculus.frontend.config.Config;
 import net.mindengine.oculus.frontend.db.search.ColumnFactory;
 import net.mindengine.oculus.frontend.domain.customization.Customization;
-import net.mindengine.oculus.frontend.domain.document.DocumentSearchFilter;
 import net.mindengine.oculus.frontend.domain.project.ProjectSearchColumn;
 import net.mindengine.oculus.frontend.domain.project.ProjectSearchFilter;
 import net.mindengine.oculus.frontend.service.customization.CustomizationDAO;
@@ -77,7 +76,6 @@ public class ProjectSearchController extends SecureSimpleFormController {
 			}
 		}
 
-		filter.setDocumentType(DocumentSearchFilter._TYPE_TESTCASE);
 		map.put("projects", projectDAO.searchSubprojects(filter));
 		map.put("rootProjects", projectDAO.getRootProjects());
 		map.put("columnFactory", columnFactory);

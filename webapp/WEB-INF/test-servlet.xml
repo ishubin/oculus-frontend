@@ -69,7 +69,6 @@
         <property name="userDAO" ref="userDAO"/>
         <property name="commentDAO" ref="commentDAO"/>
         <property name="customizationDAO" ref="customizationDAO"/>
-        <property name="documentDAO" ref="documentDAO"/>
         <property name="view" value="test-display"/>
     </bean>
     

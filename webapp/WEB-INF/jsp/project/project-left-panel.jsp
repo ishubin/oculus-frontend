@@ -20,10 +20,7 @@ if(project!=null)
             <tr>
                 <td>
                     <tag:workflow-panel title="Project Links" width="100%" id="workflow_PL">
-                    	<c:if test="${user!=null }">
-                        <tag:workflow-element icon="library" link="../document/project-${project.path}">Documentation Library</tag:workflow-element>
-                        </c:if>
-                        <c:if test="${project.parentId>0}">
+                    	<c:if test="${project.parentId>0}">
                             <tag:workflow-element icon="search" link="../test/search?project=${project.parentId}&subProject=${project.id}">Tests</tag:workflow-element>
                         </c:if>
                         <c:if test="${project.parentId==0}">

@@ -42,16 +42,6 @@
        <property name="basicCountTemplateFile" value="WEB-INF/db/report/base-count-template.sql"/>
     </bean>
 	
-	<bean id="folderDAO" class="net.mindengine.oculus.frontend.service.folder.JdbcFolderDAO">
-       <property name="dataSource" ref="dataSource" />
-       <property name="beanMappingFactory" ref="beanMappingFactory"/>
-    </bean>
-    
-    <bean id="documentDAO" class="net.mindengine.oculus.frontend.service.document.JdbcDocumentDAO">
-       <property name="dataSource" ref="dataSource" />
-       <property name="beanMappingFactory" ref="beanMappingFactory"/>
-    </bean>
-    
     <bean id="trmDAO" class="net.mindengine.oculus.frontend.service.trm.JdbcTrmDAO">
        <property name="dataSource" ref="dataSource" />
        <property name="beanMappingFactory" ref="beanMappingFactory"/>

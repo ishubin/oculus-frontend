@@ -147,52 +147,6 @@
         <property name="name" column="name"/>
     </bean>
     
-    <bean class="net.mindengine.oculus.frontend.domain.folder.Folder">
-        <property name="id" column="id"/>
-        <property name="projectId" column="project_id"/>
-        <property name="parentId" column="parent_id"/>
-        <property name="name" column="name"/>
-        <property name="description" column="description"/>
-        <property name="userId" column="userId"/>
-        <property name="children" column="children"/>
-        <property name="documents" column="documents"/>
-        <property name="branch" column="branch"/>
-    </bean>
-    
-    <bean class="net.mindengine.oculus.frontend.domain.document.Document">
-        <property name="id" column="id"/>
-        <property name="name" column="name"/>
-        <property name="description" column="description"/>
-        <property name="content" column="content"/>
-        <property name="date" column="date"/>
-        <property name="projectId" column="project_id"/>
-        <property name="folderId" column="folder_id"/>
-        <property name="userId" column="user_id"/>
-        <property name="branch" column="branch"/>
-        <property name="type" column="type"/>
-        <property name="typeExtended" column="type_extended"/>
-        <property name="size" column="size"/>
-        <property name="parentProjectName" column="parentProjectName"/>
-        <property name="parentProjectPath" column="parentProjectPath"/>
-        <property name="projectName" column="projectName"/>
-        <property name="projectPath" column="projectPath"/>
-        <property name="authorLogin" column="authorLogin"/>
-        <property name="authorName" column="authorName"/>
-    </bean>
-    
-    <bean class="net.mindengine.oculus.frontend.domain.document.DocumentAttachment">
-        <property name="id" column="id"/>
-        <property name="name" column="name"/>
-        <property name="description" column="description"/>
-        <property name="userId" column="user_id"/>
-        <property name="documentId" column="document_id"/>
-        <property name="date" column="date"/>
-        <property name="userLogin" column="userLogin"/>
-        <property name="userName" column="userName"/>
-        <property name="size" column="size"/>
-        <property name="type" column="type"/>
-    </bean>
-    
     <bean class="net.mindengine.oculus.frontend.domain.trm.TrmProperty">
         <property name="id" column="id"/>
         <property name="name" column="name"/>

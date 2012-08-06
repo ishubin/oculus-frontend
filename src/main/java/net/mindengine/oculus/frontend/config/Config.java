@@ -20,7 +20,6 @@ package net.mindengine.oculus.frontend.config;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -42,11 +41,6 @@ public class Config {
     
     private String apiSuperToken;
 	private String dataFolder;
-	private String documentsFolder;
-	private String trmFolder;
-	private String trmServerHost;
-	private String trmServerPort;
-	private String trmServerName;
 	private String mailSmtpHost;
 	private String mailSenderName;
 	private Integer mailSmtpPort;
@@ -77,14 +71,8 @@ public class Config {
         setApiSuperToken(properties.getProperty("api.token"));
         
 	    setDataFolder(properties.getProperty("data.folder"));
-        setDocumentsFolder(properties.getProperty("documents.folder"));
-        setTrmFolder(properties.getProperty("trm.folder"));
-
-        setTrmServerHost(properties.getProperty("trm.server.host"));
-        setTrmServerPort(properties.getProperty("trm.server.port"));
-        setTrmServerName(properties.getProperty("trm.server.name"));
-
-        setMailSmtpHost(properties.getProperty("mail.smtp.host"));
+        
+	    setMailSmtpHost(properties.getProperty("mail.smtp.host"));
         setMailSmtpPort(Integer.parseInt(properties.getProperty("mail.smtp.port", "25")));
         setMailSenderName(properties.getProperty("mail.sender.name"));
 
@@ -148,46 +136,6 @@ public class Config {
         }
 		
 		return props;
-	}
-
-	public void setDocumentsFolder(String documentsFolder) {
-		this.documentsFolder = documentsFolder;
-	}
-
-	public String getDocumentsFolder() {
-		return documentsFolder;
-	}
-
-	public void setTrmFolder(String trmFolder) {
-		this.trmFolder = trmFolder;
-	}
-
-	public String getTrmFolder() {
-		return trmFolder;
-	}
-
-	public String getTrmServerHost() {
-		return trmServerHost;
-	}
-
-	public void setTrmServerHost(String trmServerHost) {
-		this.trmServerHost = trmServerHost;
-	}
-
-	public String getTrmServerPort() {
-		return trmServerPort;
-	}
-
-	public void setTrmServerPort(String trmServerPort) {
-		this.trmServerPort = trmServerPort;
-	}
-
-	public String getTrmServerName() {
-		return trmServerName;
-	}
-
-	public void setTrmServerName(String trmServerName) {
-		this.trmServerName = trmServerName;
 	}
 
 	public void setMailSmtpHost(String mailSmtpHost) {

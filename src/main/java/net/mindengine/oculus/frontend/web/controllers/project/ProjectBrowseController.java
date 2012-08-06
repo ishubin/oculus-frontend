@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.mindengine.oculus.frontend.domain.project.ProjectBrowseFilter;
 import net.mindengine.oculus.frontend.domain.project.ProjectBrowseResult;
-import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.web.controllers.SecureSimpleFormController;
 
@@ -41,8 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class ProjectBrowseController extends SecureSimpleFormController {
 	private ProjectDAO projectDAO;
-	private DocumentDAO documentDAO;
-
+	
 	private ProjectBrowseFilter filter;
 
 	@SuppressWarnings("unchecked")
@@ -79,14 +77,6 @@ public class ProjectBrowseController extends SecureSimpleFormController {
 
 	public void setProjectDAO(ProjectDAO projectDAO) {
 		this.projectDAO = projectDAO;
-	}
-
-	public DocumentDAO getDocumentDAO() {
-		return documentDAO;
-	}
-
-	public void setDocumentDAO(DocumentDAO documentDAO) {
-		this.documentDAO = documentDAO;
 	}
 
 	public void setFilter(ProjectBrowseFilter filter) {

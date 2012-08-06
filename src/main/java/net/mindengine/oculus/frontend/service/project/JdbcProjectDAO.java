@@ -27,6 +27,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.List;
 
+import net.mindengine.oculus.experior.utils.FileUtils;
 import net.mindengine.oculus.frontend.db.jdbc.MySimpleJdbcDaoSupport;
 import net.mindengine.oculus.frontend.db.search.SearchColumn;
 import net.mindengine.oculus.frontend.db.search.SqlSearchCondition;
@@ -37,7 +38,6 @@ import net.mindengine.oculus.frontend.domain.project.ProjectBrowseResult;
 import net.mindengine.oculus.frontend.domain.project.ProjectSearchFilter;
 import net.mindengine.oculus.frontend.domain.test.TestSearchFilter;
 import net.mindengine.oculus.frontend.service.customization.CustomizationUtils;
-import net.mindengine.oculus.experior.utils.FileUtils;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -111,7 +111,6 @@ public class JdbcProjectDAO extends MySimpleJdbcDaoSupport implements ProjectDAO
 				update("update projects set subprojects_count = subprojects_count-1 where id = :id", "id", project.getParentId());
 
 			}
-			update("delete from documents where project_id =:projectId", "projectId", id);
 			update("delete from tests where project_id =:projectId", "projectId", id);
 
 			// deleting all suite statistics

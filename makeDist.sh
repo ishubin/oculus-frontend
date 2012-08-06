@@ -43,12 +43,14 @@ cp -r src dist/sources/src
 cp -r webapp dist/sources/webapp
 cp scripts/oculus-db-init.sql dist/sources/.
 
-cd dist/bin
-zip -r -9 ../oculus-frontend-$version-bin.zip *
+# Archiving bin folder
+cd dist
+mv bin oculus-frontend-$version
+zip -r -9 oculus-frontend-$version-bin.zip oculus-frontend-$version 
 
-cd ../sources/
+cd sources/
 zip -r -9 ../oculus-frontend-$version-sources.zip *
 
 cd ..
-rm -rf bin/ sources/
+rm -rf oculus-frontend-$version/ sources/
 echo Oculus Fronted project was successfully assembled

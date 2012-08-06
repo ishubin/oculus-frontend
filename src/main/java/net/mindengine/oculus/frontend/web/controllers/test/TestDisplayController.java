@@ -33,7 +33,6 @@ import net.mindengine.oculus.frontend.domain.test.TestParameter;
 import net.mindengine.oculus.frontend.service.comment.CommentDAO;
 import net.mindengine.oculus.frontend.service.customization.CustomizationDAO;
 import net.mindengine.oculus.frontend.service.customization.CustomizationUtils;
-import net.mindengine.oculus.frontend.service.document.DocumentDAO;
 import net.mindengine.oculus.frontend.service.exceptions.UnexistentResource;
 import net.mindengine.oculus.frontend.service.project.ProjectDAO;
 import net.mindengine.oculus.frontend.service.test.TestDAO;
@@ -43,7 +42,7 @@ import net.mindengine.oculus.frontend.web.controllers.SecureSimpleViewController
 public class TestDisplayController extends SecureSimpleViewController {
 	private TestDAO testDAO;
 	private ProjectDAO projectDAO;
-	private DocumentDAO documentDAO;
+	
 	private UserDAO userDAO;
 	private CommentDAO commentDAO;
 	private CustomizationDAO customizationDAO;
@@ -115,14 +114,6 @@ public class TestDisplayController extends SecureSimpleViewController {
 
 	public void setProjectDAO(ProjectDAO projectDAO) {
 		this.projectDAO = projectDAO;
-	}
-
-	public void setDocumentDAO(DocumentDAO documentDAO) {
-		this.documentDAO = documentDAO;
-	}
-
-	public DocumentDAO getDocumentDAO() {
-		return documentDAO;
 	}
 
 	public void setUserDAO(UserDAO userDAO) {

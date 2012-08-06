@@ -46,34 +46,29 @@
 		<load-on-startup>6</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>document</servlet-name>
+		<servlet-name>trm</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>7</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>trm</servlet-name>
+		<servlet-name>customization</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>8</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>customization</servlet-name>
+		<servlet-name>issue</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>9</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>issue</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>10</load-on-startup>
-	</servlet>
-	<servlet>
 		<servlet-name>comment</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>11</load-on-startup>
+		<load-on-startup>10</load-on-startup>
 	</servlet>
     <servlet>
         <servlet-name>api</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>12</load-on-startup>
+        <load-on-startup>11</load-on-startup>
     </servlet>
 	
 	<servlet-mapping>
@@ -105,11 +100,6 @@
 	<servlet-mapping>
 		<servlet-name>test</servlet-name>
 		<url-pattern>/test/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>document</servlet-name>
-		<url-pattern>/document/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

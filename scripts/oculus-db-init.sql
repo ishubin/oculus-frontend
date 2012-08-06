@@ -57,7 +57,7 @@ CREATE TABLE `customization_possible_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `possible_value` varchar(128) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `customizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -72,41 +72,7 @@ CREATE TABLE `customizations` (
   `type` enum('text','assignee','list','checkbox','checklist') NOT NULL DEFAULT 'text',
   `group_name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `document_attachments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `document_attachments` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `document_id` bigint(20) NOT NULL,
-  `name` varchar(128) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_id` bigint(20) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `size` bigint(20) NOT NULL,
-  `type` varchar(16) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `documents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `documents` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) NOT NULL DEFAULT '',
-  `content` text,
-  `type` enum('file') DEFAULT NULL,
-  `folder_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `description` mediumtext,
-  `branch` mediumtext,
-  `type_extended` varchar(16) DEFAULT NULL,
-  `size` bigint(20) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `filters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -118,22 +84,6 @@ CREATE TABLE `filters` (
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `filter` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `folders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `folders` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(128) NOT NULL DEFAULT '',
-  `description` text,
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `children` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `branch` text,
-  `documents` bigint(20) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -247,19 +197,6 @@ CREATE TABLE `suite_statistics` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `test_cases`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `test_cases` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) NOT NULL DEFAULT '',
-  `project_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `description` text,
-  `parameters` text,
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `test_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -353,7 +290,7 @@ CREATE TABLE `tests` (
   `content` text,
   `automated` int(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `trm_properties`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -442,7 +379,7 @@ CREATE TABLE `unit_customization_values` (
   `customization_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `value` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

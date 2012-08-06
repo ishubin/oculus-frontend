@@ -38,11 +38,7 @@ public class ProjectSearchFilter {
 	private String project;
 	private String designer;
 
-	public static final String _TYPE_TESTCASE = "testcase".intern();
-	public static final String _TYPE_FILE = "file".intern();
-
-	private String documentType;
-
+	
 	private Collection<SearchColumn> columns;
 	/**
 	 * A set of customization conditions where key is the id of the
@@ -135,11 +131,4 @@ public class ProjectSearchFilter {
 		return columns;
 	}
 
-	public void setDocumentType(String documentType) {
-		this.documentType = documentType;
-	}
-
-	public String getDocumentType() {
-		return documentType;
-	}
 }

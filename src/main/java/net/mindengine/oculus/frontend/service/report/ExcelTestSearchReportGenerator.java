@@ -33,7 +33,6 @@ import net.mindengine.oculus.frontend.domain.customization.Customization;
 import net.mindengine.oculus.frontend.domain.customization.CustomizationPossibleValue;
 import net.mindengine.oculus.frontend.domain.customization.UnitCustomizationValue;
 import net.mindengine.oculus.frontend.domain.db.BrowseResult;
-import net.mindengine.oculus.frontend.domain.document.Document;
 import net.mindengine.oculus.frontend.domain.test.Test;
 import net.mindengine.oculus.frontend.domain.user.User;
 import net.mindengine.oculus.frontend.service.customization.CustomizationDAO;
@@ -234,15 +233,6 @@ public class ExcelTestSearchReportGenerator {
                 authorName = test.getAuthorName();
                 objectId = test.getId();
                 date = test.getDate();
-            }
-            else if(object instanceof Document){
-                Document testCase = (Document)object;
-                name = testCase.getName();
-                parentProjectName = testCase.getParentProjectName();
-                projectName = testCase.getProjectName();
-                objectId = testCase.getId();
-                authorName = testCase.getAuthorName();
-                date = testCase.getDate();
             }
             else throw new IllegalArgumentException(object.getClass().getName());
             
