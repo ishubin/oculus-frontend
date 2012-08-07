@@ -12,6 +12,7 @@ cd scripts
 cd ..
 
 mkdir -p dist
+mkdir -p target
 rm -rf dist/*
 mkdir -p dist/bin
 mkdir -p dist/sources
@@ -20,7 +21,7 @@ cp scripts/oculus-db-init.sql dist/bin/.
 cp scripts/install.sh dist/bin/.
 
 mkdir -p target
-rm -r target/*
+rm -rf target/*
 mvn assembly:assembly -DskipTests=true
 
 if [[ ! -f target/oculus-frontend-jar-with-dependencies.jar ]]; then
